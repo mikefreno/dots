@@ -102,8 +102,6 @@ local weather_icons_night = {
 	["1279"] = "􀇟", -- Patchy light snow with thunder/392
 	["1282"] = "􀇟", -- Moderate or heavy snow with thunder/395
 }
-API_KEY = "ac52803fe74841f7b7a191127241005"
-CITY = sbar.exec("$(curl -s ipinfo.io/loc)")
 
 -- Execute the event provider binary which provides the event "weather_update" for
 -- the weather data, which is fired every 10 minutes (600 seconds).
@@ -150,7 +148,7 @@ local weather_icon = sbar.add("item", "widgets.weather.icon", {
 		string = "__",
 	},
 	padding_right = -16,
-	padding_left = -14,
+	padding_left = 4,
 	y_offset = 0,
 })
 
