@@ -1,0 +1,10 @@
+options=(
+	style=round
+	width=8.0
+	hidpi=off
+	active_color=0xff739df2
+	inactive_color=0xff0e0f16
+	blacklist="Simulator,qemu-system-aarch64"
+)
+
+borders "${options[@]}"

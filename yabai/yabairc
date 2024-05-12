@@ -60,9 +60,9 @@ yabai -m signal --add event=window_resized action='echo "refresh windows" | nc -
 yabai -m signal --add event=window_minimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
 yabai -m signal --add event=window_deminimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
 
-borders active_color=0xff739df2 inactive_color=0xff0e0f16 width=8.0 &
-borders blacklist="Simulator,qemu-system-aarch64"
+borders
+echo "yabai config loaded"
 
 yabai -m rule --apply
 
-echo "yabai config loaded"
+echo "yabai config applied"
