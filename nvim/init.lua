@@ -654,6 +654,12 @@ local ocamllsp = {
 	cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
 	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
 }
+
+local test_c = {
+	cmd = { "./c_lsp" },
+	filetypes = { "c" },
+}
+
 -- Setup neovim lua configuration
 require("neodev").setup()
 
@@ -682,6 +688,9 @@ mason_lspconfig.setup_handlers({
 
 require("lspconfig")["sourcekit"].setup(sourcekit)
 require("lspconfig")["ocamllsp"].setup(ocamllsp)
+
+--require("lspconfig")["clangd"].setup(test_c)
+
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require("cmp")

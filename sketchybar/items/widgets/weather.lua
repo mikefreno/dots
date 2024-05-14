@@ -104,8 +104,10 @@ local weather_icons_night = {
 }
 
 -- Execute the event provider binary which provides the event "weather_update" for
--- the weather data, which is fired every 10 minutes (600 seconds).
-sbar.exec("$CONFIG_DIR/helpers/event_providers/weather_provider/weather_provider weather_update 300 &")
+-- the weather data, which is fired every 2.5 minutes (150 seconds).
+sbar.exec(
+	"killall weather_update >/dev/null; $CONFIG_DIR/helpers/event_providers/weather_provider/bin/weather_provider weather_update 150"
+)
 
 local weather_temp = sbar.add("item", "widgets.weather.temp", {
 	position = "right",
@@ -170,7 +172,7 @@ sbar.add("bracket", "widgets.weather.bracket", {
 
 sbar.add("item", { position = "right", width = settings.group_paddings })
 
-weather_icon:subscribe("weather_update", function(env)
+weather:subscribe("weather_update", function(env)
 	local is_day = tonumber(env.is_day)
 	local condition = env.condition
 	local icon = is_day == 1 and weather_icons_day[condition] or weather_icons_night[condition]
@@ -185,12 +187,6 @@ weather_icon:subscribe("weather_update", function(env)
 		label = {
 			string = env.temp .. "°F",
 			color = colors.white,
-		},
-	})
-	weather_city:set({
-		label = {
-			string = env.city,
-			color = colors.grey,
 		},
 	})
 end)

@@ -60,9 +60,7 @@ yabai -m signal --add event=window_resized action='echo "refresh windows" | nc -
 yabai -m signal --add event=window_minimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
 yabai -m signal --add event=window_deminimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
 
-borders
-echo "yabai config loaded"
-
 yabai -m rule --apply
+borders
 
-echo "yabai config applied"
+echo "yabai config loaded"
