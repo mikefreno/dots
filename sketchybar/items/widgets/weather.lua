@@ -134,7 +134,7 @@ local weather_city = sbar.add("item", "widgets.weather.city", {
 			size = 8.0,
 		},
 		color = colors.grey,
-		string = "Brooklyn", -- Replace with the actual city name
+		string = "loading...",
 	},
 	y_offset = -6,
 })
@@ -172,7 +172,7 @@ sbar.add("bracket", "widgets.weather.bracket", {
 
 sbar.add("item", { position = "right", width = settings.group_paddings })
 
-weather:subscribe("weather_update", function(env)
+weather_icon:subscribe("weather_update", function(env)
 	local is_day = tonumber(env.is_day)
 	local condition = env.condition
 	local icon = is_day == 1 and weather_icons_day[condition] or weather_icons_night[condition]
@@ -186,6 +186,12 @@ weather:subscribe("weather_update", function(env)
 	weather_temp:set({
 		label = {
 			string = env.temp .. "°F",
+			color = colors.white,
+		},
+	})
+	weather_city:set({
+		label = {
+			string = env.city,
 			color = colors.white,
 		},
 	})

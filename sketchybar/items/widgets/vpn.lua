@@ -2,7 +2,7 @@
 local colors = require("colors")
 local settings = require("settings")
 
-sbar.exec("$CONFIG_DIR/helpers/event_providers/vpn_load/vpn_load vpn_update 5 &")
+sbar.exec("$CONFIG_DIR/helpers/event_providers/vpn_load/bin/vpn_load vpn_update 5 &")
 
 local vpn_icon = sbar.add("item", "widgets.vpn.icon", {
 	position = "left",
