@@ -110,6 +110,8 @@ cmd + alt - n : yabai -m space --create && \
 # destroy desktop
 cmd + alt - w : yabai -m space --destroy
 
+cmd + shift - s : brew services restart sketchybar
+
 # Change desktop
 #cmd + alt - 1 : yabai -m space --focus  1 || skhd -k "alt + alt + cmd - 1"
 #cmd + alt - 2 : yabai -m space --focus  2 || skhd -k "alt + alt + cmd - 2"

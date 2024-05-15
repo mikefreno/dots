@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define API_KEY "api_key"
+#define API_KEY "API_KEY"
 #define WEATHER_URL "http://api.weatherapi.com/v1/current.json?key=%s&q=%f,%f"
 
 size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata) {
@@ -37,7 +37,8 @@ int main(int argc, char **argv) {
 
   while (1) {
     // Get the current location from the local server
-    char location_url[] = "http://localhost:8000/current_location";
+    char location_url[] =
+        "http://localhost:8000/current_location?accuracy=best";
     char location_response[4096] = {0};
     curl_easy_setopt(curl, CURLOPT_URL, location_url);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);

@@ -9,7 +9,8 @@ yabai -m space 4 --label audio
 yabai -m space 5 --label vm
 
 # Window rules
-yabai -m rule --add app="^Alacritty$" space=main border=on
+yabai -m rule --add app="^Alacritty$" space=main
+yabai -m rule --add app="^kitty" space=main
 yabai -m rule --add app="^Orion" space=web
 yabai -m rule --add app="^Brave" space=web
 yabai -m rule --add app="^SigmaOS" space=web
