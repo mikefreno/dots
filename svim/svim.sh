@@ -9,7 +9,7 @@
 # COLOR=0xff9dd274
 # if [ "$MODE" = "" ]; then
 #   COLOR=0xffff6578
-# fi
+# f
 #
  sketchybar --set svim.mode label="[$MODE]" \
                             label.drawing=$(if [ "$MODE" = "" ]; then echo "off"; else echo "on"; fi) \

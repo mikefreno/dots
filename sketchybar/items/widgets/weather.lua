@@ -182,18 +182,12 @@ weather_icon:subscribe("weather_update", function(env)
 			color = colors.white,
 		},
 	})
-end)
-
-weather_temp:subscribe("weather_update", function(env)
 	weather_temp:set({
 		label = {
 			string = env.temp .. "°F",
 			color = colors.white,
 		},
 	})
-end)
-
-weather_city:subscribe("weather_update", function(env)
 	weather_city:set({
 		label = {
 			string = env.city,

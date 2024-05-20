@@ -10,7 +10,7 @@ yabai -m space 5 --label vm
 
 # Window rules
 yabai -m rule --add app="^Alacritty$" space=main
-yabai -m rule --add app="^kitty" space=main
+yabai -m rule --add app="^kitty$" space=main
 yabai -m rule --add app="^Orion" space=web
 yabai -m rule --add app="^Brave" space=web
 yabai -m rule --add app="^SigmaOS" space=web
@@ -37,17 +37,17 @@ yabai -m rule --add app="^(Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings
 
 yabai -m config					\
     layout			bsp		\
-    top_padding			4		\
-    bottom_padding		4		\
-    left_padding		4		\
-    right_padding		4		\
-    window_gap			10		\
+    top_padding			8		\
+    bottom_padding		8		\
+    left_padding		8		\
+    right_padding		8		\
+    window_gap			20		\
     window_shadow		float		\
     mouse_modifier		fn		\
     mouse_action1		move		\
     mouse_action2		resize		\
     window_border_width		1		\
-    external_bar                all:40:0         \
+    external_bar                all:40:0        \
 
 #yabai indicator
 yabai -m signal --add event=mission_control_exit action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'

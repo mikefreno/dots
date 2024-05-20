@@ -1,46 +1,47 @@
 local colors = require("colors")
+local settings = require("settings")
 
-sbar.add("alias", "CleanShot X", {
+sbar.add("item", "mirrors.cleanshot.icon", {
 	background = {
 		height = 22,
 		color = colors.bg1,
 		border_color = colors.grey,
-		drawing = true,
 		border_width = 1,
 	},
 	icon = {
-		padding_right = -4,
-		padding_left = 0,
+		string = "􀐩",
+		width = 20,
+		padding_right = 0,
+		padding_left = 5,
+		align = "center",
+		color = colors.white,
+		font = {
+			style = settings.font.style_map["Regular"],
+			size = 14.0,
+		},
 	},
-	label = {
-		padding_right = 2,
-	},
-	padding_right = -12,
-	width = 34,
 	position = "right",
 	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 'CleanShot X,Item-0'",
 })
 
-sbar.add("alias", "Cork", {
+sbar.add("item", "mirrors.cork.icon", {
 	background = {
 		height = 22,
 		color = colors.bg1,
 		border_color = colors.grey,
-		drawing = true,
 		border_width = 1,
 	},
 	icon = {
-		padding_right = -4,
-		padding_left = 0,
+		string = "􀐯",
+		width = 20,
+		padding_right = 6,
+		padding_left = 5,
+		color = colors.white,
+		font = {
+			style = settings.font.style_map["Regular"],
+			size = 14.0,
+		},
 	},
-	label = {
-		padding_right = 0,
-	},
-	padding_right = -8,
-	width = 30,
 	position = "right",
 	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 'Cork,Item-0'",
 })
-
-sbar.exec(string.format("sketchybar --set 'Cork' alias.color=%s", colors.white))
-sbar.exec(string.format("sketchybar --set 'CleanShot X' alias.color=%s", colors.white))

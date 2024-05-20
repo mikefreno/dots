@@ -11,7 +11,7 @@ return {
   transparent = 0x00000000,
 
   bar = {
-    bg     = 0xff2c2f40, -- surface0
+    bg     = 0xB02c2f40, -- surface0
     border = 0xff3e4255, -- surface1
   },
   popup = {
@@ -26,4 +26,3 @@ return {
     return (color & 0x00ffffff) | (math.floor(alpha * 255.0) << 24)
   end,
 }
-
