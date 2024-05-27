@@ -228,6 +228,16 @@ require("lazy").setup({
 		},
 		config = true,
 	},
+	-- flutter tooling
+	{
+		"akinsho/flutter-tools.nvim",
+		lazy = false,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"stevearc/dressing.nvim", -- optional for vim.ui.select
+		},
+		config = true,
+	},
 	{
 		-- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
@@ -479,7 +489,7 @@ LineNumberColors()
 -- See `:help telescope` and `:help telescope.setup()`
 require("telescope").setup({
 	defaults = {
-		file_ignore_patterns = { "node_modules", "env", "ios", "android" },
+		file_ignore_patterns = { "node_modules", "env", "ios", "android", "macos", "linux", "build", "windows" },
 		mappings = {
 			i = {
 				["<C-u>"] = false,

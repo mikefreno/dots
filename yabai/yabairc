@@ -32,7 +32,7 @@ yabai -m rule --add title="^Preferences" manage=off
 yabai -m rule --add title="^Settings" manage=off
 yabai -m rule --add title="^Control Center" manage=off
 yabai -m rule --add title="^Steam" manage=off
-yabai -m rule --add app="^(Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Parallels Desktop|ProtonVPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit)$" manage=off
+yabai -m rule --add app="^(Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|ProtonVPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit)$" manage=off
 
 
 yabai -m config					\
@@ -46,20 +46,9 @@ yabai -m config					\
     mouse_modifier		fn		\
     mouse_action1		move		\
     mouse_action2		resize		\
-    window_border_width		1		\
     external_bar                all:40:0        \
 
 #yabai indicator
-yabai -m signal --add event=mission_control_exit action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=display_added action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=display_removed action='echo "refresh" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_created action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_destroyed action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_focused action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_moved action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_resized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_minimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
-yabai -m signal --add event=window_deminimized action='echo "refresh windows" | nc -U /tmp/yabai-indicator.socket'
 
 yabai -m rule --apply
 borders

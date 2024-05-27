@@ -3,7 +3,6 @@
 .blacklist [
     "Alacritty"
     "Ubuntu"
-    "World of Warcraft Classic"
     "nixOS"
     "Parallels Desktop"
 ]

@@ -10,12 +10,8 @@ sbar.exec(
 
 local popup_width = 250
 
-local wifi = sbar.add("item", "widgets.wifi.padding", {
-	position = "left",
-	label = { drawing = false },
-})
 local wifi_up = sbar.add("item", "widgets.wifi1", {
-	position = "left",
+	position = "right",
 	padding_left = -5,
 	width = 0,
 	icon = {
@@ -39,7 +35,7 @@ local wifi_up = sbar.add("item", "widgets.wifi1", {
 })
 
 local wifi_down = sbar.add("item", "widgets.wifi2", {
-	position = "left",
+	position = "right",
 	padding_left = -5,
 	icon = {
 		padding_right = 0,
@@ -59,6 +55,11 @@ local wifi_down = sbar.add("item", "widgets.wifi2", {
 		string = "??? Bps",
 	},
 	y_offset = -4,
+})
+
+local wifi = sbar.add("item", "widgets.wifi.padding", {
+	position = "right",
+	label = { drawing = false },
 })
 
 -- Background around the item
