@@ -11,10 +11,7 @@ yabai -m space 5 --label vm
 # Window rules
 yabai -m rule --add app="^Alacritty$" space=main
 yabai -m rule --add app="^kitty$" space=main
-yabai -m rule --add app="^Xcode$" space=main
-yabai -m rule --add app="^Xcode-beta$" space=main
 yabai -m rule --add app="^Orion" space=web
-yabai -m rule --add app="^Safari" space=web
 yabai -m rule --add app="^Brave" space=web
 yabai -m rule --add app="^SigmaOS" space=web
 yabai -m rule --add app="^YouTube Music" space=audio
@@ -49,7 +46,7 @@ yabai -m config					\
     mouse_modifier		fn		\
     mouse_action1		move		\
     mouse_action2		resize		\
-    external_bar                all:44:0        \
+    #external_bar                all:40:0        \
 
 #yabai indicator
 

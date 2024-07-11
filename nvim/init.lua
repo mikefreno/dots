@@ -46,6 +46,7 @@ require("lazy").setup({
 	"mattn/emmet-vim",
 	"rhysd/vim-clang-format",
 	"evanleck/vim-svelte",
+	"OmniSharp/omnisharp-vim",
 	{
 		"kristijanhusak/vim-dadbod-ui",
 		dependencies = {

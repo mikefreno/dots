@@ -92,8 +92,6 @@ alt + shift - 4 : yabai -m space --destroy 4
 alt + shift - 5 : yabai -m space --destroy 5
 
 
-alt + shift - r : yabai --restart-service
-alt + shift - s : yabai --stop_service
 
 # create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
 shift + cmd - n : yabai -m space --create && \
@@ -109,7 +107,9 @@ cmd + alt - n : yabai -m space --create && \
 # destroy desktop
 cmd + alt - w : yabai -m space --destroy
 
-cmd + shift - s : brew services restart sketchybar
+
+cmd + shift - r : yabai --restart-service && \
+                  brew services restart sketchybar
 
 # Change desktop
 #cmd + alt - 1 : yabai -m space --focus  1 || skhd -k "alt + alt + cmd - 1"
