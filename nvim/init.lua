@@ -32,21 +32,17 @@ require("lazy").setup({
 	"tpope/vim-sleuth",
 	"preservim/nerdcommenter",
 	"wakatime/vim-wakatime",
-	"vrischmann/tree-sitter-templ",
 	"sbdchd/neoformat",
 	"tpope/vim-dadbod",
 	"tpope/vim-surround",
 	"mattn/emmet-vim",
 	"keith/swift.vim",
-	"ThePrimeagen/vim-be-good",
-	"ThePrimeagen/harpoon",
-	"ThePrimeagen/vim-apm",
-	"prisma/vim-prisma",
 	"mbbill/undotree",
 	"mattn/emmet-vim",
 	"rhysd/vim-clang-format",
 	"evanleck/vim-svelte",
 	"OmniSharp/omnisharp-vim",
+	"ionide/Ionide-vim",
 	{
 		"kristijanhusak/vim-dadbod-ui",
 		dependencies = {
@@ -329,14 +325,7 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "[H]arpoon [Q]uick Menu" }
 )
 
-local apm = require("vim-apm")
-
-apm:setup({})
-vim.keymap.set("n", "<leader>apm", function()
-	apm:toggle_monitor()
-end)
 --git integration
-
 vim.api.nvim_set_keymap("n", "<leader>ng", ":Neogit<CR>", { noremap = true, silent = true })
 -- Remap for dealing with word wrap
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
