@@ -1,4 +1,3 @@
--- Insert API key and city here
 local colors = require("colors")
 local settings = require("settings")
 
