@@ -140,11 +140,6 @@ require("lazy").setup({
 			end,
 		},
 	},
-	--{
-	--"windwp/nvim-autopairs",
-	--event = "InsertEnter",
-	--opts = {}, -- this is equalent to setup({}) functions
-	--},
 	{ "neoclide/coc.nvim", branch = "release" },
 	{
 		"romgrk/barbar.nvim",
@@ -193,7 +188,13 @@ require("lazy").setup({
 		},
 	},
 	{ "windwp/nvim-ts-autotag" },
-	{ "windwp/nvim-autopairs" },
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		-- use opts = {} for passing setup options
+		-- this is equalent to setup({}) function
+	},
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	-- "gc" to comment visual regions/lines
 	{ "numToStr/Comment.nvim", opts = {} },
@@ -646,7 +647,9 @@ local servers = {
 }
 
 local sourcekit = {
-	cmd = { "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp" },
+	cmd = {
+		"/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
+	},
 	filetypes = { "swift" },
 }
 
