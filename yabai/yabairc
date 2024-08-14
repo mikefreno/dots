@@ -49,7 +49,7 @@ yabai -m config					\
     mouse_modifier		fn		\
     mouse_action1		move		\
     mouse_action2		resize		\
-    external_bar                all:44:0        \
+    external_bar                all:40:0        \
 
 #yabai indicator
 
