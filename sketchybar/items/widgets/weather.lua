@@ -103,9 +103,9 @@ local weather_icons_night = {
 }
 
 -- Execute the event provider binary which provides the event "weather_update" for
--- the weather data, which is fired every 2.5 minutes (150 seconds).
+-- the weather data, which is fired every 3 minutes (180 seconds).
 sbar.exec(
-	"killall weather_update >/dev/null; $CONFIG_DIR/helpers/event_providers/weather_provider/bin/weather_provider weather_update 150 &"
+	"killall weather_update >/dev/null; $CONFIG_DIR/helpers/event_providers/weather_provider/bin/weather_provider weather_update 180 &"
 )
 
 local weather_temp = sbar.add("item", "widgets.weather.temp", {
