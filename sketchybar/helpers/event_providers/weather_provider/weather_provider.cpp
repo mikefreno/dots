@@ -3,6 +3,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <thread>
+
 #include "../sketchybar.h"
 
 using json = nlohmann::json;
@@ -42,7 +43,7 @@ public:
 
         // Fetch weather data
         auto weatherData = getWeather(location.first, location.second);
-        //std::cout << weatherData << std::endl;
+        // std::cout << weatherData << std::endl;
 
         // Send update event to sketchybar
         sendUpdate(weatherData);
@@ -57,47 +58,63 @@ public:
 
 private:
   std::pair<double, double> getLocation() {
-    // Get the current location from the local server
-    FILE *pipe = popen("CoreLocationCli", "r");
-    if (!pipe) {
-      std::cerr << "Error: Failed to execute CoreLocationCli" << std::endl;
-      throw std::runtime_error("Failed to execute CoreLocationCli");
+    const int RETRY_DELAY_SECONDS = 10;
+
+    while (true) {
+      FILE *pipe = popen("CoreLocationCli", "r");
+      if (!pipe) {
+        std::cerr << "Error: Failed to execute CoreLocationCli. Retrying in "
+                  << RETRY_DELAY_SECONDS << " seconds..." << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(RETRY_DELAY_SECONDS));
+        continue;
+      }
+
+      char buffer[128];
+      std::string result = "";
+      while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+        result += buffer;
+      }
+      pclose(pipe);
+
+      // Trim any whitespace from the result
+      result.erase(0, result.find_first_not_of(" \n\r\t"));
+      result.erase(result.find_last_not_of(" \n\r\t") + 1);
+
+      // Check if the result contains an error message
+      if (result.find("error") != std::string::npos) {
+        std::cerr << "CoreLocationCli error: " << result << std::endl;
+        std::cerr << "Retrying in " << RETRY_DELAY_SECONDS << " seconds..."
+                  << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(RETRY_DELAY_SECONDS));
+        continue;
+      }
+
+      // Parse the output to get latitude and longitude
+      std::istringstream iss(result);
+      double latitude, longitude;
+      if (!(iss >> latitude >> longitude)) {
+        std::cerr << "Error: Failed to parse latitude and longitude from: '"
+                  << result << "'" << std::endl;
+        std::cerr << "Retrying in " << RETRY_DELAY_SECONDS << " seconds..."
+                  << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(RETRY_DELAY_SECONDS));
+        continue;
+      }
+
+      return std::make_pair(latitude, longitude);
     }
-
-    char buffer[128];
-    std::string result = "";
-    while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-      result += buffer;
-    }
-    pclose(pipe);
-
-    // Trim any whitespace from the result
-    result.erase(0, result.find_first_not_of(" \n\r\t"));
-    result.erase(result.find_last_not_of(" \n\r\t") + 1);
-
-    // std::cout << "Raw CoreLocationCli output: '" << result << "'" <<
-    // std::endl;
-
-    // Parse the output to get latitude and longitude
-    std::istringstream iss(result);
-    double latitude, longitude;
-    if (!(iss >> latitude >> longitude)) {
-      std::cerr << "Error: Failed to parse latitude and longitude from: '"
-                << result << "'" << std::endl;
-      throw std::runtime_error("Failed to parse latitude and longitude");
-    }
-
-    return std::make_pair(latitude, longitude);
   }
+
   json combineWeatherData(const json &tomorrowData,
                           const json &weatherApiData) {
     json combinedData;
 
     // Data from Tomorrow.io API
     combinedData["temperature"] = tomorrowData["data"]["values"]["temperature"];
-    combinedData["weatherCode"] = tomorrowData["data"]["values"]["weatherCode"];
 
     // Data from WeatherAPI.com
+    combinedData["weatherCode"] =
+        weatherApiData["current"]["condition"]["code"];
     combinedData["is_day"] = weatherApiData["current"]["is_day"];
     combinedData["city"] = weatherApiData["location"]["name"];
 
