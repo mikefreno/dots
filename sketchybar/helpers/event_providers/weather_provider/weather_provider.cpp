@@ -3,7 +3,6 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <thread>
-
 #include "../sketchybar.h"
 
 using json = nlohmann::json;
