@@ -4,6 +4,8 @@ vim.g.maplocalleader = " "
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.wo.relativenumber = true
+vim.o.updatetime = 50
+vim.o.redrawtime = 100
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -43,6 +45,7 @@ require("lazy").setup({
 	"evanleck/vim-svelte",
 	"OmniSharp/omnisharp-vim",
 	"ionide/Ionide-vim",
+	"mg979/vim-visual-multi",
 	{
 		"kristijanhusak/vim-dadbod-ui",
 		dependencies = {
@@ -235,6 +238,53 @@ require("lazy").setup({
 			"stevearc/dressing.nvim", -- optional for vim.ui.select
 		},
 		config = true,
+	},
+	{
+		"folke/trouble.nvim",
+		opts = {}, -- for default options, refer to the configuration section for custom setup.
+		cmd = "Trouble",
+		keys = {
+			{
+				"<leader>xx",
+				"<cmd>Trouble diagnostics toggle<cr>",
+				desc = "Diagnostics (Trouble)",
+			},
+			{
+				"<leader>xX",
+				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+				desc = "Buffer Diagnostics (Trouble)",
+			},
+			{
+				"<leader>cs",
+				"<cmd>Trouble symbols toggle focus=false<cr>",
+				desc = "Symbols (Trouble)",
+			},
+			{
+				"<leader>cl",
+				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+				desc = "LSP Definitions / references / ... (Trouble)",
+			},
+			{
+				"<leader>xL",
+				"<cmd>Trouble loclist toggle<cr>",
+				desc = "Location List (Trouble)",
+			},
+			{
+				"<leader>xQ",
+				"<cmd>Trouble qflist toggle<cr>",
+				desc = "Quickfix List (Trouble)",
+			},
+		},
+	},
+	{
+		"lervag/vimtex",
+		lazy = false, -- we don't want to lazy load VimTeX
+		-- tag = "v2.15", -- uncomment to pin to a specific release
+		init = function()
+			-- VimTeX configuration goes here, e.g.
+			vim.g.vimtex_view_method = "zathura"
+			vim.g.vimtex_compiler_method = "latexmk"
+		end,
 	},
 	{
 		-- Highlight, edit, and navigate code
@@ -632,6 +682,7 @@ local on_attach = function(_, bufnr)
 end
 
 local servers = {
+	basedpyright = { basedpyright = { typeCheckingMode = "standard" } },
 	clangd = { hint = { enable = true } },
 	gopls = { hint = { enable = true } },
 	rust_analyzer = { hint = { enable = true } },
@@ -657,12 +708,6 @@ local ocamllsp = {
 	cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
 	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
 }
-
-local test_c = {
-	cmd = { "./c_lsp" },
-	filetypes = { "c" },
-}
-
 -- Setup neovim lua configuration
 require("neodev").setup()
 
@@ -782,6 +827,24 @@ vim.g.neoformat_options_cpp = {
 vim.cmd([[
   autocmd BufWritePost * silent! :Sleuth
 ]])
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*.json",
+	callback = function()
+		local bufnr = vim.api.nvim_get_current_buf()
+		local content = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), "\n")
+		local result = vim.system({
+			"jq",
+			".",
+		}, {
+			stdin = content,
+		}):wait()
+		if result.code == 0 then
+			local formatted = vim.split(result.stdout, "\n")
+			vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, formatted)
+		end
+	end,
+})
 -- key maps --
 
 --make save case insensitive

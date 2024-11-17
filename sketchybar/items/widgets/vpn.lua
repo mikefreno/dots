@@ -55,7 +55,7 @@ sbar.add("item", { position = "left", width = settings.group_paddings })
 vpn_icon:subscribe("vpn_update", function(env)
 	local vpn_name = env.vpn
 
-	if vpn_name then
+	if vpn_name == "Connected" then
 		vpn_icon:set({
 			icon = {
 				string = "􁅏",

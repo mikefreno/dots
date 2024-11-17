@@ -22,25 +22,27 @@ int main(int argc, char **argv) {
   char trigger_message[512];
   for (;;) {
     // Execute the scutil command and capture the output
-    FILE *fp = popen(
-        "scutil --nc list | grep Connected | sed -E 's/.*\"(.*)\".*/\\1/'",
-        "r");
+    FILE *fp = popen("scutil --nwi", "r");
     if (fp == NULL) {
       fprintf(stderr, "Failed to execute scutil command\n");
       exit(1);
     }
 
     char output[MAX_OUTPUT_LENGTH];
-    if (fgets(output, sizeof(output), fp) != NULL) {
-      // Remove trailing newline character
-      output[strcspn(output, "\n")] = '\0';
-    } else {
-      // No connected VPN found, set output to empty string
-      output[0] = '\0';
+    int vpn_connected = 0;
+    while (fgets(output, sizeof(output), fp) != NULL) {
+      if (strstr(output, "ipsec0") != NULL || strstr(output, "utun") != NULL) {
+        vpn_connected = 1;
+        break;
+      }
     }
 
     // Prepare the event message
-    snprintf(trigger_message, 512, "--trigger '%s' vpn='%s'", argv[1], output);
+    if (vpn_connected) {
+      snprintf(trigger_message, 512, "--trigger '%s' vpn='Connected'", argv[1]);
+    } else {
+      snprintf(trigger_message, 512, "--trigger '%s' vpn='Disconnected'", argv[1]);
+    }
 
     // Trigger the event
     sketchybar(trigger_message);
@@ -52,3 +54,4 @@ int main(int argc, char **argv) {
   }
   return 0;
 }
+
