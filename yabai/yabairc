@@ -1,59 +1,73 @@
-sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa &>/dev/null
 
-# Space labels
-yabai -m space 1 --label main
-yabai -m space 2 --label web 
-yabai -m space 3 --label comms
-yabai -m space 4 --label audio
-yabai -m space 5 --label vm
+display_count=$(yabai -m query --displays | jq length)
+echo "Number of displays detected: $display_count"
 
-# Window rules
-yabai -m rule --add app="^Alacritty$" space=main
-yabai -m rule --add app="^kitty$" space=main
-yabai -m rule --add app="^Xcode$" space=main
-yabai -m rule --add app="^Xcode-beta$" space=main
-yabai -m rule --add app="^Orion" space=web
-yabai -m rule --add app="^Safari" space=web
-yabai -m rule --add app="^Brave" space=web
-yabai -m rule --add app="^SigmaOS" space=web
-yabai -m rule --add app="^YouTube Music" space=audio
-yabai -m rule --add app="^Podcasts" space=audio
-yabai -m rule --add app="^Spotify" space=audio
-yabai -m rule --add app="^Music" space=audio
-yabai -m rule --add app="^Mail" space=comms
-yabai -m rule --add app="^Messages" space=comms
-yabai -m rule --add app="^Things" space=comms
-yabai -m rule --add app="^Obsidian" space=comms
-yabai -m rule --add app="^Parallels Desktop" space=vm
-yabai -m rule --add title="^Ubuntu" space=vm
-yabai -m rule --add app="^Simulator" space=vm
-yabai -m rule --add app="^qemu-system-aarch64" space=vm
-yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder)$" manage=off
-yabai -m rule --add title="^Preview" manage=off
-yabai -m rule --add title="^Preferences" manage=off
-yabai -m rule --add title="^Settings" manage=off
-yabai -m rule --add title="^Control Center" manage=off
-yabai -m rule --add title="^Steam" manage=off
-yabai -m rule --add app="^(Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|ProtonVPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit)$" manage=off
+setup_spaces() {
+    if [ "$display_count" -eq 1 ]; then
+        # Single display configuration
+        yabai -m space 1 --label main
+        yabai -m space 2 --label web
+        yabai -m space 3 --label comms
+        yabai -m space 4 --label audio
+    else
+        # Multi-display configuration
+        yabai -m space 1 --label audio
+        yabai -m space 2 --label main
+        yabai -m space 3 --label web
+        yabai -m space 4 --label comms
+    fi
+}
 
+setup_rules() {
+    local main_space="main"
+    local web_space="web"
+    local comms_space="comms"
+    local audio_space="audio"
+    if [ "$display_count" -gt 1 ]; then
+        audio_space="audio"
+        main_space="main"
+        web_space="web"
+        comms_space="comms"
+    fi
+    yabai -m rule --add app="^(Alacritty|kitty)$" space="$main_space"
+    yabai -m rule --add app="^Xcode(-beta)?$" space="$main_space"
+    yabai -m rule --add app="^(Orion|Safari|Brave|SigmaOS)$" space="$web_space"
+    yabai -m rule --add app="^(Mail|Messages|Things|Obsidian)$" space="$comms_space"
+    yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex)$" space="$audio_space"
+    yabai -m rule --add app="^(Parallels Desktop|Simulator|qemu-system-aarch64)$" space="$main_space" manage=off
+    yabai -m rule --add title="^Ubuntu$" space="$main_space" manage=off
+    # Unmanaged apps and windows
+    yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam)$" manage=off
+    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|ProtonVPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit)$" manage=off
+}
 
-yabai -m config					\
-    layout			bsp		\
-    top_padding			16		\
-    bottom_padding		16		\
-    left_padding		16		\
-    right_padding		16		\
-    window_gap			20		\
-    window_shadow		float		\
-    mouse_modifier		fn		\
-    mouse_action1		move		\
-    mouse_action2		resize		\
-    external_bar                all:40:0        \
+# Set up spaces
+setup_spaces
 
-#yabai indicator
+# Set up window management rules
+setup_rules
 
+# General yabai configuration
+yabai -m config \
+    layout                  bsp             \
+    top_padding            16              \
+    bottom_padding         16              \
+    left_padding           16              \
+    right_padding          16              \
+    window_gap             10              \
+    window_shadow          float           \
+    mouse_modifier         fn              \
+    mouse_action1          move            \
+    mouse_action2          resize          \
+    external_bar           all:40:0
+
+# Apply rules
 yabai -m rule --apply
-borders
 
-echo "yabai config loaded"
+if ! pgrep -x "borders" >/dev/null; then
+    borders &
+fi
+
+echo "yabai configuration loaded successfully"
