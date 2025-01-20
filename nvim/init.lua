@@ -23,6 +23,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 vim.cmd("set spell spelllang=en_us")
+require("colors").setup()
 
 require("lazy").setup({
 	-- NOTE: First, some plugins that don't require any configuration
@@ -107,6 +108,15 @@ require("lazy").setup({
 			"rafamadriz/friendly-snippets",
 		},
 	},
+	{
+		"rcarriga/nvim-notify",
+		lazy = false,
+		config = function()
+			require("notify").setup({
+				-- your notify config here
+			})
+		end,
+	},
 	--Useful plugin to show you pending keybinds.
 	{ "folke/which-key.nvim", opts = {} },
 	{
@@ -168,11 +178,30 @@ require("lazy").setup({
 			require("nvim-tree").setup({})
 		end,
 	},
+
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
-		lazy = false,
+		config = function()
+			local current_theme = vim.g.current_theme or "latte"
+			local transparency = vim.g.transparency or false
+
+			require("catppuccin").setup({
+				lazy = false,
+				flavour = current_theme,
+				background = {
+					light = "latte",
+					dark = "mocha",
+				},
+				color_overrides = require("colors").colors,
+				transparent_background = transparency,
+				show_end_of_buffer = false,
+				custom_highlights = {},
+			})
+
+			vim.cmd.colorscheme("catppuccin")
+		end,
 	},
 	{
 		-- Set lualine as statusline
@@ -198,7 +227,189 @@ require("lazy").setup({
 		-- use opts = {} for passing setup options
 		-- this is equalent to setup({}) function
 	},
+	{
+		"folke/zen-mode.nvim",
+		config = function()
+			local colors = require("colors")
+
+			-- Function to switch Kitty config
+			local function kitty_switch_config(mode)
+				local config_dir = os.getenv("HOME") .. "/.config/kitty"
+				local kitty_file = config_dir .. "/kitty.conf"
+				local kitty_dark_file = config_dir .. "/kitty_dark.conf"
+				local kitty_light_file = config_dir .. "/kitty_light.conf"
+
+				-- Store current config
+				vim.fn.system("cp " .. kitty_file .. " " .. config_dir .. "/kitty_previous.conf")
+
+				-- Switch to dark mode
+				vim.fn.system("cp " .. kitty_dark_file .. " " .. kitty_file)
+				vim.fn.system("kitty @ load-config")
+			end
+
+			-- Function to restore previous Kitty config
+			local function kitty_restore_config()
+				local config_dir = os.getenv("HOME") .. "/.config/kitty"
+				local kitty_file = config_dir .. "/kitty.conf"
+				local previous_config = config_dir .. "/kitty_previous.conf"
+
+				vim.fn.system("cp " .. previous_config .. " " .. kitty_file)
+				vim.fn.system("kitty @ load-config")
+			end
+
+			require("zen-mode").setup({
+				window = {
+					backdrop = 0.95,
+					width = 120,
+					height = 1,
+					options = {
+						signcolumn = "no",
+						number = false,
+						relativenumber = false,
+						cursorline = false,
+						cursorcolumn = false,
+						foldcolumn = "0",
+						list = false,
+					},
+				},
+				plugins = {
+					options = {
+						enabled = true,
+						ruler = false,
+						showcmd = false,
+					},
+					twilight = { enabled = true },
+					gitsigns = { enabled = false },
+					tmux = { enabled = true },
+				},
+				on_open = function()
+					-- Store current theme
+					vim.g.pre_zen_theme = vim.g.current_theme
+
+					-- Switch to dark theme
+					colors.change_theme("mocha")
+
+					-- Switch Kitty to dark mode
+					kitty_switch_config("dark")
+
+					-- Tmux adjustments
+					vim.fn.system("tmux set status off")
+					vim.fn.system("tmux list-panes -F '\\#F' | grep -q Z || tmux resize-pane -Z")
+
+					-- Safely handle notify
+					local ok, notify = pcall(require, "notify")
+					if ok then
+						notify.setup({ enabled = false })
+					end
+				end,
+				on_close = function()
+					-- Restore previous theme
+					colors.change_theme(vim.g.pre_zen_theme or get_system_theme())
+
+					-- Restore previous Kitty config
+					kitty_restore_config()
+
+					-- Restore tmux
+					vim.fn.system("tmux set status on")
+					vim.fn.system("tmux list-panes -F '\\#F' | grep -q Z && tmux resize-pane -Z")
+
+					-- Safely handle notify
+					local ok, notify = pcall(require, "notify")
+					if ok then
+						notify.setup({ enabled = true })
+					end
+				end,
+			})
+
+			vim.keymap.set("n", "<leader>z", ":ZenMode<CR>", { silent = true })
+		end,
+	},
+
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		event = "BufReadPost",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"lukas-reineke/indent-blankline.nvim",
+		},
+		config = function()
+			local rainbow_delimiters = require("rainbow-delimiters")
+			local colors = vim.g.current_colors
+
+			local highlight = {
+				"RainbowRed",
+				"RainbowYellow",
+				"RainbowBlue",
+				"RainbowPeach",
+				"RainbowGreen",
+				"RainbowMauve",
+				"RainbowTeal",
+			}
+
+			local hooks = require("ibl.hooks")
+			hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+				-- Using globally available colors
+				vim.api.nvim_set_hl(0, "RainbowRed", { fg = colors.red })
+				vim.api.nvim_set_hl(0, "RainbowYellow", { fg = colors.yellow })
+				vim.api.nvim_set_hl(0, "RainbowBlue", { fg = colors.blue })
+				vim.api.nvim_set_hl(0, "RainbowPeach", { fg = colors.peach })
+				vim.api.nvim_set_hl(0, "RainbowGreen", { fg = colors.green })
+				vim.api.nvim_set_hl(0, "RainbowMauve", { fg = colors.mauve })
+				vim.api.nvim_set_hl(0, "RainbowTeal", { fg = colors.teal })
+			end)
+
+			vim.g.rainbow_delimiters = {
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+					lua = "rainbow-blocks",
+				},
+				highlight = highlight,
+			}
+
+			require("ibl").setup({ scope = { highlight = highlight } })
+		end,
+	},
+	{
+		"folke/twilight.nvim",
+		config = function()
+			require("twilight").setup({
+				dimming = {
+					alpha = 0.4,
+					color = { "Normal", vim.g.current_colors.text },
+					term_bg = vim.g.current_colors.base,
+					inactive = false,
+				},
+				context = 14,
+				treesitter = true,
+				expand = {
+					"function",
+					"method",
+					"table",
+					"if_statement",
+				},
+				exclude = {
+					"NvimTree",
+					"TelescopePrompt",
+					"help",
+					"lazy",
+					"Mason",
+				},
+			})
+
+			-- Auto-enable Twilight
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+				pattern = { "*.lua", "*.ts", "*.tsx", "*.jsx", "*.js", "*.md" },
+				callback = function()
+					vim.cmd("TwilightEnable")
+				end,
+			})
+		end,
+	},
 	-- "gc" to comment visual regions/lines
 	{ "numToStr/Comment.nvim", opts = {} },
 	-- Fuzzy Finder (files, lsp, etc)
@@ -498,6 +709,8 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "[H]arpoon [Q]uick Menu" }
 )
 
+vim.keymap.set("n", "<leader>z", ":ZenMode<CR>", { silent = true })
+
 --git integration
 vim.api.nvim_set_keymap("n", "<leader>ng", ":Neogit<CR>", { noremap = true, silent = true })
 -- Remap for dealing with word wrap
@@ -548,105 +761,6 @@ require("nvim-tree").setup({
 	},
 })
 vim.api.nvim_set_keymap("n", "<leader>T", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
---time dependant color theme set-up
-local handle =
-	io.popen("osascript -e 'tell application \"System Events\" to tell appearance preferences to return dark mode'")
-local flavor
-local transparency = false
-if handle then
-	local result = handle:read("*a")
-	handle:close()
-
-	local is_dark_mode = (result:find("true") ~= nil)
-	if is_dark_mode then
-		flavor = "mocha"
-	else
-		flavor = "latte"
-	end
-else
-	flavor = "mocha"
-end
-if flavor == "mocha" then
-	transparency = true
-end
-require("catppuccin").setup({
-	lazy = false,
-	flavour = flavor,
-	background = {
-		light = "latte",
-		dark = "mocha",
-	},
-	color_overrides = {
-		mocha = {
-			rosewater = "#efc9c2",
-			flamingo = "#ebb2b2",
-			pink = "#f2a7de",
-			mauve = "#b889f4",
-			red = "#ea7183",
-			maroon = "#ea838c",
-			peach = "#f39967",
-			yellow = "#eaca89",
-			green = "#96d382",
-			teal = "#78cec1",
-			sky = "#91d7e3",
-			sapphire = "#68bae0",
-			blue = "#739df2",
-			lavender = "#a0a8f6",
-			text = "#b5c1f1",
-			subtext1 = "#a6b0d8",
-			subtext0 = "#959ec2",
-			overlay2 = "#848cad",
-			overlay1 = "#717997",
-			overlay0 = "#63677f",
-			surface2 = "#505469",
-			surface1 = "#3e4255",
-			surface0 = "#2c2f40",
-			base = "#1a1c2a",
-			mantle = "#141620",
-			crust = "#0e0f16",
-		},
-		latte = {
-			rosewater = "#c14a4a",
-			flamingo = "#c14a4a",
-			pink = "#945e80",
-			mauve = "#945e80",
-			red = "#c14a4a",
-			maroon = "#c14a4a",
-			peach = "#c35e0a",
-			yellow = "#a96b2c",
-			green = "#6c782e",
-			teal = "#4c7a5d",
-			sky = "#4c7a5d",
-			sapphire = "#4c7a5d",
-			blue = "#45707a",
-			lavender = "#45707a",
-			text = "#654735",
-			subtext1 = "#7b5d44",
-			subtext0 = "#8f6f56",
-			overlay2 = "#a28368",
-			overlay1 = "#b6977a",
-			overlay0 = "#c9aa8c",
-			surface2 = "#A79C86",
-			surface1 = "#C9C19F",
-			surface0 = "#DFD6B1",
-			base = "#fbf1c7",
-			mantle = "#F3EAC1",
-			crust = "#E7DEB7",
-		},
-	},
-	transparent_background = transparency,
-	show_end_of_buffer = false,
-	custom_highlights = {},
-})
-
-vim.cmd.colorscheme("catppuccin")
-
-function LineNumberColors()
-	vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#8abcb5" })
-	vim.api.nvim_set_hl(0, "LineNr", { fg = "#b5c1f1", bold = true })
-	vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#dfbad5" })
-end
-LineNumberColors()
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`

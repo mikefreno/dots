@@ -6,6 +6,6 @@ rm btop.conf
 if [[ $darkmode == "Dark" ]]; then
     cp btop_dark btop.conf
 else
-    mv btop_light btop.conf
+    cp btop_light btop.conf
 fi
 
