@@ -91,32 +91,38 @@ M.setup_highlights = function()
 end
 
 function M.setup()
+	-- Store colors globally
 	vim.g.colors = M.colors
 
+	-- Add zen mode state tracking
+	vim.g.zen_mode_active = false
+
+	-- Set current theme based on system
 	local current_theme = M.get_system_theme()
 	vim.g.current_theme = current_theme
 	vim.g.current_colors = M.colors[current_theme]
 	vim.g.transparency = current_theme == "mocha"
 
-	M.setup_highlights()
-
+	-- Set up theme change detection
 	vim.api.nvim_create_autocmd({ "FocusGained" }, {
 		callback = function()
-			local new_theme = M.get_system_theme()
-			if new_theme ~= vim.g.current_theme then
-				M.change_theme(new_theme)
+			-- Only check system theme if not in zen mode
+			if not vim.g.zen_mode_active then
+				local new_theme = M.get_system_theme()
+				if new_theme ~= vim.g.current_theme then
+					M.change_theme(new_theme)
+				end
 			end
-		end,
-	})
-
-	vim.api.nvim_create_autocmd("ColorScheme", {
-		callback = function()
-			M.setup_highlights()
 		end,
 	})
 end
 
-function M.change_theme(new_theme)
+function M.change_theme(new_theme, is_zen_mode)
+	-- Update zen mode state
+	if is_zen_mode ~= nil then
+		vim.g.zen_mode_active = is_zen_mode
+	end
+
 	vim.g.current_theme = new_theme
 	vim.g.current_colors = M.colors[new_theme]
 	vim.g.transparency = new_theme == "mocha"
@@ -130,8 +136,6 @@ function M.change_theme(new_theme)
 		})
 		vim.cmd.colorscheme("catppuccin")
 	end
-
-	M.setup_highlights()
 end
 
 return M

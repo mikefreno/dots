@@ -251,6 +251,15 @@ require("lazy").setup({
 				vim.fn.system("/Applications/kitty.app/Contents/MacOS/kitty @ load-config")
 			end
 
+			local function toggle_fullscreen()
+				local script = [[
+        tell application "System Events"
+            keystroke "f" using {command down, control down}
+        end tell
+    ]]
+				vim.fn.system(string.format("osascript -e '%s'", script))
+			end
+
 			require("zen-mode").setup({
 				window = {
 					backdrop = 0.95,
@@ -279,7 +288,9 @@ require("lazy").setup({
 				on_open = function()
 					vim.g.pre_zen_theme = vim.g.current_theme
 
-					colors.change_theme("mocha")
+					colors.change_theme("mocha", true)
+
+					toggle_fullscreen()
 
 					kitty_switch_config()
 
@@ -293,7 +304,8 @@ require("lazy").setup({
 					end
 				end,
 				on_close = function()
-					colors.change_theme(vim.g.pre_zen_theme or vim.g.get_system_theme())
+					toggle_fullscreen()
+					colors.change_theme(vim.g.pre_zen_theme or colors.get_system_theme(), false)
 
 					kitty_restore_config()
 
