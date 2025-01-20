@@ -232,29 +232,23 @@ require("lazy").setup({
 		config = function()
 			local colors = require("colors")
 
-			-- Function to switch Kitty config
-			local function kitty_switch_config(mode)
+			local function kitty_switch_config()
 				local config_dir = os.getenv("HOME") .. "/.config/kitty"
 				local kitty_file = config_dir .. "/kitty.conf"
 				local kitty_dark_file = config_dir .. "/kitty_dark.conf"
-				local kitty_light_file = config_dir .. "/kitty_light.conf"
 
-				-- Store current config
-				vim.fn.system("cp " .. kitty_file .. " " .. config_dir .. "/kitty_previous.conf")
-
-				-- Switch to dark mode
-				vim.fn.system("cp " .. kitty_dark_file .. " " .. kitty_file)
-				vim.fn.system("kitty @ load-config")
+				vim.fn.system(string.format("cp %s %s/kitty_previous.conf", kitty_file, config_dir))
+				vim.fn.system(string.format("cp %s %s", kitty_dark_file, kitty_file))
+				vim.fn.system("/Applications/kitty.app/Contents/MacOS/kitty @ load-config")
 			end
 
-			-- Function to restore previous Kitty config
 			local function kitty_restore_config()
 				local config_dir = os.getenv("HOME") .. "/.config/kitty"
 				local kitty_file = config_dir .. "/kitty.conf"
 				local previous_config = config_dir .. "/kitty_previous.conf"
 
-				vim.fn.system("cp " .. previous_config .. " " .. kitty_file)
-				vim.fn.system("kitty @ load-config")
+				vim.fn.system(string.format("cp %s %s", previous_config, kitty_file))
+				vim.fn.system("/Applications/kitty.app/Contents/MacOS/kitty @ load-config")
 			end
 
 			require("zen-mode").setup({
@@ -278,45 +272,37 @@ require("lazy").setup({
 						ruler = false,
 						showcmd = false,
 					},
-					twilight = { enabled = true },
+					twilight = { enabled = false },
 					gitsigns = { enabled = false },
 					tmux = { enabled = true },
 				},
 				on_open = function()
-					-- Store current theme
 					vim.g.pre_zen_theme = vim.g.current_theme
 
-					-- Switch to dark theme
 					colors.change_theme("mocha")
 
-					-- Switch Kitty to dark mode
-					kitty_switch_config("dark")
-
-					-- Tmux adjustments
-					vim.fn.system("tmux set status off")
-					vim.fn.system("tmux list-panes -F '\\#F' | grep -q Z || tmux resize-pane -Z")
+					kitty_switch_config()
 
 					-- Safely handle notify
 					local ok, notify = pcall(require, "notify")
 					if ok then
-						notify.setup({ enabled = false })
+						notify.setup({
+							enabled = false,
+							merge_duplicates = true,
+						})
 					end
 				end,
 				on_close = function()
-					-- Restore previous theme
-					colors.change_theme(vim.g.pre_zen_theme or get_system_theme())
+					colors.change_theme(vim.g.pre_zen_theme or vim.g.get_system_theme())
 
-					-- Restore previous Kitty config
 					kitty_restore_config()
 
-					-- Restore tmux
-					vim.fn.system("tmux set status on")
-					vim.fn.system("tmux list-panes -F '\\#F' | grep -q Z && tmux resize-pane -Z")
-
-					-- Safely handle notify
 					local ok, notify = pcall(require, "notify")
 					if ok then
-						notify.setup({ enabled = true })
+						notify.setup({
+							enabled = true,
+							merge_duplicates = true,
+						})
 					end
 				end,
 			})
@@ -324,9 +310,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>z", ":ZenMode<CR>", { silent = true })
 		end,
 	},
-
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
-
 	{
 		"HiPhish/rainbow-delimiters.nvim",
 		event = "BufReadPost",
@@ -380,8 +364,6 @@ require("lazy").setup({
 			require("twilight").setup({
 				dimming = {
 					alpha = 0.4,
-					color = { "Normal", vim.g.current_colors.text },
-					term_bg = vim.g.current_colors.base,
 					inactive = false,
 				},
 				context = 14,
@@ -401,7 +383,7 @@ require("lazy").setup({
 				},
 			})
 
-			-- Auto-enable Twilight
+			-- Auto-enable Twilight for specific file types
 			vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 				pattern = { "*.lua", "*.ts", "*.tsx", "*.jsx", "*.js", "*.md" },
 				callback = function()

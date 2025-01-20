@@ -72,71 +72,66 @@ function M.get_system_theme()
 end
 
 M.setup_highlights = function()
-    -- Line numbers with your specific colors
-    vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#8abcb5" })
-    vim.api.nvim_set_hl(0, "LineNr", { fg = "#b5c1f1", bold = true })
-    vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#dfbad5" })
-    
-    -- Rainbow delimiters
-    local colors = vim.g.current_colors
-    if colors then
-        vim.api.nvim_set_hl(0, "RainbowRed", { fg = colors.red })
-        vim.api.nvim_set_hl(0, "RainbowYellow", { fg = colors.yellow })
-        vim.api.nvim_set_hl(0, "RainbowBlue", { fg = colors.blue })
-        vim.api.nvim_set_hl(0, "RainbowOrange", { fg = colors.peach })
-        vim.api.nvim_set_hl(0, "RainbowGreen", { fg = colors.green })
-        vim.api.nvim_set_hl(0, "RainbowViolet", { fg = colors.mauve })
-        vim.api.nvim_set_hl(0, "RainbowCyan", { fg = colors.teal })
-    end
+	-- Line numbers with your specific colors
+	vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#8abcb5" })
+	vim.api.nvim_set_hl(0, "LineNr", { fg = "#b5c1f1", bold = true })
+	vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#dfbad5" })
+
+	-- Rainbow delimiters
+	local colors = vim.g.current_colors
+	if colors then
+		vim.api.nvim_set_hl(0, "RainbowRed", { fg = colors.red })
+		vim.api.nvim_set_hl(0, "RainbowYellow", { fg = colors.yellow })
+		vim.api.nvim_set_hl(0, "RainbowBlue", { fg = colors.blue })
+		vim.api.nvim_set_hl(0, "RainbowOrange", { fg = colors.peach })
+		vim.api.nvim_set_hl(0, "RainbowGreen", { fg = colors.green })
+		vim.api.nvim_set_hl(0, "RainbowViolet", { fg = colors.mauve })
+		vim.api.nvim_set_hl(0, "RainbowCyan", { fg = colors.teal })
+	end
 end
 
 function M.setup()
-    -- Store colors globally
-    vim.g.colors = M.colors
-    
-    -- Set current theme based on system
-    local current_theme = M.get_system_theme()
-    vim.g.current_theme = current_theme
-    vim.g.current_colors = M.colors[current_theme]
-    vim.g.transparency = current_theme == "mocha"
+	vim.g.colors = M.colors
 
-    -- Setup initial highlights
-    M.setup_highlights()
-    
-    -- Set up theme change detection
-    vim.api.nvim_create_autocmd({ "FocusGained" }, {
-        callback = function()
-            local new_theme = M.get_system_theme()
-            if new_theme ~= vim.g.current_theme then
-                M.change_theme(new_theme)
-            end
-        end,
-    })
+	local current_theme = M.get_system_theme()
+	vim.g.current_theme = current_theme
+	vim.g.current_colors = M.colors[current_theme]
+	vim.g.transparency = current_theme == "mocha"
 
-    -- Ensure highlights are reapplied when colorscheme changes
-    vim.api.nvim_create_autocmd("ColorScheme", {
-        callback = function()
-            M.setup_highlights()
-        end,
-    })
+	M.setup_highlights()
+
+	vim.api.nvim_create_autocmd({ "FocusGained" }, {
+		callback = function()
+			local new_theme = M.get_system_theme()
+			if new_theme ~= vim.g.current_theme then
+				M.change_theme(new_theme)
+			end
+		end,
+	})
+
+	vim.api.nvim_create_autocmd("ColorScheme", {
+		callback = function()
+			M.setup_highlights()
+		end,
+	})
 end
 
 function M.change_theme(new_theme)
-    vim.g.current_theme = new_theme
-    vim.g.current_colors = M.colors[new_theme]
-    vim.g.transparency = new_theme == "mocha"
-    
-    local ok, catppuccin = pcall(require, "catppuccin")
-    if ok then
-        catppuccin.setup({
-            flavour = new_theme,
-            color_overrides = M.colors,
-            transparent_background = vim.g.transparency,
-        })
-        vim.cmd.colorscheme("catppuccin")
-    end
-    
-    M.setup_highlights()
+	vim.g.current_theme = new_theme
+	vim.g.current_colors = M.colors[new_theme]
+	vim.g.transparency = new_theme == "mocha"
+
+	local ok, catppuccin = pcall(require, "catppuccin")
+	if ok then
+		catppuccin.setup({
+			flavour = new_theme,
+			color_overrides = M.colors,
+			transparent_background = vim.g.transparency,
+		})
+		vim.cmd.colorscheme("catppuccin")
+	end
+
+	M.setup_highlights()
 end
 
 return M
