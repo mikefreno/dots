@@ -3,14 +3,13 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <thread>
-
+#include <cstdlib>
+#include <filesystem>
+#include <fstream>
 #include "../sketchybar.h"
 
 using json = nlohmann::json;
 
-// Define API key and URL
-#define WEATHER_API_KEY "9d2001153285473c8fb23012252501"
-#define TOMORROW_API_KEY "Qu1t84lMBLguwMY7yaqh202ho6OGdvn5"
 #define WEATHER_API_URL                                                        \
   "http://api.weatherapi.com/v1/current.json?key=%s&q=%f,%f"
 #define TOMORROW_API_URL                                                       \
@@ -21,7 +20,9 @@ class WeatherProvider {
 public:
   WeatherProvider(const std::string &event_name, int update_interval)
       : event_name(event_name), update_interval(update_interval),
-        cached_location(std::make_pair(0.0, 0.0)), has_cached_location(false) {}
+        cached_location(std::make_pair(0.0, 0.0)), has_cached_location(false) {
+    load_env_variables();
+  }
 
   void run() {
     // Initialize global curl once
@@ -76,6 +77,74 @@ private:
   int update_interval;
   std::pair<double, double> cached_location;
   bool has_cached_location;
+  std::string weather_api_key;
+  std::string tomorrow_api_key;
+
+  std::string find_env_file() {
+    std::vector<std::string> possible_paths = {
+        ".env",
+        "../.env",
+        "../../.env",  // If binary is in build/debug or similar
+        std::string(getenv("HOME")) + "/.config/sketchybar/helpers/event_providers/weather_provider/.env"
+    };
+    
+    std::cerr << "Searching for .env file in:" << std::endl;
+    for (const auto& path : possible_paths) {
+        std::cerr << "Checking " << path << "... ";
+        if (std::filesystem::exists(path)) {
+            std::cerr << "FOUND!" << std::endl;
+            return path;
+        }
+        std::cerr << "not found" << std::endl;
+    }
+    
+    throw std::runtime_error("Could not find .env file");
+}
+
+void load_env_variables() {
+    try {
+        std::cerr << "Attempting to load environment variables..." << std::endl;
+        std::string env_path = find_env_file();
+        std::cerr << "Loading from: " << env_path << std::endl;
+        
+        std::ifstream env_file(env_path);
+        if (!env_file.is_open()) {
+            throw std::runtime_error("Could not open .env file: " + env_path);
+        }
+
+        std::string line;
+        while (std::getline(env_file, line)) {
+            if (line.empty() || line[0] == '#') continue;
+
+            size_t pos = line.find('=');
+            if (pos == std::string::npos) continue;
+
+            std::string key = line.substr(0, pos);
+            std::string value = line.substr(pos + 1);
+
+            if (value.front() == '"' && value.back() == '"') {
+                value = value.substr(1, value.length() - 2);
+            }
+
+            if (key == "WEATHER_API_KEY") {
+                weather_api_key = value;
+                std::cerr << "Loaded WEATHER_API_KEY" << std::endl;
+            } else if (key == "TOMORROW_API_KEY") {
+                tomorrow_api_key = value;
+                std::cerr << "Loaded TOMORROW_API_KEY" << std::endl;
+            }
+        }
+
+        if (weather_api_key.empty() || tomorrow_api_key.empty()) {
+            throw std::runtime_error("Missing required API keys in .env file");
+        }
+
+        std::cerr << "Successfully loaded both API keys" << std::endl;
+
+    } catch (const std::exception& e) {
+        throw std::runtime_error(std::string("Error loading .env file: ") + e.what());
+    }
+}
 
   std::pair<double, double> getLocation() {
     // If we already have a cached location, return it
@@ -164,7 +233,6 @@ private:
             "Missing temperature data from Tomorrow.io API");
       }
 
-      // Data from WeatherAPI.com
       if (weatherApiData.contains("current") &&
           weatherApiData["current"].contains("condition") &&
           weatherApiData["current"]["condition"].contains("code")) {
@@ -199,7 +267,7 @@ private:
     // Prepare the weather API request URL
     char tomorrow_url[256];
     snprintf(tomorrow_url, sizeof(tomorrow_url), TOMORROW_API_URL, latitude,
-             longitude, TOMORROW_API_KEY);
+             longitude, tomorrow_api_key.c_str());
 
     std::string tomorrow_response;
     curl_easy_setopt(curl, CURLOPT_URL, tomorrow_url);
@@ -215,8 +283,8 @@ private:
     auto tomorrow_parse = json::parse(tomorrow_response);
 
     char weather_url[256];
-    snprintf(weather_url, sizeof(weather_url), WEATHER_API_URL, WEATHER_API_KEY,
-             latitude, longitude);
+    snprintf(weather_url, sizeof(weather_url), WEATHER_API_URL, 
+             weather_api_key.c_str(), latitude, longitude);
 
     std::string weather_response;
     curl_easy_setopt(curl, CURLOPT_URL, weather_url);
@@ -279,3 +347,4 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+
