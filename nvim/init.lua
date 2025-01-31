@@ -47,6 +47,7 @@ require("lazy").setup({
 	"OmniSharp/omnisharp-vim",
 	"ionide/Ionide-vim",
 	"mg979/vim-visual-multi",
+	"tikhomirov/vim-glsl",
 	{
 		"kristijanhusak/vim-dadbod-ui",
 		dependencies = {
@@ -1057,6 +1058,11 @@ vim.g.neoformat_options_cpp = {
 vim.cmd([[
   autocmd BufWritePost * silent! :Sleuth
 ]])
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*.glsl",
+	command = "Format",
+})
 
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*.json",

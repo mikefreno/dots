@@ -5,27 +5,7 @@ local settings = require("settings")
 -- Execute the event provider binary which provides the event "cpu_update" for
 -- the cpu load data, which is fired every 2.0 seconds.
 sbar.exec("killall cpu_load >/dev/null; $CONFIG_DIR/helpers/event_providers/cpu_load/bin/cpu_load cpu_update 2.0")
---sbar.add("alias", "iStat Menus Status,com.bjango.istatmenus.sensors", {
---background = {
---height = 22,
---color = colors.bg1,
---drawing = true,
---border_width = 1,
---},
---icon = {
---padding_right = -4,
---padding_left = 0,
---},
---label = {
---padding_right = 0,
---},
---padding_right = -12,
---width = 34,
---position = "right",
---})
---sbar.exec(
---string.format("sketchybar --set 'iStat Menus Status,com.bjango.istatmenus.sensors' alias.color=%s", colors.white)
---)
+
 local cpu = sbar.add("graph", "widgets.cpu", 42, {
 	position = "right",
 	graph = { color = colors.blue },

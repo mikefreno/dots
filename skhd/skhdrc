@@ -1,7 +1,7 @@
 # https://github.com/koekeishiya/yabai/wiki/Commands#focus-display
 # https://github.com/koekeishiya/dotfiles/blob/master/skhd/skhdrc
 .blacklist [
-    "Alacritty"
+    "Blender"
     "Ubuntu"
     "nixOS"
     "Parallels Desktop"
