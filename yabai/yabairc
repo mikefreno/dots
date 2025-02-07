@@ -1,5 +1,5 @@
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-sudo yabai --load-sa &>/dev/null
+sudo yabai --load-sa
 
 display_count=$(yabai -m query --displays | jq length)
 echo "Number of displays detected: $display_count"
@@ -110,7 +110,7 @@ setup_rules() {
 
     yabai -m rule --add app="^(Alacritty|kitty)$" space="$main_space"
     yabai -m rule --add app="^Xcode(-beta)?$" space="$main_space"
-    yabai -m rule --add app="^(Orion|Safari|Brave|SigmaOS)$" space="$web_space"
+    yabai -m rule --add app="^(Orion|Safari|Brave|SigmaOS|Zen Browser)$" space="$web_space"
     yabai -m rule --add app="^(Mail|Messages|Things|Obsidian)$" space="$comms_space"
     yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex)$" space="$audio_space"
     if is_lm_studio_running; then
@@ -149,11 +149,11 @@ setup_rules
 # General yabai configuration
 yabai -m config \
     layout                  bsp             \
-    top_padding            16              \
-    bottom_padding         16              \
-    left_padding           16              \
-    right_padding          16              \
-    window_gap             10              \
+    top_padding            8              \
+    bottom_padding         8              \
+    left_padding           8              \
+    right_padding          8              \
+    window_gap             12              \
     window_shadow          float           \
     mouse_modifier         fn              \
     mouse_action1          move            \
