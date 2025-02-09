@@ -49,6 +49,21 @@ require("lazy").setup({
 	"mg979/vim-visual-multi",
 	"tikhomirov/vim-glsl",
 	{
+		"chrisgrieser/nvim-spider",
+		opts = {
+			skipInsignificantPunctuation = false,
+			consistentOperatorPending = false,
+			subwordMovement = true,
+			customPatterns = {},
+		},
+		keys = {
+			{ "w", "<cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" } },
+			{ "e", "<cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" } },
+			{ "b", "<cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" } },
+			{ "ge", "<cmd>lua require('spider').motion('ge')<CR>", mode = { "n", "o", "x" } },
+		},
+	},
+	{
 		"kristijanhusak/vim-dadbod-ui",
 		dependencies = {
 			{ "tpope/vim-dadbod", lazy = true },
