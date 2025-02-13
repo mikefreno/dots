@@ -339,53 +339,52 @@ require("lazy").setup({
 		end,
 	},
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
-	--{
-	--"HiPhish/rainbow-delimiters.nvim",
-	--event = "BufReadPost",
-	--dependencies = {
-	--"nvim-treesitter/nvim-treesitter",
-	--"lukas-reineke/indent-blankline.nvim",
-	--},
-	--config = function()
-	--local rainbow_delimiters = require("rainbow-delimiters")
-	--local colors = vim.g.current_colors
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		event = "BufReadPost",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"lukas-reineke/indent-blankline.nvim",
+		},
+		config = function()
+			local rainbow_delimiters = require("rainbow-delimiters")
+			local colors = vim.g.current_colors
 
-	--local highlight = {
-	--"RainbowRed",
-	--"RainbowYellow",
-	--"RainbowBlue",
-	--"RainbowPeach",
-	--"RainbowGreen",
-	--"RainbowMauve",
-	--"RainbowTeal",
-	--}
+			local highlight = {
+				"RainbowRed",
+				"RainbowYellow",
+				"RainbowBlue",
+				"RainbowPeach",
+				"RainbowGreen",
+				"RainbowMauve",
+				"RainbowTeal",
+			}
 
-	--local hooks = require("ibl.hooks")
-	--hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-	---- Using globally available colors
-	--vim.api.nvim_set_hl(0, "RainbowRed", { fg = colors.red })
-	--vim.api.nvim_set_hl(0, "RainbowYellow", { fg = colors.yellow })
-	--vim.api.nvim_set_hl(0, "RainbowBlue", { fg = colors.blue })
-	--vim.api.nvim_set_hl(0, "RainbowPeach", { fg = colors.peach })
-	--vim.api.nvim_set_hl(0, "RainbowGreen", { fg = colors.green })
-	--vim.api.nvim_set_hl(0, "RainbowMauve", { fg = colors.mauve })
-	--vim.api.nvim_set_hl(0, "RainbowTeal", { fg = colors.teal })
-	--end)
+			local hooks = require("ibl.hooks")
+			hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+				vim.api.nvim_set_hl(0, "RainbowRed", { fg = colors.red })
+				vim.api.nvim_set_hl(0, "RainbowYellow", { fg = colors.yellow })
+				vim.api.nvim_set_hl(0, "RainbowBlue", { fg = colors.blue })
+				vim.api.nvim_set_hl(0, "RainbowPeach", { fg = colors.peach })
+				vim.api.nvim_set_hl(0, "RainbowGreen", { fg = colors.green })
+				vim.api.nvim_set_hl(0, "RainbowMauve", { fg = colors.mauve })
+				vim.api.nvim_set_hl(0, "RainbowTeal", { fg = colors.teal })
+			end)
 
-	--vim.g.rainbow_delimiters = {
-	--strategy = {
-	--[""] = rainbow_delimiters.strategy["global"],
-	--},
-	--query = {
-	--[""] = "rainbow-delimiters",
-	--lua = "rainbow-blocks",
-	--},
-	--highlight = highlight,
-	--}
+			vim.g.rainbow_delimiters = {
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+					lua = "rainbow-blocks",
+				},
+				highlight = highlight,
+			}
 
-	--require("ibl").setup({ scope = { highlight = highlight } })
-	--end,
-	--},
+			require("ibl").setup({ scope = { highlight = highlight } })
+		end,
+	},
 	{
 		"folke/twilight.nvim",
 		config = function()
@@ -648,6 +647,8 @@ require("lspconfig").ocamllsp.setup({
 	cmd = { "ocamllsp" },
 	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
 })
+
+require("colors").setup_highlights()
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
