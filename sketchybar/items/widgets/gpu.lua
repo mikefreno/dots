@@ -31,10 +31,10 @@ local gpu = sbar.add("graph", "widgets.gpu", 42, {
 })
 
 gpu:subscribe("gpu_update", function(env)
-	local load = tonumber(env.gpu_load)
+	local load = tonumber(env.gpu_total_util)
 	gpu:push({ load / 100. })
 
-	local color = colors.purple
+	local color = colors.blue
 	if load > 30 then
 		if load < 60 then
 			color = colors.yellow
@@ -47,9 +47,7 @@ gpu:subscribe("gpu_update", function(env)
 
 	gpu:set({
 		graph = { color = color },
-		label = "gpu " .. env.gpu_load .. "%",
-		-- Optional: Add power monitoring
-		-- icon = "power: " .. env.gpu_power .. "mW",
+		label = "gpu " .. load .. "%",
 	})
 end)
 
