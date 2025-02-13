@@ -240,6 +240,7 @@ require("lazy").setup({
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = true,
+		opts = { map_cr = false },
 		-- use opts = {} for passing setup options
 		-- this is equalent to setup({}) function
 	},
@@ -1118,5 +1119,13 @@ if vim.lsp.inlay_hint then
 	end, { desc = "toggle inlay [h]ints" })
 end
 
+vim.cmd([[
+  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+]])
+vim.o.mouse = ""
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
