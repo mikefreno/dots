@@ -1,4 +1,6 @@
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+vim.opt.shortmess = vim.opt.shortmess + { I = true }
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.loaded_netrw = 1
@@ -108,12 +110,6 @@ require("lazy").setup({
 	--"mfussenegger/nvim-dap-python",
 	--"leoluz/nvim-dap-go",
 	--"mxsdev/nvim-dap-vscode-js",
-	{
-		"NvChad/nvterm",
-		config = function()
-			require("nvterm").setup()
-		end,
-	},
 	{
 		-- Autocompletion
 		"hrsh7th/nvim-cmp",
@@ -694,19 +690,6 @@ vim.o.termguicolors = true
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
---terminal
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>t",
-	'<cmd>lua require("nvterm.terminal").toggle("horizontal")<CR>',
-	{ noremap = true, silent = true, desc = "[H]orizontal Terminal" }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>f",
-	'<cmd>lua require("nvterm.terminal").toggle("float")<CR>',
-	{ noremap = true, silent = true, desc = "[F]loating Terminal" }
-)
 --harpoon keymaps
 vim.api.nvim_set_keymap(
 	"n",
@@ -772,7 +755,7 @@ require("nvim-tree").setup({
 		},
 	},
 })
-vim.api.nvim_set_keymap("n", "<leader>T", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -1124,7 +1107,6 @@ vim.cmd([[
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
   inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 ]])
-vim.o.mouse = ""
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
