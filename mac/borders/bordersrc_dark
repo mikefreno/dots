@@ -1,0 +1,10 @@
+options=(
+	style=round
+	width=8.0
+	hidpi=off
+	active_color=0xbf45707a
+	inactive_color=0xbf7b5d44
+	blacklist="Simulator,qemu-system-aarch64,iPhone Mirroring,Transmission,Steam,Notes,Numi,Weather,SoundSource"
+)
+
+borders "${options[@]}"

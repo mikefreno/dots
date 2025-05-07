@@ -1,0 +1,209 @@
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa &>/dev/null
+
+display_count=$(yabai -m query --displays | jq length)
+echo "Number of displays detected: $display_count"
+
+# Function to check if LM Studio is running
+is_lm_studio_running() {
+    pgrep -x "LM Studio" >/dev/null
+}
+
+
+is_emulator_running() {
+    pgrep -x "Simulator" >/dev/null || pgrep "qemu-system-aarch64" >/dev/null
+}
+
+# Function to get current space count
+get_space_count() {
+    yabai -m query --spaces | jq length
+}
+
+# Function to add or remove spaces as needed
+adjust_space_count() {
+    local needed_spaces=$1
+    local current_spaces=$(get_space_count)
+
+    while [ $current_spaces -lt $needed_spaces ]; do
+        yabai -m space --create
+        current_spaces=$((current_spaces + 1))
+    done
+
+    while [ $current_spaces -gt $needed_spaces ]; do
+        yabai -m space $current_spaces --destroy
+        current_spaces=$((current_spaces - 1))
+    done
+}
+
+setup_spaces() {
+    local needed_spaces
+    if [ "$display_count" -eq 1 ]; then
+        if is_lm_studio_running; then
+            needed_spaces=5  # main, web, comms, misc, audio
+        else
+            needed_spaces=4  # main, web, comms, audio
+        fi
+    else
+        if is_lm_studio_running && is_emulator_running; then
+            needed_spaces=6  # audio, misc, main, web, comms, emulators
+        elif is_lm_studio_running; then
+            needed_spaces=5  # audio, misc, main, web, comms
+        elif is_emulator_running; then
+            needed_spaces=5  # audio, main, web, comms, emulators
+        else
+            needed_spaces=4  # audio, main, web, comms
+        fi
+    fi
+
+    # Adjust space count first
+    adjust_space_count $needed_spaces
+
+    if [ "$display_count" -eq 1 ]; then
+        # Single display configuration
+        yabai -m space 1 --label main
+        yabai -m space 2 --label web
+        yabai -m space 3 --label comms
+        if is_lm_studio_running; then
+            yabai -m space 4 --label misc
+            yabai -m space 5 --label audio
+        else
+            yabai -m space 4 --label audio
+        fi
+    else
+        # Multi-display configuration
+        # Label spaces
+        yabai -m space 1 --label audio
+        
+        if is_lm_studio_running && is_emulator_running; then
+            yabai -m space 2 --label misc
+            yabai -m space 3 --label main
+            yabai -m space 4 --label web
+            yabai -m space 5 --label comms
+            yabai -m space 6 --label emulators
+        elif is_lm_studio_running; then
+            yabai -m space 2 --label misc
+            yabai -m space 3 --label main
+            yabai -m space 4 --label web
+            yabai -m space 5 --label comms
+        elif is_emulator_running; then
+            yabai -m space 2 --label main
+            yabai -m space 3 --label web
+            yabai -m space 4 --label comms
+            yabai -m space 5 --label emulators
+        else
+            yabai -m space 2 --label main
+            yabai -m space 3 --label web
+            yabai -m space 4 --label comms
+        fi
+
+        # Get display indexes
+        local display1=$(yabai -m query --displays | jq '.[0].index')
+        local display2=$(yabai -m query --displays | jq '.[1].index')
+
+        # Move spaces to correct displays
+        yabai -m space 1 --display $display1
+        yabai -m space 2 --display $display1
+        yabai -m space 3 --display $display2
+        yabai -m space 4 --display $display2
+        
+        if is_lm_studio_running && is_emulator_running; then
+            yabai -m space 5 --display $display2
+            yabai -m space 6 --display $display2
+        elif is_lm_studio_running || is_emulator_running; then
+            yabai -m space 5 --display $display2
+        fi
+    fi
+}
+
+setup_rules() {
+    local main_space="main"
+    local web_space="web"
+    local comms_space="comms"
+    local audio_space="audio"
+    local misc_space="misc"
+    local emulators_space="emulators"
+
+    if [ "$display_count" -gt 1 ]; then
+        audio_space="audio"
+        main_space="main"
+        web_space="web"
+        comms_space="comms"
+        misc_space="misc"
+        emulators_space="emulators"
+    fi
+
+    # Clear existing rules first
+    yabai -m rule --remove ".*" 2>/dev/null
+
+    yabai -m rule --add app="^(Alacritty|kitty)$" space="$main_space"
+    yabai -m rule --add app="^Xcode(-beta)?$" space="$main_space"
+    yabai -m rule --add app="^(Orion|Safari|Brave|SigmaOS|Zen Browser|Zen)$" space="$web_space"
+    yabai -m rule --add app="^(Mail|Messages|Things|Obsidian)$" space="$comms_space"
+    yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex|Jellyfin Media Player)$" space="$audio_space"
+    
+    if is_lm_studio_running; then
+        yabai -m rule --add app="^(LM Studio|Blender)$" space="$misc_space"
+    fi
+    
+    # Handle emulators based on display count
+    if [ "$display_count" -eq 1 ] || ! is_emulator_running; then
+        # Single display: emulators go to main space
+        yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="$main_space" manage=on
+    else
+        # Multiple displays and emulator running: emulators get their own space
+        yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="$emulators_space" manage=on
+    fi
+    
+    yabai -m rule --add title="^Ubuntu$" space="$main_space" manage=off
+    
+    yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam)$" manage=off
+    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love)$" manage=off
+}
+
+# Function to handle display changes
+handle_display_change() {
+    local new_display_count=$(yabai -m query --displays | jq length)
+    if [ "$display_count" -ne "$new_display_count" ]; then
+        display_count=$new_display_count
+        echo "Display count changed to: $display_count"
+        setup_spaces
+        setup_rules
+    fi
+}
+
+# Add signal handlers
+yabai -m signal --add event=display_added action="$0"
+yabai -m signal --add event=display_removed action="$0"
+yabai -m signal --add event=application_launched app="^LM Studio$" action="$0"
+yabai -m signal --add event=application_terminated app="^LM Studio$" action="$0"
+yabai -m window --focus recent :: svim --mode insert
+
+# Set up spaces
+setup_spaces
+
+# Set up window management rules
+setup_rules
+
+# General yabai configuration
+yabai -m config \
+    layout                 bsp             \
+    top_padding            8              \
+    bottom_padding         8              \
+    left_padding           8              \
+    right_padding          8              \
+    window_gap             12              \
+    window_shadow          float           \
+    mouse_modifier         fn              \
+    mouse_action1          move            \
+    mouse_action2          resize          \
+    external_bar           all:40:0
+
+# Apply rules
+yabai -m rule --apply
+
+if ! pgrep -x "borders" >/dev/null; then
+    borders &
+fi
+
+echo "yabai configuration loaded successfully"
+
