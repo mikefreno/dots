@@ -4,8 +4,6 @@
     "reload_style_on_change": true,
     "modules-left": [
         "hyprland/workspaces",
-        "vpn",
-        "mpris",
         "gamemode",
         "privacy"
     ],
@@ -13,6 +11,7 @@
         "clock"
     ],
     "modules-right": [
+        "mpris",
         "tray",
         "cpu",
         "memory",
@@ -33,10 +32,10 @@
     "mpris": {
         "format": "{player_icon}  {title} - {artist}",
         "format-paused": "{status_icon}  {title} - {artist}",
-        "max-length": 50,
+        "max-length": 25,
         "dynamic-len": 10,
         // only the strings that match "spotify" will appear
-        "player": "spotify", 
+        //"player": "spotify", 
         "on-scroll-up": "playerctl --player=spotify volume 0.05+",
         "on-scroll-down": "playerctl --player=spotify volume 0.05-",
         "player-icons": {
