@@ -42,8 +42,9 @@ Config(
     "libapplications.so",
     //"libsymbols.so",
     "librink.so",
-    //"libkidex.so",
+    "libkidex_anyrun_plugin.so",
     "libshell.so",
     "libtranslate.so",
+    "libwebsearch.so"
   ],
 )
