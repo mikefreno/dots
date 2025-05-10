@@ -47,6 +47,7 @@ require("lazy").setup({
 	"OmniSharp/omnisharp-vim",
 	"ionide/Ionide-vim",
 	"tikhomirov/vim-glsl",
+  "vuciv/golf",
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
