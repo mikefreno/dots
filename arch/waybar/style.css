@@ -34,6 +34,11 @@ tooltip label {
   color: @main-fg;
   margin: -1.5px 3px;
 }
+#privacy-item {
+    background: #e64553;
+    color: #15161e;
+    margin-left: 8px
+}
 
 /* ──────────────────────────────────────────────────────────────┤ general ├───
 */
@@ -50,8 +55,9 @@ tooltip label {
 #custom-update,
 #mpris,
 #pulseaudio,
-#backlight,
+#custom-ddcui,
 #battery,
+#tray,
 #custom-power {
   opacity: 1;
   color: @module-fg;
@@ -99,32 +105,45 @@ tooltip label {
   padding-left: 2px;
 }
 
-#workspaces {
-  background: @workspaces;
+
+#workspaces{
+  background:@workspaces; 
+  color: #888789;
+  box-shadow: none;
+  text-shadow: none;
+  border-radius: 9px;
+  transition: 0.2s ease;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 1px;
 }
 
+
 #workspaces button {
-  color: @module-fg;
-  border-radius: 8px;
-  box-shadow: none;
-  margin: 2px 8px;
-  padding: 0 2px;
-  transition: none;
+    background: rgba(23, 23, 23, 0.0);
+    color: #A1BDCE;
+    box-shadow: none;
+    text-shadow: none;
+    border-radius: 9px;
+    transition: 0.2s ease;
+    animation: ws_normal 20s ease-in-out 1; 
+    padding: 0
+}
+
+
+
+#workspaces button.active { 
+    color: #A1BDCE;   
+    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(.55,0.68,.48,1.682); 
+    padding: 0
 }
 
 #workspaces button:hover {
-  color: @hover-fg;
-  background: @hover-bg;
-  text-shadow: none;
-}
-
-#workspaces button.active {
-  color: @active-fg;
-  background: @active-bg;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
-  margin: 2px;
-  padding: 0 6px;
+    background: none;
+    color: #739df2;
+    animation: ws_hover 20s ease-in-out 1;
+    transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.682);
 }
 
 #custom-right1 {
@@ -271,7 +290,8 @@ tooltip label {
 */
 #bluetooth {
   background: @tray;
-  padding-right: 5px;
+  padding-right: 12px;
+  padding-left: 12px;
 }
 
 #bluetooth:hover {
@@ -329,8 +349,9 @@ tooltip label {
   padding-left: 2px;
 }
 
-#backlight {
+#custom-ddcutil{
   background: @backlight;
+  padding-right: 8px;
 }
 
 /* ──────────────────────────────────────────────────────────────┤ battery ├───
@@ -341,7 +362,7 @@ tooltip label {
   padding-left: 2px;
 }
 
-#battery {
+#tray{
   color: @module-fg;
   background: @battery;
 }
@@ -429,7 +450,7 @@ tooltip label,
 #custom-leftin1,
 #custom-leftin2,
 #custom-rightin1 {
-  font-size: 31px;
+  font-size: 32.5px;
 }
 
 /* ──────────────────────────────────────────────────────────┤ distro icon ├───
@@ -450,17 +471,17 @@ tooltip label,
 /* ───────────────────────────────────────────────────────────┤ workspaces ├───
 */
 #workspaces button {
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 0 4px;
 }
 
 #workspaces button.active {
-  padding: 0 12px;
+  padding: 0 4px;
 }
 
 /* ─────────────────────────────────────────────────────────┤ power button ├───
 */
 #custom-power {
   border-radius: 12px;
-  padding: 0 12px 0 18px;
+  padding: 0 14px 0 22px;
 }

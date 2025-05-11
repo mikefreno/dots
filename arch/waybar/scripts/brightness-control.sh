@@ -1,92 +1,46 @@
 #!/usr/bin/env bash
 
-# Print error message for invalid arguments
-print_error() {
-  cat <<"EOF"
-Usage: ./brightnesscontrol.sh <action>
-Valid actions are:
-    i -- <i>ncrease brightness [+2%]
-    d -- <d>ecrease brightness [-2%]
-EOF
+receive_pipe="/tmp/waybar-ddc-module-rx"
+step=5
+
+ddcutil_fast() {
+    # adjust the bus number and the multiplier for your display
+    # multiplier should be chosen so that it both works reliably and fast enough
+    ddcutil --noverify --bus 3 --sleep-multiplier .03 "$@" 2>/dev/null
 }
 
-# Send a notification with brightness info
-send_notification() {
-  brightness=$(brightnessctl info | grep -oP "(?<=\()\d+(?=%)")
-  notify-send -a "state" -r 91190 -i "gpm-brightness-lcd" -h int:value:"$brightness" "Brightness: ${brightness}%" -u low
+ddcutil_slow() {
+    ddcutil --maxtries 15,15,15 "$@" 2>/dev/null
 }
 
-# Get the current brightness percentage and device name
-get_brightness() {
-  brightness=$(brightnessctl -m | grep -o '[0-9]\+%' | head -c-2)
-  device=$(brightnessctl -m | head -n 1 | awk -F',' '{print $1}' | sed 's/_/ /g; s/\<./\U&/g') # Get device name
-  current_brightness=$(brightnessctl -m | head -n 1 | awk -F',' '{print $3}')                  # Get current brightness
-  max_brightness=$(brightnessctl -m | head -n 1 | awk -F',' '{print $5}')                      # Get max brightness
+# takes ddcutil commandline as arguments
+print_brightness() {
+    if brightness=$("$@" -t getvcp 10); then
+        brightness=$(echo "$brightness" | cut -d ' ' -f 4)
+    else
+        brightness=-1
+    fi
+    echo '{ "percentage":' "$brightness" '}'
 }
-get_brightness
 
-# Handle options
-while getopts o: opt; do
-  case "${opt}" in
-  o)
-    case $OPTARG in
-    i) # Increase brightness
-      if [[ $brightness -lt 10 ]]; then
-        brightnessctl set +1%
-      else
-        brightnessctl set +2%
-      fi
-      send_notification
-      ;;
-    d) # Decrease brightness
-      if [[ $brightness -le 1 ]]; then
-        brightnessctl set 1%
-      elif [[ $brightness -le 10 ]]; then
-        brightnessctl set 1%-
-      else
-        brightnessctl set 2%-
-      fi
-      send_notification
-      ;;
-    *)
-      print_error
-      ;;
+rm -rf $receive_pipe
+mkfifo $receive_pipe
+
+# in case waybar restarted the script after restarting/replugging a monitor
+print_brightness ddcutil_slow
+
+while true; do
+    read -r command < $receive_pipe
+    case $command in
+        + | -)
+            ddcutil_fast setvcp 10 $command $step
+            ;;
+        max)
+            ddcutil_fast setvcp 10 100 
+            ;;
+        min)
+            ddcutil_fast setvcp 10 0
+            ;;
     esac
-    ;;
-  *)
-    print_error
-    ;;
-  esac
+    print_brightness ddcutil_fast
 done
-
-# Determine the icon based on brightness level
-get_icon() {
-  if ((brightness <= 5)); then
-    icon=""
-  elif ((brightness <= 15)); then
-    icon=""
-  elif ((brightness <= 30)); then
-    icon=""
-  elif ((brightness <= 45)); then
-    icon=""
-  elif ((brightness <= 55)); then
-    icon=""
-  elif ((brightness <= 65)); then
-    icon=""
-  elif ((brightness <= 80)); then
-    icon=""
-  elif ((brightness <= 95)); then
-    icon=""
-  else
-    icon=""
-  fi
-}
-
-# Backlight module and tooltip
-get_icon
-module="${icon} ${brightness}%"
-
-tooltip="Device Name: ${device}"
-tooltip+="\nBrightness:  ${current_brightness} / ${max_brightness}"
-
-echo "{\"text\": \"${module}\", \"tooltip\": \"${tooltip}\"}"
