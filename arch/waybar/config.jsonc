@@ -16,13 +16,11 @@
     "hyprland/workspaces",  // workspaces
     "custom/right1",
 
-    "custom/paddw",
     "hyprland/window",       // window title
     "privacy"
   ],
 
   "modules-center": [
-    "custom/paddc",
     "custom/left2",
     "memory",               // memory
 
@@ -30,8 +28,8 @@
     "custom/temperature",   // temperature
 
     "custom/left4",
-    "custom/nvidia",        // cpu
     "cpu",                  // cpu
+    "custom/nvidia",        // cpu
     "custom/leftin1",
 
     "custom/left5",
@@ -49,7 +47,8 @@
     "custom/wifi",          // wi-fi
     "bluetooth",            // bluetooth
     "custom/update",        // system update
-    "custom/right5"
+    "custom/right5",
+    "custom/paddw"
   ],
 
   "modules-right": [
@@ -97,7 +96,7 @@
 	"format-icons": {
 	"default": "",
 	"active": "",
-	},
+	}
 },
 
   // ─────────────────────────────────────────────────────────────┤ window ├───
@@ -106,6 +105,7 @@
     "format": "{}",
     "tooltip": false,
     "min-length": 5,
+    "max-length": 20,
 
     "rewrite": {
       // ────────────────────────────────────────────────────────── desktop ───
@@ -246,8 +246,10 @@
   "custom/nvidia": {
     "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,nounits,noheader | sed 's/\\([0-9]\\+\\), \\([0-9]\\+\\)/\\1%/g'",
     "format": " {}%",
+    "min-length": 6,
+    "max-length": 6,
     "tooltip": false,
-    "interval": 2
+    "interval": 5
   },
 
   // ─────────────────────────────────────────────────────────────┤ distro ├───

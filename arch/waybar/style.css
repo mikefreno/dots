@@ -158,7 +158,10 @@ tooltip label {
 /* ──────────────────────────────────────────────────────────┤ temperature ├───
 */
 #custom-paddc {
-  padding-right: 22px;
+  padding-right: 0px;
+}
+#custom-paddw {
+  padding-right: 195px;
 }
 
 #custom-left2 {
