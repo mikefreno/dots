@@ -53,8 +53,10 @@ tooltip label {
 #custom-wifi,
 #bluetooth,
 #custom-update,
+#custom-nvidia,
 #mpris,
 #pulseaudio,
+#pulseaudio-slider,
 #custom-ddcui,
 #battery,
 #tray,
@@ -160,7 +162,7 @@ tooltip label {
 }
 
 #custom-left2 {
-  color: @temperature;
+  color: @memory;
   background: @main-bg;
   padding-left: 3px;
 }
@@ -173,8 +175,8 @@ tooltip label {
 /* ───────────────────────────────────────────────────────────────┤ memory ├───
 */
 #custom-left3 {
-  color: @memory;
-  background: @temperature;
+  color: @temperature;
+  background: @memory;
   padding-left: 3px;
 }
 
@@ -195,11 +197,14 @@ tooltip label {
 */
 #custom-left4 {
   color: @cpu;
-  background: @memory;
+  background: @temperature;
   padding-left: 3px;
 }
 
 #cpu {
+  background: @cpu;
+}
+#custom-nvidia{
   background: @cpu;
 }
 
@@ -333,12 +338,35 @@ tooltip label {
   padding-left: 3px;
 }
 
-#pulseaudio {
+#pulseaudio{
   background: @pulseaudio;
 }
 
 #pulseaudio:hover {
   color: @hover-fg;
+}
+#pulseaudio-slider{
+  background: @pulseaudio;
+}
+
+#pulseaudio-slider slider {
+    min-height: 0px;
+    min-width: 0px;
+    opacity: 0;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+}
+#pulseaudio-slider trough {
+    min-height: 10px;
+    min-width: 80px;
+    border-radius: 5px;
+    background-color: black;
+}
+#pulseaudio-slider highlight {
+    min-width: 10px;
+    border-radius: 5px;
+    background-color: green;
 }
 
 /* ───────────────────────────────────────────────────────────┤ brightness ├───

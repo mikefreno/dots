@@ -24,12 +24,13 @@
   "modules-center": [
     "custom/paddc",
     "custom/left2",
-    "custom/temperature",   // temperature
-
-    "custom/left3",
     "memory",               // memory
 
+    "custom/left3",
+    "custom/temperature",   // temperature
+
     "custom/left4",
+    "custom/nvidia",        // cpu
     "cpu",                  // cpu
     "custom/leftin1",
 
@@ -56,9 +57,11 @@
 
     "custom/left6",
     "pulseaudio",           // output device
+    "pulseaudio/slider",           // output device
 
     "custom/left7",
     "custom/ddcutil",            // brightness
+    "backlight/slider",
 
     "custom/left8",
     "tray",              // battery
@@ -67,11 +70,11 @@
     "custom/power"          // power button
   ],
     "tray": {
-        "icon-spacing": 16,
+        "spacing": 12,
         "icon-size": 24
     },
     "privacy": {
-        "icon-spacing": 16,
+        "spacing": 16,
         "icon-size": 24,
         "transition-duration": 250,
         "modules": [
@@ -202,12 +205,12 @@
   // ────────────────────────────────────────────────────────┤ temperature ├───
 
   "custom/temperature": {
-    "exec": "~/.config/waybar/scripts/cpu-temp.sh",
+    "exec": "~/.config/waybar/scripts/temps.sh",
     "return-type": "json",
     "format": "{}",
     "interval": 5,
-    "min-length": 8,
-    "max-length": 8
+    "min-length": 16,
+    "max-length": 20
   },
 
   // ─────────────────────────────────────────────────────────────┤ memory ├───
@@ -235,6 +238,16 @@
     "interval": 5,
     "min-length": 6,
     "max-length": 6
+  },
+
+  
+  // ────────────────────────────────────────────────────────────────┤ gpu ├───
+
+  "custom/nvidia": {
+    "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,nounits,noheader | sed 's/\\([0-9]\\+\\), \\([0-9]\\+\\)/\\1%/g'",
+    "format": " {}%",
+    "tooltip": false,
+    "interval": 2
   },
 
   // ─────────────────────────────────────────────────────────────┤ distro ├───
@@ -332,7 +345,7 @@
       ":: {device_alias}: 󱊣 {device_battery_percentage}%",
 
     "on-click": "~/.config/waybar/scripts/bluetooth-menu.sh",
-    "on-click-right": "kitty --title '󰂯  Bluetooth TUI' bash -c bluetui",
+    "on-click-right": "blueman-manager",
     "interval": 1,
     "min-length": 1,
     "max-length": 1
@@ -373,6 +386,13 @@
 
   // ──────────────────────────────────────────────────────┤ output device ├───
 
+  "pulseaudio/slider": {
+    "min": 0,
+    "max": 100,
+    "rotate": 0,
+    "device": "pulseaudio",
+    "scroll-step": 1
+  },
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-muted": "󰝟 {volume}%",

@@ -54,8 +54,8 @@
 @define-color module-fg       @text;
 @define-color workspaces      @mantle;
 
-@define-color temperature     @mantle;
-@define-color memory          @base;
+@define-color temperature     @base;
+@define-color memory          @mantle;
 @define-color cpu             @surface0;
 @define-color distro-fg       @black;
 @define-color distro-bg       @overlay2;
