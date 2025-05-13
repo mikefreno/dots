@@ -68,36 +68,36 @@
     "custom/leftin2",
     "custom/power"          // power button
   ],
-    "tray": {
-        "spacing": 12,
-        "icon-size": 24
-    },
-    "privacy": {
-        "spacing": 16,
-        "icon-size": 24,
-        "transition-duration": 250,
-        "modules": [
-            {
-                "type": "screenshare",
-                "tooltip": true,
-                "tooltip-icon-size": 12
-            },
-            {
-                "type": "audio-in",
-                "tooltip": true,
-                "tooltip-icon-size": 12
-            }
-        ]
-    },
+  "tray": {
+    "spacing": 12,
+    "icon-size": 24
+  },
+  "privacy": {
+    "spacing": 16,
+    "icon-size": 24,
+    "transition-duration": 250,
+    "modules": [
+      {
+        "type": "screenshare",
+        "tooltip": true,
+        "tooltip-icon-size": 12
+      },
+      {
+        "type": "audio-in",
+        "tooltip": true,
+        "tooltip-icon-size": 12
+      }
+    ]
+  },
   // ─────────────────────────────────────────────────────────┤ workspaces ├───
 
-"hyprland/workspaces": {
-	"format": "{icon}",
-	"format-icons": {
-	"default": "",
-	"active": "",
-	}
-},
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "default": "",
+      "active": ""
+    }
+  },
 
   // ─────────────────────────────────────────────────────────────┤ window ├───
 

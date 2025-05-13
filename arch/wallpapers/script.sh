@@ -22,6 +22,6 @@ while true; do
     random_img="${filtered_wallpapers[$((RANDOM % ${#filtered_wallpapers[@]}))]}"
     random_position="${positions[$((RANDOM % ${#positions[@]}))]}"
     swww img ~/.config/wallpapers/$random_img --transition-type grow --transition-pos $random_position --transition-fps 144
-    # sleep for 1 hour
-    sleep 3600
+    # sleep for 15 min
+    sleep 900
 done
