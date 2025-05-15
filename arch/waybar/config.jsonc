@@ -11,7 +11,6 @@
 
   "modules-left": [
     "custom/ws",            // window icon
-    "custom/left1",
 
     "hyprland/workspaces",  // workspaces
     "custom/right1",
@@ -31,11 +30,7 @@
     "cpu",                  // cpu
     "custom/nvidia",        // cpu
     "custom/leftin1",
-
-    "custom/left5",
     "custom/distro",        // distro icon
-    "custom/right2",
-
     "custom/rightin1",
     "idle_inhibitor",       // idle inhibitor
     "clock#time",           // time
@@ -277,17 +272,16 @@
   // ───────────────────────────────────────────────────────────────┤ time ├───
 
   "clock#time": {
-    "format": "{:%H:%M}",
-    "tooltip": true,
-     "tooltip-format": "Standard Time: {:%I:%M %p}",
+    "format": " {:%I:%M %p}",
+    "tooltip": false,
     "min-length": 6,
-    "max-length": 6
+    "max-length": 12
   },
 
   // ───────────────────────────────────────────────────────────────┤ date ├───
 
   "clock#date": {
-    "format": "󰨳 {:%m-%d}",
+    "format": "󰨳 {:%b %d}",
     "tooltip-format": "<tt>{calendar}</tt>",
 
     "calendar": {
@@ -383,7 +377,7 @@
     "tooltip-format": "Playing: {title} - {artist}",
     "tooltip-format-paused": "Paused: {title} - {artist}",
     "min-length": 5,
-    "max-length": 35
+    "max-length": 25
   },
 
   // ──────────────────────────────────────────────────────┤ output device ├───

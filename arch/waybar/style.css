@@ -7,19 +7,14 @@
   border: none;
   margin: 0;
   padding: 0;
-}
-
-/* ──────────────────────────────────────────────────────────┤ drop shadow ├───
-*/
-window#waybar {
-  background: @shadow;
+  background-color: transparent;
 }
 
 /* ───────────────────────────────────────────────────────────┤ background ├───
 */
 window#waybar > box {
-  background: @main-bg;
-  margin: 2px;
+  background: rgba(17,17,27, 0.5);
+  margin: 6px 2px 0 0;
 }
 
 /* ─────────────────────────────────────────────────────────────┤ tooltips ├───
@@ -113,11 +108,12 @@ tooltip label {
   color: #888789;
   box-shadow: none;
   text-shadow: none;
-  border-radius: 9px;
   transition: 0.2s ease;
-  padding-left: 4px;
+  padding-left: 8px;
   padding-right: 4px;
   padding-top: 1px;
+  margin-left: 4px;
+  border-radius: 12px 0 0 12px;
 }
 
 
@@ -150,7 +146,6 @@ tooltip label {
 
 #custom-right1 {
   color: @workspaces;
-  background: @main-bg;
   text-shadow: 3px 0 2px rgba(0, 0, 0, 0.4);
   margin-bottom: 0;
 }
@@ -166,7 +161,6 @@ tooltip label {
 
 #custom-left2 {
   color: @memory;
-  background: @main-bg;
   padding-left: 3px;
 }
 
@@ -212,31 +206,25 @@ tooltip label {
 }
 
 #custom-leftin1 {
+  background-color: @distro-bg;
   color: @cpu;
+  margin:0;
+  padding: 0;
   margin-bottom: -1px;
 }
 
 /* ──────────────────────────────────────────────────────────┤ distro icon ├───
 */
-#custom-left5 {
-  color: @distro-bg;
-  background: @main-bg;
-  text-shadow: none;
-  margin-bottom: -2px;
-  padding-left: 3px;
-}
 
 #custom-distro {
   color: @distro-fg;
   background: @distro-bg;
-  margin: 0 -1px -2px 0;
-  padding: 0 0 0 3px;
+  margin: 0 -8px 0 0;
   text-shadow: 0 0 1.5px rgba(0, 0, 0, 1);
 }
 
 #custom-right2 {
   color: @distro-bg;
-  background: @main-bg;
   text-shadow: none;
   margin-bottom: -2px;
 }
@@ -244,6 +232,7 @@ tooltip label {
 /* ─────────────────────────────────────────────────────────────────┤ time ├───
 */
 #custom-rightin1 {
+  background: @distro-bg;
   color: @time;
   margin-bottom: -1px;
 }
@@ -319,13 +308,11 @@ tooltip label {
 
 #custom-right5 {
   color: @tray;
-  background: @main-bg;
 }
 
 /* ───────────────────────────────────────────────────────────┤ media info ├───
 */
 #mpris {
-  background: @main-bg;
   padding: 0 8px 0;
 }
 
@@ -337,7 +324,6 @@ tooltip label {
 */
 #custom-left6 {
   color: @pulseaudio;
-  background: @main-bg;
   padding-left: 3px;
 }
 
@@ -414,7 +400,6 @@ tooltip label {
 */
 #custom-leftin2 {
   color: @battery;
-  background: @main-bg;
   margin-bottom: -1px;
 }
 
@@ -424,7 +409,7 @@ tooltip label {
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
-  margin: 2px 4px 2px 0;
+  margin: 2px 8px 2px 4px;
   padding: 0 6px 0 9px;
 }
 
@@ -473,7 +458,7 @@ tooltip label,
 #custom-right3,
 #custom-right4,
 #custom-right5 {
-  font-size: 30px;
+  font-size: 32px;
 }
 
 /* ─────────────────────────────────────────────────┤ left & right inverse ├───
@@ -487,7 +472,7 @@ tooltip label,
 /* ──────────────────────────────────────────────────────────┤ distro icon ├───
 */
 #custom-distro {
-  font-size: 29px;
+  font-size: 32px;
 }
 
 #custom-left5,
