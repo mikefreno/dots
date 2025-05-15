@@ -274,8 +274,8 @@
   "clock#time": {
     "format": " {:%I:%M %p}",
     "tooltip": false,
-    "min-length": 6,
-    "max-length": 12
+    "min-length": 10,
+    "max-length": 10
   },
 
   // ───────────────────────────────────────────────────────────────┤ date ├───
