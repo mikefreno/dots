@@ -13,7 +13,7 @@
 /* ───────────────────────────────────────────────────────────┤ background ├───
 */
 window#waybar > box {
-  background: rgba(17,17,27, 0.5);
+  background: rgba(17,17,27, 0.3);
   margin: 6px 2px 0 0;
 }
 
@@ -240,7 +240,6 @@ tooltip label {
 #idle_inhibitor {
   background: @time;
   padding: 2px 0 0 14px;
-  margin-right: -8px;
 }
 
 #idle_inhibitor:hover {

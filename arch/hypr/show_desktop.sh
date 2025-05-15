@@ -5,6 +5,7 @@ TMP_FILE="$XDG_RUNTIME_DIR/hyprland-show-desktop"
 CURRENT_WORKSPACE=$(hyprctl monitors -j | jq '.[] | .activeWorkspace | .name' | sed 's/"//g')
 
 if [ -s "$TMP_FILE-$CURRENT_WORKSPACE" ]; then
+  eww close leftbar
   readarray -d $'\n' -t ADDRESS_ARRAY <<< $(< "$TMP_FILE-$CURRENT_WORKSPACE")
 
   for address in "${ADDRESS_ARRAY[@]}"
@@ -13,9 +14,11 @@ if [ -s "$TMP_FILE-$CURRENT_WORKSPACE" ]; then
   done
 
   hyprctl --batch "$CMDS"
+  waybar &> ~/.waybar.log &
 
   rm "$TMP_FILE-$CURRENT_WORKSPACE"
 else
+  eww open leftbar
   HIDDEN_WINDOWS=$(hyprctl clients -j | jq --arg CW "$CURRENT_WORKSPACE" '.[] | select (.workspace .name == $CW) | .address')
 
   readarray -d $'\n' -t ADDRESS_ARRAY <<< $HIDDEN_WINDOWS
@@ -32,6 +35,7 @@ else
   done
 
   hyprctl --batch "$CMDS"
+  pkill waybar
 
   echo -e "$TMP_ADDRESS" | sed -e '/^$/d' > "$TMP_FILE-$CURRENT_WORKSPACE"
 fi

@@ -48,6 +48,7 @@ require("lazy").setup({
 	"ionide/Ionide-vim",
 	"tikhomirov/vim-glsl",
   "vuciv/golf",
+  "elkowar/yuck.vim",
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",

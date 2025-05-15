@@ -15,3 +15,4 @@ ln -sf ~/dots/arch/xfce4 ~/.config/xfce4
 ln -sf ~/dots/arch/xsettingsd ~/.config/xsettingsd
 ln -sf ~/dots/arch/wallpapers ~/.config/wallpapers
 ln -sf ~/dots/arch/kidex.ron ~/.config/kidex.ron
+ln -sf ~/dots/arch/eww ~/.config/ew
