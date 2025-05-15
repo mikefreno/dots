@@ -55,17 +55,17 @@
 @define-color workspaces      @mantle;
 
 @define-color temperature     @base;
-@define-color memory          @mantle;
-@define-color cpu             @surface0;
-@define-color distro-fg       @black;
-@define-color distro-bg       @overlay2;
-@define-color time            @surface0;
+@define-color memory          @surface0;
+@define-color cpu             @mantle;
+@define-color distro-fg       @overlay2;
+@define-color distro-bg       @black;
+@define-color time            @mantle;
 @define-color date            @base;
-@define-color tray            @mantle;
+@define-color tray            @surface0;
 
-@define-color pulseaudio      @mantle;
+@define-color pulseaudio      @surface0;
 @define-color backlight       @base;
-@define-color battery         @surface0;
+@define-color battery         @mantle;
 @define-color power           @overlay2;
 
 /* State Colors */

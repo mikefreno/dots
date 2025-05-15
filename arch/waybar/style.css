@@ -239,7 +239,8 @@ tooltip label {
 
 #idle_inhibitor {
   background: @time;
-  padding: 0 0 0 7px;
+  padding: 2px 0 0 14px;
+  margin-right: -8px;
 }
 
 #idle_inhibitor:hover {
@@ -248,7 +249,7 @@ tooltip label {
 
 #clock.time {
   background: @time;
-  margin-left: -2px;
+  margin-left: -8px;
   padding: 0 3px 0 0;
 }
 
@@ -499,5 +500,6 @@ tooltip label,
 */
 #custom-power {
   border-radius: 12px;
+  background-color: @power;
   padding: 0 14px 0 22px;
 }
