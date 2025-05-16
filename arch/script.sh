@@ -15,4 +15,6 @@ ln -sf ~/dots/arch/xfce4 ~/.config/xfce4
 ln -sf ~/dots/arch/xsettingsd ~/.config/xsettingsd
 ln -sf ~/dots/arch/wallpapers ~/.config/wallpapers
 ln -sf ~/dots/arch/kidex.ron ~/.config/kidex.ron
-ln -sf ~/dots/arch/eww ~/.config/ew
+ln -sf ~/dots/arch/eww ~/.config/eww
+ln -sf ~/dots/arch/qt5ct/ ~/.config/qt5ct
+ln -sf ~/dots/arch/qt6ct/ ~/.config/qt6ct

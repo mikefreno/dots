@@ -6,14 +6,18 @@
 
 /** Background **************************************/
 
-bg {
-	background-color: #474D59;
-	opacity: 0.5;
+.leftbar {
+	background-color: #1a1c2a;
+	opacity: 0.8;
+	border-radius: 12px;
 }
 
-.btns-box>button{
+.btns-box > button{
 	font-size: 52px;
 	padding: 0 12px 0 12px;
+}
+.btns-box > button:hover{
+	opacity: 0.8
 }
 
 /** EOF *************************************************/

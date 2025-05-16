@@ -251,7 +251,8 @@
 
   "custom/distro": {
     "format": " ",
-    "tooltip": false
+    "tooltip": false,
+    "on-click": "hyprsysteminfo"
   },
 
   // ─────────────────────────────────────────────────────┤ idle inhibitor ├───
@@ -416,8 +417,8 @@
         "return-type": "json",
         "on-scroll-down": "echo '+' > /tmp/waybar-ddc-module-rx",
         "on-scroll-up": "echo '-' > /tmp/waybar-ddc-module-rx",
-        "on-click": "echo 'min' > /tmp/waybar-ddc-module-rx",
-        "on-click-right": "echo 'max' > /tmp/waybar-ddc-module-rx",
+        "on-click": "echo 'max' > /tmp/waybar-ddc-module-rx",
+        "on-click-right": "echo 'min' > /tmp/waybar-ddc-module-rx",
         "tooltip": false
     },
 
