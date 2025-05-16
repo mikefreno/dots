@@ -1,6 +1,7 @@
 ;======================Left Bar===================;
 ;======================(vibes)====================;
 (defwindow leftbar
+	:namespace "leftbar"
   :monitor 0
   :stacking "bg"
   :windowtype "normal"
@@ -10,7 +11,6 @@
 	:x "1%"
 	:width "20%"
         :height "80%")
-  :class leftbar
   (leftbarlayout))
 
 (defwidget leftbarlayout []
@@ -21,7 +21,9 @@
 		:valign "center"
 		:halign "start"
 		:space-evenly true
-		(box (system))))
+		(box (system))
+		(box (clock))
+))
 
 
 (deflisten temp :initial "--"
@@ -34,10 +36,10 @@
   (box ))
 
 ;; system
-(defpoll HOST :interval "5s" `hostname`)
+(defpoll HOST :interval "10m" `hostname`)
 (defpoll CPU_USAGE :interval "1s" `scripts/sys_info --cpu`)
 (defpoll MEM_USAGE :interval "1s" `scripts/sys_info --mem`)
-(defpoll BLIGHT :interval "1s" `scripts/sys_info --blight`)
+;(defpoll BLIGHT :interval "1s" `scripts/sys_info --blight`)
 
 (defwidget system [] 
 	(box :class "genwin" :vexpand "false" :hexpand "false" 
@@ -48,9 +50,10 @@
 			(box :class "mem_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
 				(label :class "iconmem" :text "")
 				(scale :min 0 :max 100 :value MEM_USAGE :active "false"))
-			(box :class "bright_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
-				(label :class "iconbright" :text "")
-				(scale :min 0 :max 100 :value BLIGHT :active "false")))))
+			;(box :class "bright_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+				;(label :class "iconbright" :text "")
+				;(scale :min 0 :max 100 :value BLIGHT :active "false"))
+			)))
 
 ;; clock
 (defpoll HOUR :interval "5s" `date +\"%I\"`)

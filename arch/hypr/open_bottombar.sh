@@ -1,3 +1,3 @@
 #!/bin/env sh
-eww daemon &>/dev/null
+eww daemon --force-wayland &>/dev/null
 eww open bottombar
