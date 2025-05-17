@@ -7,9 +7,9 @@
 /** Background **************************************/
 
 .leftbar {
-	background: #1a1c2a;
-	opacity: 0.8;
-	border-radius: 12px;
+	border-radius:20px;
+	background: rgba(26, 28, 42, 0.4);
+	padding: 10px;
 }
 
 .btns-box > button{
@@ -18,6 +18,10 @@
 }
 .btns-box > button:hover{
 	opacity: 0.8
+}
+
+.time{
+	font-size: 48px;
 }
 
 /** EOF *************************************************/

@@ -15,13 +15,8 @@
 
 (defwidget leftbarlayout []
 	(box 
-		:spacing 5
 		:vexpand true
 		:hexpand true
-		:valign "center"
-		:halign "start"
-		:space-evenly true
-		(box (system))
 		(box (clock))
 ))
 
@@ -41,34 +36,36 @@
 (defpoll MEM_USAGE :interval "1s" `scripts/sys_info --mem`)
 ;(defpoll BLIGHT :interval "1s" `scripts/sys_info --blight`)
 
-(defwidget system [] 
-	(box :class "genwin" :vexpand "false" :hexpand "false" 
-		(box :orientation "v" :spacing 35 :halign "center" :valign "center" :space-evenly "false" :vexpand "false" :hexpand "false" 
-			(box :class "cpu_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
-				(label :class "iconcpu" :text "")
-				(scale :min 0 :max 100 :value CPU_USAGE :active "false"))
-			(box :class "mem_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
-				(label :class "iconmem" :text "")
-				(scale :min 0 :max 100 :value MEM_USAGE :active "false"))
-			;(box :class "bright_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
-				;(label :class "iconbright" :text "")
-				;(scale :min 0 :max 100 :value BLIGHT :active "false"))
-			)))
+;(defwidget system [] 
+	;(box :class "genwin" :vexpand "false" :hexpand "false" 
+		;(box :orientation "v" :spacing 35 :halign "center" :valign "center" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			;(box :class "cpu_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+				;(label :class "iconcpu" :text "")
+				;(scale :min 0 :max 100 :value CPU_USAGE :active "false"))
+			;(box :class "mem_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+				;(label :class "iconmem" :text "")
+				;(scale :min 0 :max 100 :value MEM_USAGE :active "false"))
+			;;(box :class "bright_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+				;;(label :class "iconbright" :text "")
+				;;(scale :min 0 :max 100 :value BLIGHT :active "false"))
+			;)))
 
 ;; clock
-(defpoll HOUR :interval "5s" `date +\"%I\"`)
-(defpoll MIN :interval "5s" `date +\"%M\"`)
-(defpoll MER :interval "5s" `date +\"%p\"`)
-(defpoll DAY :interval "5s" `date +\"%A\"`)
+(defpoll TIME :interval "5s" `date +\"%I:%M %p\"`)
+(defpoll DATE :interval "5s" `date +\"%A\"`)
 
 (defwidget clock [] 
-	(box :class "genwin" :orientation "h" :spacing 50 :space-evenly false :vexpand "false" :hexpand "false" 
-		(box :orientation "h" :spacing 0
-			(label :class "time_hour" :valign "start" :wrap "true" :limit-width 25 :text HOUR)
-			(label :class "time_min" :valign "end" :wrap "true" :limit-width 25 :text MIN))
-		(box :orientation "v" :spacing 0 
-			(label :class "time_mer" :valign "start" :halign "end" :wrap "true" :limit-width 25 :text MER)
-			(label :class "time_day" :valign "end" :halign "end" :wrap "true" :limit-width 25 :text DAY))))
+	(box :class "clockParent" :orientation "v"
+		(box :class "time" :orientation "h" :hexpand true :spacing 36 :space-evenly false
+			(label :class "clockIcon" :text "")
+			(label :class "clockTime" :text TIME)
+		)
+		(box :class "date" :orientation "h"
+			(label :class "" :text "")
+			(label :class "" :text TIME)
+		)
+	)
+)
 
 ;; uptime
 (defpoll UPHOUR :interval "5s" `uptime -p | awk '{print $2 \" \" $3}' | sed 's/,//g'`)
@@ -109,6 +106,7 @@
 ;=================(system controls)===============;
 (defwindow bottombar
   :monitor 0
+	:namespace "bottombar"
   :stacking "bg"
   :windowtype "normal"
   :wm-ignore true
