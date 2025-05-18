@@ -41,6 +41,10 @@ while true; do
         min)
             ddcutil_fast setvcp 10 0
             ;;
+        *)
+            echo $command >> ~/dots/arch/log
+            ddcutil_fast setvcp 10 $command
+            ;;
     esac
     print_brightness ddcutil_fast
 done

@@ -20,6 +20,7 @@ while true; do
 
     # select random image, that is not the current
     random_img="${filtered_wallpapers[$((RANDOM % ${#filtered_wallpapers[@]}))]}"
+    echo ~/.config/wallpapers/$random_img > /tmp/current_wallpaper
     random_position="${positions[$((RANDOM % ${#positions[@]}))]}"
     swww img ~/.config/wallpapers/$random_img --transition-type grow --transition-pos $random_position --transition-fps 144
     # sleep for 15 min

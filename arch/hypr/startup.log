@@ -1,0 +1,2805 @@
+----------------------------------------
+Starting: Hyprland Idle Manager (hypridle)
+Timestamp: Sun May 18 10:53:19 AM EDT 2025
+----------------------------------------
+Command 'Hyprland Idle Manager' started with PID 786
+
+----------------------------------------
+Starting: Hyprland Lock Screen (hyprlock)
+[LOG] Registered timeout rule for 300s:
+      on-timeout: ~/.config/hypr/timeout.sh
+      on-resume: ~/.config/hypr/timein.sh
+[LOG] Registered timeout rule for 900s:
+      on-timeout: loginctl lock-session
+      on-resume: 
+[LOG] Registered timeout rule for 1050s:
+      on-timeout: hyprctl dispatch dpms off
+      on-resume: hyprctl dispatch dpms on
+[LOG] Registered timeout rule for 1800s:
+      on-timeout: systemctl suspend
+      on-resume: 
+Timestamp: Sun May 18 10:53:19 AM EDT 2025
+----------------------------------------
+Command 'Hyprland Lock Screen' started with PID 803
+
+========================================
+Starting Middle Priority Commands
+========================================
+
+----------------------------------------
+Starting: SWWW Wallpaper Daemon (swww-daemon)
+Timestamp: Sun May 18 10:53:19 AM EDT 2025
+----------------------------------------
+Command 'SWWW Wallpaper Daemon' started with PID 827
+
+[LOG]   | got iface: wl_seat v9
+[LOG]    > Bound to wl_seat v9
+[LOG]   | got iface: wl_data_device_manager v3
+[LOG]   | got iface: wl_compositor v6
+[LOG]   | got iface: wl_subcompositor v1
+[LOG]   | got iface: wl_shm v1
+[LOG]   | got iface: wp_viewporter v1
+[LOG]   | got iface: wp_tearing_control_manager_v1 v1
+[LOG]   | got iface: wp_fractional_scale_manager_v1 v1
+[LOG]   | got iface: zxdg_output_manager_v1 v3
+[LOG]   | got iface: wp_cursor_shape_manager_v1 v1
+[LOG]   | got iface: zwp_idle_inhibit_manager_v1 v1
+[LOG]   | got iface: zwp_relative_pointer_manager_v1 v1
+[LOG]   | got iface: zxdg_decoration_manager_v1 v1
+[LOG]   | got iface: wp_alpha_modifier_v1 v1
+[LOG]   | got iface: zwlr_gamma_control_manager_v1 v1
+[LOG]   | got iface: ext_foreign_toplevel_list_v1 v1
+[LOG]   | got iface: zwp_pointer_gestures_v1 v3
+[LOG]   | got iface: zwlr_foreign_toplevel_manager_v1 v3
+[LOG]   | got iface: zwp_keyboard_shortcuts_inhibit_manager_v1 v1
+[LOG]   | got iface: zwp_text_input_manager_v1 v1
+[LOG]   | got iface: zwp_text_input_manager_v3 v1
+[LOG]   | got iface: zwp_pointer_constraints_v1 v1
+[LOG]   | got iface: zwlr_output_power_manager_v1 v1
+[LOG]   | got iface: xdg_activation_v1 v1
+[LOG]   | got iface: ext_idle_notifier_v1 v2
+[LOG]    > Bound to ext_idle_notifier_v1 v2
+[LOG]   | got iface: hyprland_lock_notifier_v1 v1
+[LOG]    > Bound to hyprland_lock_notifier_v1 v1
+[LOG]   | got iface: ext_session_lock_manager_v1 v1
+[LOG]   | got iface: zwp_input_method_manager_v2 v1
+[LOG]   | got iface: zwp_virtual_keyboard_manager_v1 v1
+[LOG]   | got iface: zwlr_virtual_pointer_manager_v1 v2
+[LOG]   | got iface: zwlr_output_manager_v1 v4
+[LOG]   | got iface: org_kde_kwin_server_decoration_manager v1
+[LOG]   | got iface: hyprland_focus_grab_manager_v1 v1
+[LOG]   | got iface: zwp_tablet_manager_v2 v1
+[LOG]   | got iface: zwlr_layer_shell_v1 v5
+[LOG]   | got iface: wp_presentation v1
+[LOG]   | got iface: xdg_wm_base v6
+[LOG]   | got iface: zwlr_data_control_manager_v1 v2
+[LOG]   | got iface: zwp_primary_selection_device_manager_v1 v1
+[LOG]   | got iface: xwayland_shell_v1 v1
+[LOG]   | got iface: zwlr_screencopy_manager_v1 v3
+[LOG]   | got iface: hyprland_toplevel_export_manager_v1 v2
+[LOG]   | got iface: hyprland_toplevel_mapping_manager_v1 v1
+[LOG]   | got iface: hyprland_global_shortcuts_manager_v1 v1
+[LOG]   | got iface: xdg_wm_dialog_v1 v1
+[LOG]   | got iface: wp_single_pixel_buffer_manager_v1 v1
+[LOG]   | got iface: wp_security_context_manager_v1 v1
+[LOG]   | got iface: hyprland_ctm_control_manager_v1 v2
+[LOG]   | got iface: hyprland_surface_manager_v1 v2
+[LOG]   | got iface: wp_content_type_manager_v1 v1
+[LOG]   | got iface: xdg_toplevel_tag_manager_v1 v1
+[LOG]   | got iface: xdg_system_bell_v1 v1
+[LOG]   | got iface: wp_color_manager_v1 v1
+[LOG]   | got iface: wp_drm_lease_device_v1 v1
+[LOG]   | got iface: wp_linux_drm_syncobj_manager_v1 v1
+[LOG]   | got iface: wl_drm v2
+[LOG]   | got iface: zwp_linux_dmabuf_v1 v5
+[LOG]   | got iface: wl_output v4
+[LOG] found 4 rules
+14:53:19 [0m[34m[INFO] [0m(main) Selected wl_shm format: Xbgr8888
+14:53:19 [0m[34m[INFO] [0m(main) Initialization succeeded! Starting main loop...
+[LOG] wayland done, registering dbus
+[LOG] Sleep inhibition enabled - inhibiting until the wayland session gets locked
+[LOG] Using dbus path /org/freedesktop/login1/session/_31
+[LOG] Inhibited sleep with fd 11
+Hyprlock version v0.8.2
+[WARN] Error parsing gradient rgb(234 202 137)
+[WARN] Error parsing gradient rgb(234 202 137)
+[ERR] Config has errors:
+Config error in file /home/mike/dots/arch/hypr/hyprlock.conf at line 57: config option <label:onclick> does not exist.
+Config error in file /home/mike/dots/arch/hypr/hyprlock.conf at line 68: config option <label:onclick> does not exist.
+Config error in file /home/mike/dots/arch/hypr/hyprlock.conf at line 79: config option <label:onclick> does not exist.
+Config error in file /home/mike/dots/arch/hypr/hyprlock.conf at line 90: config option <label:onclick> does not exist.
+Config error in file /home/mike/dots/arch/hypr/hyprlock.conf at line 101: config option <label:onclick> does not exist.
+Config error in file /home/mike/dots/arch/hypr/hyprlock.conf at line 138: Error parsing gradient rgb(234 202 137): No colors?
+Proceeding ignoring faulty entries
+[LOG]   | got iface: wl_seat v9
+[LOG]    > Bound to wl_seat v9
+[LOG]   | got iface: wl_data_device_manager v3
+[LOG]   | got iface: wl_compositor v6
+[LOG]    > Bound to wl_compositor v6
+[LOG]   | got iface: wl_subcompositor v1
+[LOG]   | got iface: wl_shm v1
+[LOG]    > Bound to wl_shm v1
+[LOG]   | got iface: wp_viewporter v1
+[LOG]    > Bound to wp_viewporter v1
+[LOG]   | got iface: wp_tearing_control_manager_v1 v1
+[LOG]   | got iface: wp_fractional_scale_manager_v1 v1
+[LOG]    > Bound to wp_fractional_scale_manager_v1 v1
+[LOG]   | got iface: zxdg_output_manager_v1 v3
+[LOG]   | got iface: wp_cursor_shape_manager_v1 v1
+[LOG]    > Bound to wp_cursor_shape_manager_v1 v1
+[LOG]   | got iface: zwp_idle_inhibit_manager_v1 v1
+[LOG]   | got iface: zwp_relative_pointer_manager_v1 v1
+[LOG]   | got iface: zxdg_decoration_manager_v1 v1
+[LOG]   | got iface: wp_alpha_modifier_v1 v1
+[LOG]   | got iface: zwlr_gamma_control_manager_v1 v1
+[LOG]   | got iface: ext_foreign_toplevel_list_v1 v1
+[LOG]   | got iface: zwp_pointer_gestures_v1 v3
+[LOG]   | got iface: zwlr_foreign_toplevel_manager_v1 v3
+[LOG]   | got iface: zwp_keyboard_shortcuts_inhibit_manager_v1 v1
+[LOG]   | got iface: zwp_text_input_manager_v1 v1
+[LOG]   | got iface: zwp_text_input_manager_v3 v1
+[LOG]   | got iface: zwp_pointer_constraints_v1 v1
+[LOG]   | got iface: zwlr_output_power_manager_v1 v1
+[LOG]   | got iface: xdg_activation_v1 v1
+[LOG]   | got iface: ext_idle_notifier_v1 v2
+[LOG]   | got iface: hyprland_lock_notifier_v1 v1
+[LOG]   | got iface: ext_session_lock_manager_v1 v1
+[LOG]    > Bound to ext_session_lock_manager_v1 v1
+[LOG]   | got iface: zwp_input_method_manager_v2 v1
+[LOG]   | got iface: zwp_virtual_keyboard_manager_v1 v1
+[LOG]   | got iface: zwlr_virtual_pointer_manager_v1 v2
+[LOG]   | got iface: zwlr_output_manager_v1 v4
+[LOG]   | got iface: org_kde_kwin_server_decoration_manager v1
+[LOG]   | got iface: hyprland_focus_grab_manager_v1 v1
+[LOG]   | got iface: zwp_tablet_manager_v2 v1
+[LOG]   | got iface: zwlr_layer_shell_v1 v5
+[LOG]   | got iface: wp_presentation v1
+[LOG]   | got iface: xdg_wm_base v6
+[LOG]   | got iface: zwlr_data_control_manager_v1 v2
+[LOG]   | got iface: zwp_primary_selection_device_manager_v1 v1
+[LOG]   | got iface: xwayland_shell_v1 v1
+[LOG]   | got iface: zwlr_screencopy_manager_v1 v3
+[LOG]    > Bound to zwlr_screencopy_manager_v1 v3
+[LOG]   | got iface: hyprland_toplevel_export_manager_v1 v2
+[LOG]   | got iface: hyprland_toplevel_mapping_manager_v1 v1
+[LOG]   | got iface: hyprland_global_shortcuts_manager_v1 v1
+[LOG]   | got iface: xdg_wm_dialog_v1 v1
+[LOG]   | got iface: wp_single_pixel_buffer_manager_v1 v1
+[LOG]   | got iface: wp_security_context_manager_v1 v1
+[LOG]   | got iface: hyprland_ctm_control_manager_v1 v2
+[LOG]   | got iface: hyprland_surface_manager_v1 v2
+[LOG]   | got iface: wp_content_type_manager_v1 v1
+[LOG]   | got iface: xdg_toplevel_tag_manager_v1 v1
+[LOG]   | got iface: xdg_system_bell_v1 v1
+[LOG]   | got iface: wp_color_manager_v1 v1
+[LOG]   | got iface: wp_drm_lease_device_v1 v1
+[LOG]   | got iface: wp_linux_drm_syncobj_manager_v1 v1
+[LOG]   | got iface: wl_drm v2
+[LOG]   | got iface: zwp_linux_dmabuf_v1 v5
+[LOG]    > Bound to zwp_linux_14:53:19 [0m[34m[INFO] [0m(transition) BumpPool with: 1 buffers. Size: 32400Kb
+14:53:19 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Set init wallpaper (swww img /home/mike/.config/wallpapers/33_paintress.jpeg)
+Timestamp: Sun May 18 10:53:19 AM EDT 2025
+----------------------------------------
+Command 'Set init wallpaper' started with PID 884
+
+14:53:20 [0m[34m[INFO] [0m(transition) BumpPool with: 2 buffers. Size: 64800Kb
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Eww Daemon (eww daemon --force-wayland)
+Timestamp: Sun May 18 10:53:20 AM EDT 2025
+----------------------------------------
+Command 'Eww Daemon' started with PID 902
+
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+ 2025-05-18T14:53:20.219Z INFO  eww > Initializing Eww server. (/run/user/1000/eww-server_242a00c63f0f3747)
+Run `eww logs` to see any errors while editing your configuration.
+ 2025-05-18T14:53:20.219Z INFO  eww::server > Loading paths: config-dir: /home/mike/dots/arch/eww, ipc-socket: /run/user/1000/eww-server_242a00c63f0f3747, log-file: /home/mike/.cache/eww/eww_242a00c63f0f3747.log
+
+┏━━━━━━━━━━━━━━━━━━━━━━━┓
+┃Initializing eww daemon┃
+┗━━━━━━━━━━━━━━━━━━━━━━━┛
+
+[LOG] Wayland session got locked
+[LOG] Executing 
+[LOG] Process Created with pid 918
+[LOG] Releasing the sleep inhibitor!
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+ 2025-05-18T14:53:20.361Z INFO  eww::ipc_server > IPC server initialized
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Waybar Status Bar (waybar)
+Timestamp: Sun May 18 10:53:20 AM EDT 2025
+----------------------------------------
+Command 'Waybar Status Bar' started with PID 1006
+
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+[2025-05-18 10:53:20.482] [info] Using configuration file /home/mike/.config/waybar/config.jsonc
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+[2025-05-18 10:53:20.557] [info] Unable to receive desktop appearance: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such interface “org.freedesktop.portal.Settings” on object at path /org/freedesktop/portal/desktop
+[2025-05-18 10:53:20.557] [info] Using CSS file /home/mike/.config/waybar/style.css
+[2025-05-18 10:53:20.563] [info] Hyprland IPC starting
+[2025-05-18 10:53:20.563] [info] Loading persistent workspaces from Hyprland workspace rules
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Hyprsunset (Screen Temperature) (hyprsunset)
+Timestamp: Sun May 18 10:53:20 AM EDT 2025
+----------------------------------------
+Command 'Hyprsunset (Screen Temperature)' started with PID 1098
+
+┏ hyprsunset v0.2.0 ━━╸
+┃
+┣ Setting the temperature to 6000K (default)
+┃
+┣ Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 0.96528697, 0, 0, 0, 0.92878336]
+┃
+┣ Running on Hyprland
+┣ Found hyprland-ctm-control-v1 supported with version 2, binding to v2
+┣ Found new output with ID 58, binding
+┣ Found 1 outputs, applying CTMs
+[LOG] hyprsunset socket started at /run/user/1000/hypr/9958d297641b5c84dcff93f9039d80a5ad37ab00_1747579999_671924029/.hyprsunset.sock (fd: 5)
+[2025-05-18 10:53:20.606] [warning] module backlight/slider: Disabling module "backlight/slider", No backlight found
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+[2025-05-18 10:53:20.731] [info] Bar configured (width: 3840, height: 47) for output: DP-1
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Pass Secret Service Integration (pass-secret-service)
+Timestamp: Sun May 18 10:53:20 AM EDT 2025
+----------------------------------------
+/home/mike/.config/hypr/startup_pacer.sh: line 16: pass-secret-service: command not found
+Command 'Pass Secret Service Integration' started with PID 1150
+
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:20 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Blueman Applet (blueman-applet)
+Timestamp: Sun May 18 10:53:21 AM EDT 2025
+----------------------------------------
+Command 'Blueman Applet' started with PID 1208
+
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+error: error sending request for url (https://aur.archlinux.org/rpc): error trying to connect: dns error: failed to lookup address information: Temporary failure in name resolution: error trying to connect: dns error: failed to lookup address information: Temporary failure in name resolution: dns error: failed to lookup address information: Temporary failure in name resolution: failed to lookup address information: Temporary failure in name resolution
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+==> ERROR: Cannot fetch updates
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+error: Unable to load summary from remote flathub: While fetching https://dl.flathub.org/repo/summary.idx: [6] Could not resolve hostname
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Dunst Notification Daemon (dunst)
+Timestamp: Sun May 18 10:53:21 AM EDT 2025
+----------------------------------------
+Command 'Dunst Notification Daemon' started with PID 1363
+
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+blueman-applet 10.53.21 WARNING  PluginManager:93 load_plugin: Failed to start plugin GameControllerWakelock: Only X11 platform is supported
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+blueman-applet 10.53.21 WARNING  PluginManager:153 __load_plugin: Not loading PPPSupport because its conflict has higher priority
+blueman-applet 10.53.21 WARNING  PluginManager:153 __load_plugin: Not loading DhcpClient because its conflict has higher priority
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Set Nvidia Power Limit (sudo nvidia-smi -i 0 -pl 235)
+Timestamp: Sun May 18 10:53:21 AM EDT 2025
+----------------------------------------
+Command 'Set Nvidia Power Limit' started with PID 1401
+
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+Power limit for GPU 00000000:06:00.0 was set to 235.00 W from 350.00 W.
+
+Warning: persistence mode is disabled on device 00000000:06:00.0. See the Known Issues section of the nvidia-smi(1) man page for more information. Run with [--help | -h] switch to get more information on how to enable persistence mode.
+All done.
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:21 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+========================================
+Starting Low Priority Commands
+========================================
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+
+----------------------------------------
+Starting: Kitty Terminal Emulator (kitty)
+Timestamp: Sun May 18 10:53:22 AM EDT 2025
+----------------------------------------
+Command 'Kitty Terminal Emulator' started with PID 1481
+
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+[0.055] Ignoring unknown config key: resize_draw_strategy
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Zen Browser (zen-browser)
+Timestamp: Sun May 18 10:53:22 AM EDT 2025
+----------------------------------------
+Command 'Zen Browser' started with PID 1497
+
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+[0.168] The output buffer does not support sRGB color encoding, colors will be incorrect.
+----------------------------------------
+Starting: ProtonMail Bridge (protonmail-bridge)
+Timestamp: Sun May 18 10:53:22 AM EDT 2025
+----------------------------------------
+Command 'ProtonMail Bridge' started with PID 1537
+
+[0.182] [glfw error 65544]: process_desktop_settings: failed with error: org.freedesktop.DBus.Error.UnknownMethod: No such interface “org.freedesktop.portal.Settings” on object at path /org/freedesktop/portal/desktop
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: GNOME Podcasts (gnome-podcasts)
+Timestamp: Sun May 18 10:53:22 AM EDT 2025
+----------------------------------------
+Command 'GNOME Podcasts' started with PID 1653
+
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Thunderbird (thunderbird)
+Timestamp: Sun May 18 10:53:22 AM EDT 2025
+----------------------------------------
+Command 'Thunderbird' started with PID 1750
+
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:22 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Discord (discord)
+Timestamp: Sun May 18 10:53:22 AM EDT 2025
+----------------------------------------
+Command 'Discord' started with PID 1802
+
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: ProtonVPN (Flatpak) (flatpak run com.protonvpn.www)
+Timestamp: Sun May 18 10:53:23 AM EDT 2025
+----------------------------------------
+Command 'ProtonVPN (Flatpak)' started with PID 1851
+
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+----------------------------------------
+Starting: Kidex (kidex)
+Timestamp: Sun May 18 10:53:23 AM EDT 2025
+----------------------------------------
+Command 'Kidex' started with PID 1955
+
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+
+(protonvpn-app:2): Gdk-WARNING **: 10:53:23.479: Failed to read portal settings: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such interface “org.freedesktop.portal.Settings” on object at path /org/freedesktop/portal/desktop
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+Discord 0.0.94
+[2025-05-18T14:53:23Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:53:23Z ERROR kidex::index] Failed to open file: No such device or address (os error 6)
+[2025-05-18T14:53:23Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+(electron) 'session.getPreloads' is deprecated and will be removed. Please use 'session.getPreloadScripts' instead.
+(electron) 'session.setPreloads' is deprecated and will be removed. Please use 'session.registerPreloadScript' instead.
+Starting app.
+Starting updater.
+5/18/2025, 10:53:23 AM EDT [Modules] Modules initializing
+5/18/2025, 10:53:23 AM EDT [Modules] Distribution: remote
+5/18/2025, 10:53:23 AM EDT [Modules] Host updates: enabled
+5/18/2025, 10:53:23 AM EDT [Modules] Module updates: enabled
+5/18/2025, 10:53:23 AM EDT [Modules] Module install path: /home/mike/.config/discord/0.0.94/modules
+5/18/2025, 10:53:23 AM EDT [Modules] Module installed file path: /home/mike/.config/discord/0.0.94/modules/installed.json
+5/18/2025, 10:53:23 AM EDT [Modules] Module download path: /home/mike/.config/discord/0.0.94/modules/pending
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+splashScreen.initSplash(false)
+CDM component API found
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+blackbox: 5/18/2025, 10:53:23 AM EDT 0 
+
+----------------------------------------------
+CDM completed with status: cdm-ready-success
+[1805:0518/105323.855257:ERROR:object_proxy.cc(576)] Failed to call method: org.freedesktop.DBus.Properties.Get: object_path= /org/freedesktop/portal/desktop: org.freedesktop.DBus.Error.InvalidArgs: No such interface “org.freedesktop.portal.FileChooser”
+blackbox: 5/18/2025, 10:53:23 AM EDT 1 Discord starting: {"releaseChannel":"stable","version":"0.0.94"}, modulepath: /home/mike/.config/discord/0.0.94/modules
+[2025-05-18T14:53:23Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+blackbox: 5/18/2025, 10:53:23 AM EDT 2 ✅ webContents.created web1 ""
+blackbox: 5/18/2025, 10:53:23 AM EDT 3 ✅ window.created win1 "discord"
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+Failed to initialize sentry
+INFO[May 18 10:53:23.884] bridge-gui starting
+INFO[May 18 10:53:23.884] Using Qt 6.8.2
+INFO[May 18 10:53:23.887] lock file created /home/mike/.cache/protonmail/bridge-v3/bridge-v3-gui.lock
+INFO[May 18 10:53:23.887] bridge-gui executable: /home/mike/.local/share/protonmail/bridge-v3/updates/3.20.0/bridge-gui
+INFO[May 18 10:53:23.887] Command-line invocation: --session-id 20250518_105323441 --launcher /usr/lib/protonmail/bridge/proton-bridge
+INFO[May 18 10:53:23.887] New Sentry reporter - id: fIJgJQCFeqbtDPOMTD5OxkW9yqgsALkVXrCL4QDHeKk=.
+DEBU[May 18 10:53:23.889] Bridge executable path: /home/mike/.local/share/protonmail/bridge-v3/updates/3.20.0/bridge
+INFO[May 18 10:53:23.889] Launching bridge process with command "/home/mike/.local/share/protonmail/bridge-v3/updates/3.20.0/bridge" --grpc --parent-pid 2304 --launcher /usr/lib/protonmail/bridge/proton-bridge --session-id 20250518_105323441
+INFO[May 18 10:53:23.889] Retrieving gRPC service configuration from '/home/mike/.config/protonmail/bridge-v3/grpcServerConfig.json'
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+--- Logging error ---
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 48, in send_and_get_reply
+    raise DBusErrorResponse(resp_msg)
+jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.ServiceUnknown] ('The name is not activatable',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 62, in get_preferred_collection
+    collection = secretstorage.get_default_collection(bus)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 177, in get_default_collection
+    return Collection(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 45, in __init__
+    self._collection.get_property('Label')
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 67, in get_property
+    (signature, value), = self.send_and_get_reply(msg)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 58, in send_and_get_reply
+    raise SecretServiceNotAvailableException(data) from resp
+secretstorage.exceptions.SecretServiceNotAvailableException: The name is not activatable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 111, in _is_backend_working
+    keyring_backend.get_password(
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 79, in get_password
+    collection = self.get_preferred_collection()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 64, in get_preferred_collection
+    raise InitError(f"Failed to create the collection: {e}.") from e
+keyring.errors.InitError: Failed to create the collection: The name is not activatable.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+  File "/app/lib/python3.12/site-packages/keyring/backend.py", line 122, in __str__
+    return f"{keyring_class.__module__}.{keyring_class.__name__} (priority: {keyring_class.priority:g})"
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/jaraco/classes/properties.py", line 202, in __get__
+    return self.fget.__get__(None, owner)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 44, in priority
+    raise RuntimeError(
+RuntimeError: The Secret Service daemon is neither running nor activatable through D-Bus
+Call stack:
+  File "/usr/lib/python3.12/threading.py", line 1032, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/executor.py", line 89, in _run_asyncio_loop_forever
+    self._loop.run_forever()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 645, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1999, in _run_once
+    handle._run()
+  File "/usr/lib/python3.12/asyncio/events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/controller.py", line 97, in initialize_vpn_connector
+    self._connector = await self._api.get_vpn_connector()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/api.py", line 60, in get_vpn_connector
+    self._vpn_connector = await VPNConnector.get(
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 94, in get
+    await connector.initialize_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 269, in initialize_state
+    state = await self._get_initial_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 257, in _get_initial_state
+    if self._session_holder.session.logged_in:
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/session_holder.py", line 80, in session
+    self._session = self._proton_sso.get_default_session(
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 195, in get_default_session
+    sessions = self.sessions
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 133, in sessions
+    keyring = self._keyring
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 114, in _keyring
+    self.__keyring_backend = Keyring.get_from_factory(self.__keyring_backend_name)
+  File "/app/lib/python3.12/site-packages/proton/keyring/_base.py", line 49, in get_from_factory
+    keyring_backend = Loader.get("keyring", class_name=backend)
+  File "/app/lib/python3.12/site-packages/proton/loader/loader.py", line 122, in get
+    entry_is_valid = entry.cls._validate()  # pylint: disable=protected-access
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/secretservice/secretservice_backend.py", line 43, in _validate
+    return cls._is_backend_working(SecretService.Keyring())
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 120, in _is_backend_working
+    logger.exception("Keyring %s error", keyring_backend)
+Message: 'Keyring %s error'
+Arguments: (<keyring.backends.SecretService.Keyring object at 0x7c23287ff2c0>,)
+14:53:23 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+--- Logging error ---
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 48, in send_and_get_reply
+    raise DBusErrorResponse(resp_msg)
+jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.ServiceUnknown] ('The name is not activatable',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 62, in get_preferred_collection
+    collection = secretstorage.get_default_collection(bus)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 177, in get_default_collection
+    return Collection(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 45, in __init__
+    self._collection.get_property('Label')
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 67, in get_property
+    (signature, value), = self.send_and_get_reply(msg)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 58, in send_and_get_reply
+    raise SecretServiceNotAvailableException(data) from resp
+secretstorage.exceptions.SecretServiceNotAvailableException: The name is not activatable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 111, in _is_backend_working
+    keyring_backend.get_password(
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 79, in get_password
+    collection = self.get_preferred_collection()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 64, in get_preferred_collection
+    raise InitError(f"Failed to create the collection: {e}.") from e
+keyring.errors.InitError: Failed to create the collection: The name is not activatable.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/handlers.py", line 73, in emit
+    if self.shouldRollover(record):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/handlers.py", line 197, in shouldRollover
+    msg = "%s\n" % self.format(record)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+  File "/app/lib/python3.12/site-packages/keyring/backend.py", line 122, in __str__
+    return f"{keyring_class.__module__}.{keyring_class.__name__} (priority: {keyring_class.priority:g})"
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/jaraco/classes/properties.py", line 202, in __get__
+    return self.fget.__get__(None, owner)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 44, in priority
+    raise RuntimeError(
+RuntimeError: The Secret Service daemon is neither running nor activatable through D-Bus
+Call stack:
+  File "/usr/lib/python3.12/threading.py", line 1032, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/executor.py", line 89, in _run_asyncio_loop_forever
+    self._loop.run_forever()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 645, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1999, in _run_once
+    handle._run()
+  File "/usr/lib/python3.12/asyncio/events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/controller.py", line 97, in initialize_vpn_connector
+    self._connector = await self._api.get_vpn_connector()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/api.py", line 60, in get_vpn_connector
+    self._vpn_connector = await VPNConnector.get(
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 94, in get
+    await connector.initialize_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 269, in initialize_state
+    state = await self._get_initial_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 257, in _get_initial_state
+    if self._session_holder.session.logged_in:
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/session_holder.py", line 80, in session
+    self._session = self._proton_sso.get_default_session(
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 195, in get_default_session
+    sessions = self.sessions
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 133, in sessions
+    keyring = self._keyring
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 114, in _keyring
+    self.__keyring_backend = Keyring.get_from_factory(self.__keyring_backend_name)
+  File "/app/lib/python3.12/site-packages/proton/keyring/_base.py", line 49, in get_from_factory
+    keyring_backend = Loader.get("keyring", class_name=backend)
+  File "/app/lib/python3.12/site-packages/proton/loader/loader.py", line 122, in get
+    entry_is_valid = entry.cls._validate()  # pylint: disable=protected-access
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/secretservice/secretservice_backend.py", line 43, in _validate
+    return cls._is_backend_working(SecretService.Keyring())
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 120, in _is_backend_working
+    logger.exception("Keyring %s error", keyring_backend)
+Message: 'Keyring %s error'
+Arguments: (<keyring.backends.SecretService.Keyring object at 0x7c23287ff2c0>,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 48, in send_and_get_reply
+    raise DBusErrorResponse(resp_msg)
+jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.ServiceUnknown] ('The name is not activatable',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 62, in get_preferred_collection
+    collection = secretstorage.get_default_collection(bus)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 177, in get_default_collection
+    return Collection(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 45, in __init__
+    self._collection.get_property('Label')
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 67, in get_property
+    (signature, value), = self.send_and_get_reply(msg)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 58, in send_and_get_reply
+    raise SecretServiceNotAvailableException(data) from resp
+secretstorage.exceptions.SecretServiceNotAvailableException: The name is not activatable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 111, in _is_backend_working
+    keyring_backend.get_password(
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 79, in get_password
+    collection = self.get_preferred_collection()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 64, in get_preferred_collection
+    raise InitError(f"Failed to create the collection: {e}.") from e
+keyring.errors.InitError: Failed to create the collection: The name is not activatable.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+  File "/app/lib/python3.12/site-packages/keyring/backend.py", line 122, in __str__
+    return f"{keyring_class.__module__}.{keyring_class.__name__} (priority: {keyring_class.priority:g})"
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/jaraco/classes/properties.py", line 202, in __get__
+    return self.fget.__get__(None, owner)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 44, in priority
+    raise RuntimeError(
+RuntimeError: The Secret Service daemon is neither running nor activatable through D-Bus
+Call stack:
+  File "/usr/lib/python3.12/threading.py", line 1032, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/executor.py", line 89, in _run_asyncio_loop_forever
+    self._loop.run_forever()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 645, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1999, in _run_once
+    handle._run()
+  File "/usr/lib/python3.12/asyncio/events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/controller.py", line 97, in initialize_vpn_connector
+    self._connector = await self._api.get_vpn_connector()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/api.py", line 60, in get_vpn_connector
+    self._vpn_connector = await VPNConnector.get(
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 94, in get
+    await connector.initialize_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 269, in initialize_state
+    state = await self._get_initial_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 257, in _get_initial_state
+    if self._session_holder.session.logged_in:
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/session_holder.py", line 80, in session
+    self._session = self._proton_sso.get_default_session(
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 195, in get_default_session
+    sessions = self.sessions
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 140, in sessions
+    cleaned_index = [account_name for account_name in keyring_index if len(self._get_session_data(account_name)) > 0]
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 239, in _get_session_data
+    data = self._keyring[self.__keyring_key_name(account_name)]
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 115, in _keyring
+    elif not isinstance(self.__keyring_backend, type(Keyring.get_from_factory(self.__keyring_backend_name))):
+  File "/app/lib/python3.12/site-packages/proton/keyring/_base.py", line 49, in get_from_factory
+    keyring_backend = Loader.get("keyring", class_name=backend)
+  File "/app/lib/python3.12/site-packages/proton/loader/loader.py", line 122, in get
+    entry_is_valid = entry.cls._validate()  # pylint: disable=protected-access
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/secretservice/secretservice_backend.py", line 43, in _validate
+    return cls._is_backend_working(SecretService.Keyring())
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 120, in _is_backend_working
+    logger.exception("Keyring %s error", keyring_backend)
+Message: 'Keyring %s error'
+Arguments: (<keyring.backends.SecretService.Keyring object at 0x7c232cbbb7a0>,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 48, in send_and_get_reply
+    raise DBusErrorResponse(resp_msg)
+jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.ServiceUnknown] ('The name is not activatable',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 62, in get_preferred_collection
+    collection = secretstorage.get_default_collection(bus)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 177, in get_default_collection
+    return Collection(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 45, in __init__
+    self._collection.get_property('Label')
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 67, in get_property
+    (signature, value), = self.send_and_get_reply(msg)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 58, in send_and_get_reply
+    raise SecretServiceNotAvailableException(data) from resp
+secretstorage.exceptions.SecretServiceNotAvailableException: The name is not activatable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 111, in _is_backend_working
+    keyring_backend.get_password(
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 79, in get_password
+    collection = self.get_preferred_collection()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 64, in get_preferred_collection
+    raise InitError(f"Failed to create the collection: {e}.") from e
+keyring.errors.InitError: Failed to create the collection: The name is not activatable.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/handlers.py", line 73, in emit
+    if self.shouldRollover(record):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/handlers.py", line 197, in shouldRollover
+    msg = "%s\n" % self.format(record)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+  File "/app/lib/python3.12/site-packages/keyring/backend.py", line 122, in __str__
+    return f"{keyring_class.__module__}.{keyring_class.__name__} (priority: {keyring_class.priority:g})"
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/jaraco/classes/properties.py", line 202, in __get__
+    return self.fget.__get__(None, owner)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 44, in priority
+    raise RuntimeError(
+RuntimeError: The Secret Service daemon is neither running nor activatable through D-Bus
+Call stack:
+  File "/usr/lib/python3.12/threading.py", line 1032, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/executor.py", line 89, in _run_asyncio_loop_forever
+    self._loop.run_forever()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 645, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1999, in _run_once
+    handle._run()
+  File "/usr/lib/python3.12/asyncio/events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/controller.py", line 97, in initialize_vpn_connector
+    self._connector = await self._api.get_vpn_connector()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/api.py", line 60, in get_vpn_connector
+    self._vpn_connector = await VPNConnector.get(
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 94, in get
+    await connector.initialize_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 269, in initialize_state
+    state = await self._get_initial_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 257, in _get_initial_state
+    if self._session_holder.session.logged_in:
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/session_holder.py", line 80, in session
+    self._session = self._proton_sso.get_default_session(
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 195, in get_default_session
+    sessions = self.sessions
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 140, in sessions
+    cleaned_index = [account_name for account_name in keyring_index if len(self._get_session_data(account_name)) > 0]
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 239, in _get_session_data
+    data = self._keyring[self.__keyring_key_name(account_name)]
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 115, in _keyring
+    elif not isinstance(self.__keyring_backend, type(Keyring.get_from_factory(self.__keyring_backend_name))):
+  File "/app/lib/python3.12/site-packages/proton/keyring/_base.py", line 49, in get_from_factory
+    keyring_backend = Loader.get("keyring", class_name=backend)
+  File "/app/lib/python3.12/site-packages/proton/loader/loader.py", line 122, in get
+    entry_is_valid = entry.cls._validate()  # pylint: disable=protected-access
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/secretservice/secretservice_backend.py", line 43, in _validate
+    return cls._is_backend_working(SecretService.Keyring())
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 120, in _is_backend_working
+    logger.exception("Keyring %s error", keyring_backend)
+Message: 'Keyring %s error'
+Arguments: (<keyring.backends.SecretService.Keyring object at 0x7c232cbbb7a0>,)
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.
+10:53:24.034 › DiscordSplash.signalReady
+splashScreen: SPLASH_SCREEN_READY
+splashScreen.webContentsSend: SPLASH_SCREEN_QUOTE SPLASH_SCREEN_QUOTE [ 'Hold Tight — Loading Discord' ]
+5/18/2025, 10:53:24 AM EDT [Modules] No updates to install
+splashScreen: no-pending-updates
+5/18/2025, 10:53:24 AM EDT [Modules] Checking for host updates.
+splashScreen: checking-for-updates
+splashScreen.updateSplashState checking-for-updates checking-for-updates {}
+splashScreen.webContentsSend: SPLASH_UPDATE_STATE SPLASH_UPDATE_STATE [ { status: 'checking-for-updates' } ]
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+10:53:24.108 › DiscordSplash.onStateUpdate: {"status":"checking-for-updates"}
+10:53:24.109 › Splash.onStateUpdate: {"status":"checking-for-updates"}
+--- Logging error ---
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 48, in send_and_get_reply
+    raise DBusErrorResponse(resp_msg)
+jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.ServiceUnknown] ('The name is not activatable',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 62, in get_preferred_collection
+    collection = secretstorage.get_default_collection(bus)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 177, in get_default_collection
+    return Collection(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 45, in __init__
+    self._collection.get_property('Label')
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 67, in get_property
+    (signature, value), = self.send_and_get_reply(msg)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 58, in send_and_get_reply
+    raise SecretServiceNotAvailableException(data) from resp
+secretstorage.exceptions.SecretServiceNotAvailableException: The name is not activatable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 111, in _is_backend_working
+    keyring_backend.get_password(
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 79, in get_password
+    collection = self.get_preferred_collection()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 64, in get_preferred_collection
+    raise InitError(f"Failed to create the collection: {e}.") from e
+keyring.errors.InitError: Failed to create the collection: The name is not activatable.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+  File "/app/lib/python3.12/site-packages/keyring/backend.py", line 122, in __str__
+    return f"{keyring_class.__module__}.{keyring_class.__name__} (priority: {keyring_class.priority:g})"
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/jaraco/classes/properties.py", line 202, in __get__
+    return self.fget.__get__(None, owner)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 44, in priority
+    raise RuntimeError(
+RuntimeError: The Secret Service daemon is neither running nor activatable through D-Bus
+Call stack:
+  File "/usr/lib/python3.12/threading.py", line 1032, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/executor.py", line 89, in _run_asyncio_loop_forever
+    self._loop.run_forever()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 645, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1999, in _run_once
+    handle._run()
+  File "/usr/lib/python3.12/asyncio/events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/controller.py", line 97, in initialize_vpn_connector
+    self._connector = await self._api.get_vpn_connector()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/api.py", line 60, in get_vpn_connector
+    self._vpn_connector = await VPNConnector.get(
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 94, in get
+    await connector.initialize_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 269, in initialize_state
+    state = await self._get_initial_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 257, in _get_initial_state
+    if self._session_holder.session.logged_in:
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/session_holder.py", line 80, in session
+    self._session = self._proton_sso.get_default_session(
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 201, in get_default_session
+    return self.get_session(account_name, override_class)
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 176, in get_session
+    session_data = self._get_session_data(account_name)
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 239, in _get_session_data
+    data = self._keyring[self.__keyring_key_name(account_name)]
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 115, in _keyring
+    elif not isinstance(self.__keyring_backend, type(Keyring.get_from_factory(self.__keyring_backend_name))):
+  File "/app/lib/python3.12/site-packages/proton/keyring/_base.py", line 49, in get_from_factory
+    keyring_backend = Loader.get("keyring", class_name=backend)
+  File "/app/lib/python3.12/site-packages/proton/loader/loader.py", line 122, in get
+    entry_is_valid = entry.cls._validate()  # pylint: disable=protected-access
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/secretservice/secretservice_backend.py", line 43, in _validate
+    return cls._is_backend_working(SecretService.Keyring())
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 120, in _is_backend_working
+    logger.exception("Keyring %s error", keyring_backend)
+Message: 'Keyring %s error'
+Arguments: (<keyring.backends.SecretService.Keyring object at 0x7c2323b6b9b0>,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 48, in send_and_get_reply
+    raise DBusErrorResponse(resp_msg)
+jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.ServiceUnknown] ('The name is not activatable',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 62, in get_preferred_collection
+    collection = secretstorage.get_default_collection(bus)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 177, in get_default_collection
+    return Collection(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 45, in __init__
+    self._collection.get_property('Label')
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 67, in get_property
+    (signature, value), = self.send_and_get_reply(msg)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 58, in send_and_get_reply
+    raise SecretServiceNotAvailableException(data) from resp
+secretstorage.exceptions.SecretServiceNotAvailableException: The name is not activatable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 111, in _is_backend_working
+    keyring_backend.get_password(
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 79, in get_password
+    collection = self.get_preferred_collection()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 64, in get_preferred_collection
+    raise InitError(f"Failed to create the collection: {e}.") from e
+keyring.errors.InitError: Failed to create the collection: The name is not activatable.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/handlers.py", line 73, in emit
+    if self.shouldRollover(record):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/handlers.py", line 197, in shouldRollover
+    msg = "%s\n" % self.format(record)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+  File "/app/lib/python3.12/site-packages/keyring/backend.py", line 122, in __str__
+    return f"{keyring_class.__module__}.{keyring_class.__name__} (priority: {keyring_class.priority:g})"
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/jaraco/classes/properties.py", line 202, in __get__
+    return self.fget.__get__(None, owner)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 44, in priority
+    raise RuntimeError(
+RuntimeError: The Secret Service daemon is neither running nor activatable through D-Bus
+Call stack:
+  File "/usr/lib/python3.12/threading.py", line 1032, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/executor.py", line 89, in _run_asyncio_loop_forever
+    self._loop.run_forever()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 645, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1999, in _run_once
+    handle._run()
+  File "/usr/lib/python3.12/asyncio/events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/controller.py", line 97, in initialize_vpn_connector
+    self._connector = await self._api.get_vpn_connector()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/api.py", line 60, in get_vpn_connector
+    self._vpn_connector = await VPNConnector.get(
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 94, in get
+    await connector.initialize_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 269, in initialize_state
+    state = await self._get_initial_state()
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/connection.py", line 257, in _get_initial_state
+    if self._session_holder.session.logged_in:
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/session_holder.py", line 80, in session
+    self._session = self._proton_sso.get_default_session(
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 201, in get_default_session
+    return self.get_session(account_name, override_class)
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 176, in get_session
+    session_data = self._get_session_data(account_name)
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 239, in _get_session_data
+    data = self._keyring[self.__keyring_key_name(account_name)]
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 115, in _keyring
+    elif not isinstance(self.__keyring_backend, type(Keyring.get_from_factory(self.__keyring_backend_name))):
+  File "/app/lib/python3.12/site-packages/proton/keyring/_base.py", line 49, in get_from_factory
+    keyring_backend = Loader.get("keyring", class_name=backend)
+  File "/app/lib/python3.12/site-packages/proton/loader/loader.py", line 122, in get
+    entry_is_valid = entry.cls._validate()  # pylint: disable=protected-access
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/secretservice/secretservice_backend.py", line 43, in _validate
+    return cls._is_backend_working(SecretService.Keyring())
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 120, in _is_backend_working
+    logger.exception("Keyring %s error", keyring_backend)
+Message: 'Keyring %s error'
+Arguments: (<keyring.backends.SecretService.Keyring object at 0x7c2323b6b9b0>,)
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+blackbox: 5/18/2025, 10:53:24 AM EDT 4 ✅ webContents.did-finish-load web1
+[LOG] ScreenSaver inhibit: true dbus message from discord (owner: :1.62) with content Video Wake Lock
+[LOG] Inhibit locks: 1
+[LOG] Cookie 1337 sent
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+2025-05-18T14:53:24.349821+00:00 | proton.vpn.core.connection:472 | INFO | CONN:STATE_CHANGED | Disconnected (initial state)
+2025-05-18T14:53:24.351293+00:00 | proton.vpn.app.gtk.app:57 | INFO | APP:PROCESS_START | self=<app.App object at 0x7c23282bd080 (proton+vpn+app+gtk+app+App at 0x55b0e17a2260)>
+console.error: (new UnknownCollectionError("Unknown Collection \"thunderbird/moz-essential-domain-fallbacks\"", "resource://services-settings/RemoteSettingsClient.sys.mjs", 189))
+console.error: (new UnknownCollectionError("Unknown Collection \"thunderbird/url-parser-default-unknown-schemes-interventions\"", "resource://services-settings/RemoteSettingsClient.sys.mjs", 189))
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:24 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+
+(protonvpn-app:2): libayatana-appindicator-WARNING **: 10:53:24.441: libayatana-appindicator is deprecated. Please use libayatana-appindicator-glib in newly written code.
+2025-05-18T14:53:24.448380+00:00 | proton.vpn.core.refresher.vpn_data_refresher:167 | INFO | APP.VPN_DATA_REFRESHER:ENABLE | VPN data refresher service enabled.
+2025-05-18T14:53:24.448519+00:00 | proton.vpn.core.refresher.vpn_data_refresher:175 | INFO | Next client config refresh scheduled in 0:00:00
+2025-05-18T14:53:24.448595+00:00 | proton.vpn.core.refresher.vpn_data_refresher:184 | INFO | Next server list refresh scheduled in 0:00:00
+2025-05-18T14:53:24.448931+00:00 | proton.vpn.core.refresher.vpn_data_refresher:193 | INFO | Next certificate refresh scheduled in 0:00:00
+2025-05-18T14:53:24.448998+00:00 | proton.vpn.core.refresher.vpn_data_refresher:202 | INFO | Next feature flags refresh scheduled in 0:00:00
+2025-05-18T14:53:24.449152+00:00 | proton.vpn.session.utils:107 | INFO | API:REQUEST | '/vpn/v2/clientconfig'
+2025-05-18T14:53:24.449438+00:00 | proton.vpn.session.utils:107 | INFO | API:REQUEST | '/vpn/v1/logicals?SecureCoreFilter=all'
+2025-05-18T14:53:24.450402+00:00 | proton.vpn.session.utils:107 | INFO | API:REQUEST | '/vpn/v1/certificate'
+2025-05-18T14:53:24.450517+00:00 | proton.vpn.session.utils:107 | INFO | API:REQUEST | '/feature/v2/frontend'
+2025-05-18T14:53:24.475495+00:00 | proton.vpn.app.gtk.services.reconnector.reconnector:95 | INFO | VPN reconnector enabled.
+5/18/2025, 10:53:24 AM EDT [Modules] Host is up to date.
+5/18/2025, 10:53:24 AM EDT [Modules] Checking for module updates at https://discord.com/api/modules/stable/versions.json
+2025-05-18T14:53:24.661063+00:00 | proton.vpn.app.gtk.controller:147 | INFO | APP.STARTUP:STARTUP_ACTIONS | Running startup actions
+2025-05-18T14:53:24.691021+00:00 | proton.vpn.core.connection:370 | INFO | CONN.CONNECT:START | Server: US-DC#128 / Domain: node-us-237.protonvpn.net / IP: 217.138.198.246 / OpenVPN Ports: ProtocolPorts(udp=[80, 51820, 4569, 1194, 5060], tcp=[443, 7770, 8443]) / WireGuard Ports: ProtocolPorts(udp=[443, 88, 1224, 51820, 500, 4500], tcp=[443]) / Protocol: wireguard / Backend: None
+2025-05-18T14:53:24.691115+00:00 | proton.vpn.app.gtk.widgets.vpn.vpn_widget:199 | INFO | APP.VPN:WIDGET_READY | VPN widget is ready (load time: 0.24 seconds)
+2025-05-18T14:53:24.693041+00:00 | proton.vpn.core.connection:384 | INFO | Using certificate based authentication for openvpn: True
+2025-05-18T14:53:24.693522+00:00 | proton.vpn.core.connection:472 | INFO | CONN:STATE_CHANGED | Connecting
+5/18/2025, 10:53:24 AM EDT [Modules] No module updates available.
+splashScreen: update-check-finished true 0 false
+splashScreen.launchMainWindow: false
+2025-05-18T14:53:24.754465+00:00 | proton.vpn.app.gtk.services.reconnector.reconnector:175 | INFO | Network connectivity was detected.
+Optional module ./ElectronTestRpc was not included.
+splashScreen.updateSplashState launching launching {}
+splashScreen.webContentsSend: SPLASH_UPDATE_STATE SPLASH_UPDATE_STATE [ { status: 'launching' } ]
+blackbox: 5/18/2025, 10:53:24 AM EDT 5 ✅ webContents.created web2 ""
+10:53:24.764 › DiscordSplash.onStateUpdate: {"status":"launching"}
+10:53:24.764 › Splash.onStateUpdate: {"status":"launching"}
+blackbox: 5/18/2025, 10:53:24 AM EDT 6 ✅ window.created win2 "Discord"
+[2025-05-18T14:53:24Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:53:24Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+blackbox: 5/18/2025, 10:53:24 AM EDT 7 ❌ webContents.did-fail-provisional-load web2: -105 ERR_NAME_NOT_RESOLVED
+[WebContents] did-fail-load -105 ERR_NAME_NOT_RESOLVED retry in 1000 ms
+(node:1805) electron: Failed to load URL: https://discordapp.com/app?_=1747580004739 with error: ERR_NAME_NOT_RESOLVED
+(Use `discord --trace-warnings ...` to show where the warning was created)
+blackbox: 5/18/2025, 10:53:24 AM EDT 8 ❌ webContents.did-fail-load web2" -105 ERR_NAME_NOT_RESOLVED
+Error: Device 'pvpnksintrf0
+wlan0' not found.
+[33mWARN[0m[May 18 10:53:24.943] Failed to add test credentials to keychain    [33merror[0m="failed to open secretservice session: The name is not activatable" [33mhelper[0m="*keychain.SecretServiceDBusHelper"
+10:53:25.034 › Splash.updateCountdownSeconds: undefined
+mainScreen.on(did-finish-load) true false
+blackbox: 5/18/2025, 10:53:25 AM EDT 9 ✅ webContents.did-finish-load web2
+2025-05-18T14:53:25.243604+00:00 | proton.vpn.backend.linux.networkmanager.core.networkmanager:91 | INFO | VPN server REACHABLE.
+2025-05-18T14:53:25.349848+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:61 | INFO | Waiting for agent status from node-us-237.protonvpn.net...
+2025-05-18T14:53:25.448158+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:95 | INFO | Requesting VPN connection features...
+2025-05-18T14:53:25.448401+00:00 | proton.vpn.local_agent/transport_stream.rs:56 | INFO | Sending: Request { features_set: Some(AgentFeatures { netshield_level: Some(1), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(true), forwarded_port: None, jail: None, bouncing: Some("66") }), status_get: None }
+2025-05-18T14:53:25.448584+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:97 | INFO | VPN connection features requested.
+2025-05-18T14:53:25.670049+00:00 | proton.vpn.local_agent/transport_stream.rs:80 | INFO | Receiving: Response { status: Some(StatusMessage { state: Connected, reason: None, features: Some(AgentFeatures { netshield_level: Some(0), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(false), forwarded_port: None, jail: Some(false), bouncing: Some("76") }), connection_details: Some(ConnectionDetails { device_ip: Some("66.108.35.28"), device_country: Some("US"), server_ipv4: Some("104.234.212.103"), server_ipv6: None }) }), error: None }
+2025-05-18T14:53:25.670360+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:102 | INFO | Agent status received: Status { state: CONNECTED, reason: None, features: Some(AgentFeatures { features: AgentFeatures { netshield_level: Some(0), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(false), forwarded_port: None, jail: Some(false), bouncing: Some("76") } }), connection_details: Some(ConnectionDetails { device_ip: "66.108.35.xxx", device_country: Some("US"), server_ipv4: Some("104.234.212.103"), server_ipv6: None }) }
+2025-05-18T14:53:25.670667+00:00 | proton.vpn.core.connection:472 | INFO | CONN:STATE_CHANGED | Connected
+2025-05-18T14:53:25.871984+00:00 | proton.vpn.local_agent/transport_stream.rs:80 | INFO | Receiving: Response { status: Some(StatusMessage { state: Connected, reason: None, features: Some(AgentFeatures { netshield_level: Some(1), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(true), forwarded_port: None, jail: Some(false), bouncing: Some("66") }), connection_details: Some(ConnectionDetails { device_ip: Some("66.108.35.28"), device_country: Some("US"), server_ipv4: Some("104.234.212.93"), server_ipv6: None }) }), error: None }
+2025-05-18T14:53:25.872126+00:00 | proton.vpn.local_agent/port_forwarding.rs:197 | INFO | Sending Request { version: 0, operation: 2, reserved: 0, internal_port: 0, external_port: 0, lifetime_seconds: 60 } attempt 0
+2025-05-18T14:53:25.908355+00:00 | proton.vpn.local_agent/port_forwarding.rs:225 | INFO | Receiving Response { version: 0, operation: 130, response_code: 0, gateway_epoch_seconds: 205442, internal_port: 42721, external_port: 42721, lifetime_seconds: 60 }
+2025-05-18T14:53:25.908509+00:00 | proton.vpn.local_agent/listener.rs:102 | INFO | Forwarded port updated.
+2025-05-18T14:53:25.908604+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:102 | INFO | Agent status received: Status { state: CONNECTED, reason: None, features: Some(AgentFeatures { features: AgentFeatures { netshield_level: Some(1), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(true), forwarded_port: Some(42721), jail: Some(false), bouncing: Some("66") } }), connection_details: Some(ConnectionDetails { device_ip: "66.108.35.xxx", device_country: Some("US"), server_ipv4: Some("104.234.212.93"), server_ipv6: None }) }
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:53:26.034 › Splash.updateCountdownSeconds: undefined
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+2025-05-18T14:53:26.236016+00:00 | proton.vpn.core.connection:472 | INFO | CONN:STATE_CHANGED | Connected
+2025-05-18T14:53:26.240230+00:00 | proton.vpn.app.gtk.utils.exception_handler:257 | CRITICAL | APP:CRASH | Unexpected error.
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/vpn_widget.py", line 158, in update_widget
+    widget.connection_status_update(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/connection_status_widget.py", line 92, in connection_status_update
+    self._update_connection_status_label(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/connection_status_widget.py", line 131, in _update_connection_status_label
+    self._port_forward_revealer.on_new_state(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/port_forward_widget.py", line 46, in on_new_state
+    self._port_forward_widget.on_new_state(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/port_forward_widget.py", line 164, in on_new_state
+    self._notifications.show_gnome_notification(
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/main/notifications.py", line 128, in show_gnome_notification
+    ).show()
+      ^^^^^^
+gi.repository.GLib.GError: g-dbus-error-quark: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown (2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:53:27.034 › Splash.updateCountdownSeconds: undefined
+[WebContents] retrying load https://discordapp.com/app?_=1747580004739
+10:53:28.034 › Splash.updateCountdownSeconds: undefined
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:53:28.197 › [FAST CONNECT] wss://gateway.discord.gg/?encoding=etf&v=9&compress=zstd-stream, encoding: etf, version: 9
+mainScreen.on(did-finish-load) false true
+blackbox: 5/18/2025, 10:53:28 AM EDT 10 ✅ webContents.did-finish-load web2
+splashScreen.pageReady
+10:53:28.403 › [FAST CONNECT] connected in 203ms
+10:53:28.414 › [libdiscore] [BlockedDomainsStore] Deserialized 38356 hashes, revision 1331
+blackbox: 5/18/2025, 10:53:28 AM EDT 11 window.close win1
+[LOG] ScreenSaver inhibit: false dbus message from discord (owner: :1.62) with content Video Wake Lock
+[LOG] Inhibit locks: 0
+blackbox: 5/18/2025, 10:53:28 AM EDT 12 webContents.destroyed web1
+blackbox: 5/18/2025, 10:53:28 AM EDT 13 window.closed win1
+10:53:28.591 › Initializing voice engine with audio subsystem: standard
+10:53:28.673 › [DatabaseManager] active user changed (now: 679801104736714839, was: null, was: undefined)
+legacyModuleUpdater: installed-module discord_krisp 1 1 true
+10:53:28.700 › [default] [BUILD INFO] Release Channel: stable, Build Number: 400453, Version Hash: c371a8ad704137299cf8f14078989e7fad4633e3
+legacyModuleUpdater: installed-module discord_game_utils 1 1 true
+10:53:28.876 › [default] [NATIVE INFO] host 0.0.94, modules: discord_desktop_core: 1, discord_erlpack: 1, discord_spellcheck: 1, discord_utils: 1, discord_voice: 2, discord_zstd: 1, discord_krisp: 1, discord_game_utils: 1, discord_rpc: 1, build: null
+10:53:28.877 › [libdiscore] The answer for life the universe and everything is: 42
+mainScreen.UpdaterEvents: UPDATER_HISTORY_QUERY_AND_TRUNCATE
+mainScreen.UpdaterEvents: UPDATER_HISTORY_QUERY_AND_TRUNCATE
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+WEIGHT /home/mike/.config/discord/0.0.94/modules/discord_krisp/c5.n.s.20949d.kw
+WEIGHT /home/mike/.config/discord/0.0.94/modules/discord_krisp/c5.s.w.c9ac8f.kw
+WEIGHT /home/mike/.config/discord/0.0.94/modules/discord_krisp/c6.f.s.ced125.kw
+WEIGHT /home/mike/.config/discord/0.0.94/modules/discord_krisp/VAD_model.kw
+10:53:29.403 › [Spellchecker] sh is not a valid locale.
+mainScreen.UpdaterEvents: UPDATER_HISTORY_QUERY_AND_TRUNCATE
+10:53:29.442 › [Spellchecker] Switching to en-US (available)
+10:53:29.694 › [CloudSyncUtils] CloudSync is not supported on this platform
+legacyModuleUpdater: installed-module discord_rpc 1 1 true
+mainScreen.UpdaterEvents: UPDATER_HISTORY_QUERY_AND_TRUNCATE
+10:53:29.853 › [RPCServer:WSS] Starting on 6463
+10:53:29.855 › [RPCServer:IPC] Starting on /run/user/1000/discord-ipc-0
+10:53:29.867 › [ConnectionStore] Socket is reconnecting because of starting new session
+10:53:29.867 › [GatewaySocket] .connect() called, new state is WILL_RECONNECT
+10:53:29.867 › [GatewaySocket] Setting connection state to WILL_RECONNECT
+10:53:29.867 › [GatewaySocket] Setting connection state to CONNECTING
+10:53:29.867 › [GatewaySocket] [CONNECT] wss://gateway.discord.gg, encoding: etf, version: 9, compression: zstd-stream
+10:53:29.868 › [GatewaySocket] [FAST CONNECT] successfully took over websocket, state: [object Object]
+10:53:29.868 › [GatewaySocket] [CONNECTED] wss://gateway.discord.gg/?encoding=etf&v=9&compress=zstd-stream in 0 ms
+10:53:29.868 › [ConnectionStore] handleIdentify called [object Object]
+10:53:29.868 › [GatewaySocket] Setting connection state to IDENTIFYING
+10:53:29.868 › [GatewaySocket] [HELLO] via 
+gateway-prd-us-east1-d-9tpg: 0, heartbeat interval: 41250, took 1 ms
+10:53:29.874 › [GatewaySocket] [IDENTIFY]
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:53:30.391 › [GatewaySocket] [READY] took 524ms, as f3378877a31d763b0e347b638379d10e
+10:53:30.391 › [GatewaySocket] 
+gateway-prd-us-east1-d-9tpg: 290.671
+|  id_created: 0.711
+|  session_lookup_time: 6.77
+|  session_lookup_finished: 0.023
+|  discord-sessions-prd-2-51: 280.25
+|  |  start_session: 115.501
+|  |  |  discord-api-rpc-6c744fbcb7-j8dkf: 99.726
+|  |  |  |  get_user: 9.68
+|  |  |  |  get_guilds: 26.115
+|  |  |  |  user_settings_proto: 0.044
+|  |  |  |  relationships: 0.006
+|  |  |  |  game_relationships: 0.001
+|  |  |  |  friend_suggestion: 0.037
+|  |  |  |  connections: 0.009
+|  |  |  |  serialized_read_states: 0.001
+|  |  |  |  send_scheduled_deletion_message: 0.001
+|  |  |  |  sanitize_premium_perks: 0
+|  |  |  |  guild_join_requests: 3.767
+|  |  |  |  user_guild_settings: 11.198
+|  |  |  |  serialized_private_channels: 0.003
+|  |  |  |  user_segments: 3.494
+|  |  |  |  game_invites: 0.003
+|  |  |  |  blocker_ids: 0.001
+|  |  |  |  affine_user_ids: 0.874
+|  |  |  |  experiments: 30.942
+|  |  |  |  required_action: 0.011
+|  |  |  |  authorized_ip_coro: 0.002
+|  |  |  |  pending_payments: 1.346
+|  |  |  |  apex_user_experiments: 0.003
+|  |  |  |  user_activities: 0.001
+|  |  starting_guild_connect: 0.071
+|  |  presence_started: 33.415
+|  |  guilds_started: 0.21
+|  |  lobbies_started: 0.002
+|  |  guilds_connect: 103.547
+|  |  presence_connect: 0.002
+|  |  connect_finished: 130.139
+|  |  build_ready: 0.842
+|  |  clean_ready: 0.002
+|  |  optimize_ready: 0.059
+|  |  split_ready: 0.008
+10:53:30.391 › [GatewaySocket] Setting connection state to SESSION_ESTABLISHED
+10:53:30.391 › [GatewaySocket] Updating resume url to wss://gateway-us-east1-d.discord.gg
+10:53:30.407 › [Flux] Dispatching CONNECTION_OPEN
+10:53:30.407 › [AuthenticationStore] handleConnectionOpen called [object Object]
+10:53:30.409 › [DatabaseManager] removing database (user: 679801104736714839, database: undefined)
+10:53:30.409 › [DatabaseManager] added database (679801104736714839 → null)
+10:53:30.414 › [NativeDispatchUtils] Tried getting Dispatch instance before instantiated
+10:53:30.422 › [OverlayRenderStore] setOverlayEnabled: not supported
+10:53:30.433 › [OverlayStoreV3] Maybe Enable Overlay
+10:53:30.612 › [GatewaySocket] [READY_SUPPLEMENTAL] took 745ms
+10:53:30.612 › [GatewaySocket] Setting connection state to SESSION_ESTABLISHED
+2025-05-18T14:53:30.916009+00:00 | proton.vpn.session.utils:111 | INFO | API:RESPONSE | '/feature/v2/frontend'
+2025-05-18T14:53:30.917339+00:00 | proton.vpn.core.refresher.feature_flags_refresher:66 | INFO | Next feature flag refresh scheduled in 2:00:29.469541
+2025-05-18T14:53:30.961029+00:00 | proton.vpn.session.utils:111 | INFO | API:RESPONSE | '/vpn/v2/clientconfig'
+2025-05-18T14:53:30.961412+00:00 | proton.vpn.core.refresher.client_config_refresher:67 | INFO | Next client config refresh scheduled in 3:37:40.412314
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+2025-05-18T14:53:31.176365+00:00 | proton.vpn.session.utils:111 | INFO | API:RESPONSE | '/vpn/v1/certificate'
+--- Logging error ---
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 48, in send_and_get_reply
+    raise DBusErrorResponse(resp_msg)
+jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.ServiceUnknown] ('The name is not activatable',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 62, in get_preferred_collection
+    collection = secretstorage.get_default_collection(bus)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 177, in get_default_collection
+    return Collection(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 45, in __init__
+    self._collection.get_property('Label')
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 67, in get_property
+    (signature, value), = self.send_and_get_reply(msg)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 58, in send_and_get_reply
+    raise SecretServiceNotAvailableException(data) from resp
+secretstorage.exceptions.SecretServiceNotAvailableException: The name is not activatable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 111, in _is_backend_working
+    keyring_backend.get_password(
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 79, in get_password
+    collection = self.get_preferred_collection()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 64, in get_preferred_collection
+    raise InitError(f"Failed to create the collection: {e}.") from e
+keyring.errors.InitError: Failed to create the collection: The name is not activatable.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/__init__.py", line 1160, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+  File "/app/lib/python3.12/site-packages/keyring/backend.py", line 122, in __str__
+    return f"{keyring_class.__module__}.{keyring_class.__name__} (priority: {keyring_class.priority:g})"
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/jaraco/classes/properties.py", line 202, in __get__
+    return self.fget.__get__(None, owner)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 44, in priority
+    raise RuntimeError(
+RuntimeError: The Secret Service daemon is neither running nor activatable through D-Bus
+Call stack:
+  File "/usr/lib/python3.12/threading.py", line 1032, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/executor.py", line 89, in _run_asyncio_loop_forever
+    self._loop.run_forever()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 645, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1999, in _run_once
+    handle._run()
+  File "/usr/lib/python3.12/asyncio/events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/refresher/certificate_refresher.py", line 63, in refresh
+    certificate = await self._session.fetch_certificate()
+  File "/app/lib/python3.12/site-packages/proton/vpn/session/session.py", line 261, in fetch_certificate
+    self._requests_unlock()
+  File "/app/lib/python3.12/site-packages/proton/session/api.py", line 743, in _requests_unlock
+    observer._release_session_lock(account_name, session_data)
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 299, in _release_session_lock
+    keyring = self._keyring
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 115, in _keyring
+    elif not isinstance(self.__keyring_backend, type(Keyring.get_from_factory(self.__keyring_backend_name))):
+  File "/app/lib/python3.12/site-packages/proton/keyring/_base.py", line 49, in get_from_factory
+    keyring_backend = Loader.get("keyring", class_name=backend)
+  File "/app/lib/python3.12/site-packages/proton/loader/loader.py", line 122, in get
+    entry_is_valid = entry.cls._validate()  # pylint: disable=protected-access
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/secretservice/secretservice_backend.py", line 43, in _validate
+    return cls._is_backend_working(SecretService.Keyring())
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 120, in _is_backend_working
+    logger.exception("Keyring %s error", keyring_backend)
+Message: 'Keyring %s error'
+Arguments: (<keyring.backends.SecretService.Keyring object at 0x7c22fffcd820>,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 48, in send_and_get_reply
+    raise DBusErrorResponse(resp_msg)
+jeepney.wrappers.DBusErrorResponse: [org.freedesktop.DBus.Error.ServiceUnknown] ('The name is not activatable',)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 62, in get_preferred_collection
+    collection = secretstorage.get_default_collection(bus)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 177, in get_default_collection
+    return Collection(connection)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/collection.py", line 45, in __init__
+    self._collection.get_property('Label')
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 67, in get_property
+    (signature, value), = self.send_and_get_reply(msg)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/secretstorage/util.py", line 58, in send_and_get_reply
+    raise SecretServiceNotAvailableException(data) from resp
+secretstorage.exceptions.SecretServiceNotAvailableException: The name is not activatable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 111, in _is_backend_working
+    keyring_backend.get_password(
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 79, in get_password
+    collection = self.get_preferred_collection()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 64, in get_preferred_collection
+    raise InitError(f"Failed to create the collection: {e}.") from e
+keyring.errors.InitError: Failed to create the collection: The name is not activatable.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/logging/handlers.py", line 73, in emit
+    if self.shouldRollover(record):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/handlers.py", line 197, in shouldRollover
+    msg = "%s\n" % self.format(record)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 703, in format
+    record.message = record.getMessage()
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/logging/__init__.py", line 392, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+  File "/app/lib/python3.12/site-packages/keyring/backend.py", line 122, in __str__
+    return f"{keyring_class.__module__}.{keyring_class.__name__} (priority: {keyring_class.priority:g})"
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/jaraco/classes/properties.py", line 202, in __get__
+    return self.fget.__get__(None, owner)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/lib/python3.12/site-packages/keyring/backends/SecretService.py", line 44, in priority
+    raise RuntimeError(
+RuntimeError: The Secret Service daemon is neither running nor activatable through D-Bus
+Call stack:
+  File "/usr/lib/python3.12/threading.py", line 1032, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/executor.py", line 89, in _run_asyncio_loop_forever
+    self._loop.run_forever()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 645, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 1999, in _run_once
+    handle._run()
+  File "/usr/lib/python3.12/asyncio/events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "/app/lib/python3.12/site-packages/proton/vpn/core/refresher/certificate_refresher.py", line 63, in refresh
+    certificate = await self._session.fetch_certificate()
+  File "/app/lib/python3.12/site-packages/proton/vpn/session/session.py", line 261, in fetch_certificate
+    self._requests_unlock()
+  File "/app/lib/python3.12/site-packages/proton/session/api.py", line 743, in _requests_unlock
+    observer._release_session_lock(account_name, session_data)
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 299, in _release_session_lock
+    keyring = self._keyring
+  File "/app/lib/python3.12/site-packages/proton/sso/sso.py", line 115, in _keyring
+    elif not isinstance(self.__keyring_backend, type(Keyring.get_from_factory(self.__keyring_backend_name))):
+  File "/app/lib/python3.12/site-packages/proton/keyring/_base.py", line 49, in get_from_factory
+    keyring_backend = Loader.get("keyring", class_name=backend)
+  File "/app/lib/python3.12/site-packages/proton/loader/loader.py", line 122, in get
+    entry_is_valid = entry.cls._validate()  # pylint: disable=protected-access
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/secretservice/secretservice_backend.py", line 43, in _validate
+    return cls._is_backend_working(SecretService.Keyring())
+  File "/app/lib/python3.12/site-packages/proton/keyring_linux/core/keyring_linux.py", line 120, in _is_backend_working
+    logger.exception("Keyring %s error", keyring_backend)
+Message: 'Keyring %s error'
+Arguments: (<keyring.backends.SecretService.Keyring object at 0x7c22fffcd820>,)
+2025-05-18T14:53:31.183811+00:00 | proton.vpn.core.connection:164 | INFO | Updating credentials for current connection.
+2025-05-18T14:53:31.184040+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:58 | INFO | Closing existing agent connection...
+2025-05-18T14:53:31.184115+00:00 | proton.vpn.backend.linux.networkmanager.core.local_agent.listener:72 | INFO | Agent listener successfully stopped.
+2025-05-18T14:53:31.184163+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:61 | INFO | Waiting for agent status from node-us-237.protonvpn.net...
+2025-05-18T14:53:31.235018+00:00 | proton.vpn.session.utils:111 | INFO | API:RESPONSE | '/vpn/v1/logicals?SecureCoreFilter=all'
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+2025-05-18T14:53:31.556915+00:00 | proton.vpn.core.refresher.server_list_refresher:76 | INFO | Next server list refresh scheduled in 0:13:17.495701
+2025-05-18T14:53:31.557325+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:95 | INFO | Requesting VPN connection features...
+2025-05-18T14:53:31.557544+00:00 | proton.vpn.local_agent/transport_stream.rs:56 | INFO | Sending: Request { features_set: Some(AgentFeatures { netshield_level: Some(1), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(true), forwarded_port: None, jail: None, bouncing: Some("66") }), status_get: None }
+2025-05-18T14:53:31.557839+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:97 | INFO | VPN connection features requested.
+2025-05-18T14:53:31.557964+00:00 | proton.vpn.local_agent/transport_stream.rs:80 | INFO | Receiving: Response { status: Some(StatusMessage { state: Connected, reason: None, features: Some(AgentFeatures { netshield_level: Some(1), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(true), forwarded_port: None, jail: Some(false), bouncing: Some("66") }), connection_details: Some(ConnectionDetails { device_ip: Some("66.108.35.28"), device_country: Some("US"), server_ipv4: Some("104.234.212.93"), server_ipv6: None }) }), error: None }
+2025-05-18T14:53:31.558091+00:00 | proton.vpn.local_agent/port_forwarding.rs:197 | INFO | Sending Request { version: 0, operation: 2, reserved: 0, internal_port: 0, external_port: 0, lifetime_seconds: 60 } attempt 0
+2025-05-18T14:53:31.624693+00:00 | proton.vpn.local_agent/port_forwarding.rs:225 | INFO | Receiving Response { version: 0, operation: 130, response_code: 0, gateway_epoch_seconds: 205447, internal_port: 42721, external_port: 42721, lifetime_seconds: 60 }
+2025-05-18T14:53:31.625341+00:00 | proton.vpn.local_agent/listener.rs:102 | INFO | Forwarded port updated.
+2025-05-18T14:53:31.625439+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:102 | INFO | Agent status received: Status { state: CONNECTED, reason: None, features: Some(AgentFeatures { features: AgentFeatures { netshield_level: Some(1), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(true), forwarded_port: Some(42721), jail: Some(false), bouncing: Some("66") } }), connection_details: Some(ConnectionDetails { device_ip: "66.108.35.xxx", device_country: Some("US"), server_ipv4: Some("104.234.212.93"), server_ipv6: None }) }
+2025-05-18T14:53:31.625746+00:00 | proton.vpn.core.connection:472 | INFO | CONN:STATE_CHANGED | Connected
+2025-05-18T14:53:31.765515+00:00 | proton.vpn.app.gtk.widgets.vpn.serverlist.serverlist:127 | INFO | Full server list widget update completed in 0.21 seconds.
+2025-05-18T14:53:31.795490+00:00 | proton.vpn.app.gtk.utils.exception_handler:257 | CRITICAL | APP:CRASH | Unexpected error.
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/vpn_widget.py", line 158, in update_widget
+    widget.connection_status_update(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/connection_status_widget.py", line 92, in connection_status_update
+    self._update_connection_status_label(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/connection_status_widget.py", line 131, in _update_connection_status_label
+    self._port_forward_revealer.on_new_state(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/port_forward_widget.py", line 46, in on_new_state
+    self._port_forward_widget.on_new_state(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/port_forward_widget.py", line 164, in on_new_state
+    self._notifications.show_gnome_notification(
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/main/notifications.py", line 128, in show_gnome_notification
+    ).show()
+      ^^^^^^
+gi.repository.GLib.GError: g-dbus-error-quark: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown (2)
+2025-05-18T14:53:31.850562+00:00 | proton.vpn.local_agent/transport_stream.rs:80 | INFO | Receiving: Response { status: Some(StatusMessage { state: Connected, reason: None, features: Some(AgentFeatures { netshield_level: Some(1), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(true), forwarded_port: None, jail: Some(false), bouncing: Some("66") }), connection_details: Some(ConnectionDetails { device_ip: Some("66.108.35.28"), device_country: Some("US"), server_ipv4: Some("104.234.212.93"), server_ipv6: None }) }), error: None }
+2025-05-18T14:53:31.850714+00:00 | proton.vpn.local_agent/port_forwarding.rs:197 | INFO | Sending Request { version: 0, operation: 2, reserved: 0, internal_port: 0, external_port: 0, lifetime_seconds: 60 } attempt 0
+[LOG] Wayland session got unlocked
+[LOG] Inhibited sleep with fd 11
+[LOG] Executing /home/mike/.config/hypr/login_items.sh
+[LOG] Process Created with pid 3472
+2025-05-18T14:53:31.881419+00:00 | proton.vpn.local_agent/port_forwarding.rs:225 | INFO | Receiving Response { version: 0, operation: 130, response_code: 0, gateway_epoch_seconds: 205448, internal_port: 42721, external_port: 42721, lifetime_seconds: 60 }
+2025-05-18T14:53:31.881548+00:00 | proton.vpn.local_agent/listener.rs:102 | INFO | Forwarded port updated.
+2025-05-18T14:53:31.881640+00:00 | proton.vpn.backend.linux.networkmanager.core.localagent_mixin:102 | INFO | Agent status received: Status { state: CONNECTED, reason: None, features: Some(AgentFeatures { features: AgentFeatures { netshield_level: Some(1), randomized_nat: Some(true), split_tcp: Some(true), port_forwarding: Some(true), forwarded_port: Some(42721), jail: Some(false), bouncing: Some("66") } }), connection_details: Some(ConnectionDetails { device_ip: "66.108.35.xxx", device_country: Some("US"), server_ipv4: Some("104.234.212.93"), server_ipv6: None }) }
+2025-05-18T14:53:31.881868+00:00 | proton.vpn.core.connection:472 | INFO | CONN:STATE_CHANGED | Connected
+2025-05-18T14:53:31.885506+00:00 | proton.vpn.app.gtk.utils.exception_handler:257 | CRITICAL | APP:CRASH | Unexpected error.
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/vpn_widget.py", line 158, in update_widget
+    widget.connection_status_update(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/connection_status_widget.py", line 92, in connection_status_update
+    self._update_connection_status_label(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/connection_status_widget.py", line 131, in _update_connection_status_label
+    self._port_forward_revealer.on_new_state(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/port_forward_widget.py", line 46, in on_new_state
+    self._port_forward_widget.on_new_state(connection_state)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/vpn/port_forward_widget.py", line 164, in on_new_state
+    self._notifications.show_gnome_notification(
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/main/notifications.py", line 128, in show_gnome_notification
+    ).show()
+      ^^^^^^
+gi.repository.GLib.GError: g-dbus-error-quark: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown (2)
+dmabuf_v1 v5
+[LOG]   | got iface: wl_output v4
+[LOG]    > Bound to wl_output v4
+[LOG] Exposed seat name: Hyprland
+[LOG] [core] dmabufFeedbackMainDevice
+[LOG] output DP-1 name DP-1
+[LOG] output 58 description LG Electronics LG ULTRAFINE 311NTGY6F095 (DP-1)
+[LOG] output 58 make LG Electronics model LG ULTRAFINE
+[LOG] output 58 done
+[LOG] Running on Hyprland
+[LOG] Locking session
+[LOG] Starting fade in
+[LOG] Got fractional scale: 100.0%
+[LOG] configure with serial 3
+[LOG] Configuring surface for logical [Vector2D: x: 3840, y: 2160] and pixel [Vector2D: x: 3840, y: 2160]
+[LOG] onLockLocked called
+[LOG] Authenticating
+[LOG] PAM_PROMPT: Password: 
+[LOG] auth: authenticated for hyprlock
+[LOG] Unlocking session
+[LOG] Unlocked, exiting!
+[LOG] Reached the end, exiting
+14:53:31 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:31 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:31 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:31 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:31 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:31 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:31 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+mainScreen.UpdaterEvents: CHECK_FOR_UPDATES UPDATE_NOT_AVAILABLE
+5/18/2025, 10:53:32 AM EDT [Modules] Checking for host updates.
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+10:53:32.882 › Access to XMLHttpRequest at 'https://cdn.discordapp.com/changelogs/config_0.json?x=10' from origin 'https://discordapp.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+[2025-05-18T14:53:32Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+10:53:32.890 › Uncaught (in promise) Error: Request has been terminated
+Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:32 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+10:53:33.420 › [Flux] Slow dispatch on GAMES_DATABASE_UPDATE: 278.40000000000146ms
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:33 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:53:34.960: Unable to replace properties on 0: Error getting properties for ID
+14:53:34 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:35 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+14:53:35 [0m[33m[WARN] [0m(main) Received transform. We currently ignore those
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+10:53:36.601 › The resource https://discordapp.com/assets/189422196a4f8b53.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:36.601 › The resource https://discordapp.com/assets/7a6a566c2e88a35d.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:36.602 › The resource https://discordapp.com/assets/dd24010f3cf7def7.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:36.602 › The resource https://discordapp.com/assets/e52f0cba712e2fb4.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:36.602 › The resource https://discordapp.com/assets/ce3b8055f5114434.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:36.602 › The resource https://discordapp.com/assets/cb2006dbced0e246.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+2025-05-18T14:53:37.985421+00:00 | proton.vpn.app.gtk.utils.exception_handler:257 | CRITICAL | APP:CRASH | Unexpected error.
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/glib.py", line 35, in wrapper_function
+    function(*args, **kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/main/notifications.py", line 97, in _generate_and_show_dialog
+    self.error_dialog.destroy()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'destroy'
+2025-05-18T14:53:37.987813+00:00 | proton.vpn.app.gtk.utils.exception_handler:257 | CRITICAL | APP:CRASH | Unexpected error.
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/glib.py", line 35, in wrapper_function
+    function(*args, **kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/main/notifications.py", line 97, in _generate_and_show_dialog
+    self.error_dialog.destroy()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'destroy'
+2025-05-18T14:53:38.593530+00:00 | proton.vpn.app.gtk.utils.exception_handler:257 | CRITICAL | APP:CRASH | Unexpected error.
+Traceback (most recent call last):
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/utils/glib.py", line 35, in wrapper_function
+    function(*args, **kwargs)
+  File "/app/lib/python3.12/site-packages/proton/vpn/app/gtk/widgets/main/notifications.py", line 97, in _generate_and_show_dialog
+    self.error_dialog.destroy()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'destroy'
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:53:39.981 › The resource https://discordapp.com/assets/189422196a4f8b53.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:39.981 › The resource https://discordapp.com/assets/7a6a566c2e88a35d.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:39.981 › The resource https://discordapp.com/assets/dd24010f3cf7def7.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:39.981 › The resource https://discordapp.com/assets/e52f0cba712e2fb4.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:39.982 › The resource https://discordapp.com/assets/ce3b8055f5114434.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:39.982 › The resource https://discordapp.com/assets/cb2006dbced0e246.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:53:42.692 › [libdiscore] [NETWORK] Sending GET request to https://cdn.discordapp.com/bad-domains/current_revision.txt
+10:53:42.723 › [libdiscore] [NETWORK] Completed GET request to https://cdn.discordapp.com/bad-domains/current_revision.txt with status: 200
+10:53:42.724 › [libdiscore] [BlockedDomainsStore] Fetching delta between revisions 1331 -> 1333
+10:53:42.724 › [libdiscore] [NETWORK] Sending GET request to https://discordapp.com/bad-hash-delta
+10:53:42.766 › [libdiscore] [NETWORK] Completed GET request to https://discordapp.com/bad-hash-delta with status: 200
+10:53:42.767 › [libdiscore] [BlockedDomainsStore] Adding 3 hashes, removing 0 hashes
+10:53:42.770 › [libdiscore] [Cache] Set cache for key: blocked_domains_state
+10:53:42.770 › [libdiscore] [BlockedDomainsStore] Successfully fetched blocked domains
+[2025-05-18T14:53:42Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:53:43.291 › [KeyboardLayoutMapUtils] KeyboardMapper - Key code mismatch for key alt: 64 !== 18
+[2025-05-18T14:53:43Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:53:43Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:53:43Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:53:43Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:53:43Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:53:43Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+INFO[May 18 10:53:43.909] Connecting to gRPC service
+INFO[May 18 10:53:43.925] Tray icon is visible: true
+INFO[May 18 10:53:43.927] Connection to gRPC server at unix:///tmp/bridge9919. attempt #1
+INFO[May 18 10:53:43.930] Successfully connected to gRPC server.
+INFO[May 18 10:53:43.930] Client config file was saved to '/home/mike/.config/protonmail/bridge-v3/grpcClientConfig_0.json'
+DEBU[May 18 10:53:43.931] checkTokens()
+INFO[May 18 10:53:43.931] gRPC token was validated
+INFO[May 18 10:53:43.931] Connected to backend via gRPC service.
+DEBU[May 18 10:53:43.931] version()
+DEBU[May 18 10:53:43.931] EventStreamReader started
+DEBU[May 18 10:53:43.931] goos()
+DEBU[May 18 10:53:43.935] logsPath()
+DEBU[May 18 10:53:43.935] licensePath()
+DEBU[May 18 10:53:43.935] mailServerSettings()
+DEBU[May 18 10:53:43.936] getUserList()
+[2025-05-18T14:53:43Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:53:43Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[2025-05-18T14:53:44Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[2025-05-18T14:53:46Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[2025-05-18T14:53:48Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:53:51.797 › The resource https://discordapp.com/assets/189422196a4f8b53.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:51.797 › The resource https://discordapp.com/assets/7a6a566c2e88a35d.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:51.797 › The resource https://discordapp.com/assets/dd24010f3cf7def7.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:51.797 › The resource https://discordapp.com/assets/e52f0cba712e2fb4.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:51.797 › The resource https://discordapp.com/assets/ce3b8055f5114434.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:53:51.798 › The resource https://discordapp.com/assets/cb2006dbced0e246.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:53:53.769: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+5/18/2025, 10:53:58 AM EDT [Modules] Host is up to date.
+5/18/2025, 10:53:58 AM EDT [Modules] Checking for module updates at https://discord.com/api/modules/stable/versions.json
+5/18/2025, 10:53:58 AM EDT [Modules] No module updates available.
+legacyModuleUpdater: update-check-finished
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:54:01.306 › The resource https://discordapp.com/assets/189422196a4f8b53.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:01.306 › The resource https://discordapp.com/assets/7a6a566c2e88a35d.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:01.306 › The resource https://discordapp.com/assets/dd24010f3cf7def7.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:01.306 › The resource https://discordapp.com/assets/e52f0cba712e2fb4.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:01.306 › The resource https://discordapp.com/assets/ce3b8055f5114434.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:01.306 › The resource https://discordapp.com/assets/cb2006dbced0e246.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+[2025-05-18T14:54:02Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[2025-05-18T14:54:03Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:54:03Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+10:54:07.584 › The resource https://discordapp.com/assets/189422196a4f8b53.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:07.585 › The resource https://discordapp.com/assets/7a6a566c2e88a35d.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:07.585 › The resource https://discordapp.com/assets/dd24010f3cf7def7.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:07.585 › The resource https://discordapp.com/assets/e52f0cba712e2fb4.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:07.585 › The resource https://discordapp.com/assets/ce3b8055f5114434.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:07.585 › The resource https://discordapp.com/assets/cb2006dbced0e246.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:07.885: Unable to replace properties on 0: Error getting properties for ID
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:08.285: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:54:09.589 › [RTCLatencyTestManager] RTC region latency test completed, ranked regions are:  newark,us-east,atlanta,us-south,us-central
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[2025-05-18T14:54:12Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:12.991: Unable to replace properties on 0: Error getting properties for ID
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:13.391: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:18.597: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:19.098: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+10:54:23.006 › The resource https://discordapp.com/assets/189422196a4f8b53.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:23.006 › The resource https://discordapp.com/assets/7a6a566c2e88a35d.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:23.006 › The resource https://discordapp.com/assets/dd24010f3cf7def7.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:23.006 › The resource https://discordapp.com/assets/e52f0cba712e2fb4.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:23.006 › The resource https://discordapp.com/assets/ce3b8055f5114434.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:23.006 › The resource https://discordapp.com/assets/cb2006dbced0e246.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+[2025-05-18T14:54:24Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:54:24Z ERROR kidex::index] Failed to open file: No such device or address (os error 6)
+[2025-05-18T14:54:24Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:54:24Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+[2025-05-18T14:54:28Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:54:28Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:54:28Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+10:54:28.889 › [KeyboardLayoutMapUtils] KeyboardMapper - Key code mismatch for key meta: 133 !== 91
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+10:54:32.168 › The resource https://discordapp.com/assets/189422196a4f8b53.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:32.168 › The resource https://discordapp.com/assets/7a6a566c2e88a35d.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:32.168 › The resource https://discordapp.com/assets/dd24010f3cf7def7.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:32.168 › The resource https://discordapp.com/assets/e52f0cba712e2fb4.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:32.169 › The resource https://discordapp.com/assets/ce3b8055f5114434.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+10:54:32.169 › The resource https://discordapp.com/assets/cb2006dbced0e246.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+2025-05-18T14:54:32.470645+00:00 | proton.vpn.local_agent/port_forwarding.rs:197 | INFO | Sending Request { version: 0, operation: 2, reserved: 0, internal_port: 0, external_port: 0, lifetime_seconds: 60 } attempt 0
+2025-05-18T14:54:32.518872+00:00 | proton.vpn.local_agent/port_forwarding.rs:225 | INFO | Receiving Response { version: 0, operation: 130, response_code: 0, gateway_epoch_seconds: 205508, internal_port: 42721, external_port: 42721, lifetime_seconds: 60 }
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[2025-05-18T14:54:35Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:47.133: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:47.534: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:54:59.848: Unable to replace properties on 0: Error getting properties for ID
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:00.449: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:03.251: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:03.952: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:06.956: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:07.356: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:17.267: Unable to replace properties on 0: Error getting properties for ID
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:17.768: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:23.875: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:24.276: Unable to replace properties on 0: Error getting properties for ID
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:28.480: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+2025-05-18T14:55:32.519339+00:00 | proton.vpn.local_agent/port_forwarding.rs:197 | INFO | Sending Request { version: 0, operation: 2, reserved: 0, internal_port: 0, external_port: 0, lifetime_seconds: 60 } attempt 0
+2025-05-18T14:55:32.547541+00:00 | proton.vpn.local_agent/port_forwarding.rs:225 | INFO | Receiving Response { version: 0, operation: 130, response_code: 0, gateway_epoch_seconds: 205568, internal_port: 42721, external_port: 42721, lifetime_seconds: 60 }
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:33.386: Unable to replace properties on 0: Error getting properties for ID
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:33.485: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:33.585: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:36.288: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[2025-05-18T14:55:40Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[2025-05-18T14:55:40Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[137.654] [PARSE ERROR] Escape codes to resize text area are not supported
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:41.293: Unable to replace properties on 0: Error getting properties for ID
+
+(waybar:1009): LIBDBUSMENU-GLIB-WARNING **: 10:55:41.794: Unable to replace properties on 0: Error getting properties for ID
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+/home/mike/.config/waybar/scripts/temps.sh: line 52: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 54: [: : integer expression expected
+/home/mike/.config/waybar/scripts/temps.sh: line 56: [: : integer expression expected
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[2025-05-18 10:55:45.970] [info] Hyprland config reloaded, reinitializing hyprland/workspaces module...
+[2025-05-18 10:55:45.971] [info] Loading persistent workspaces from Hyprland workspace rules
+Error: Device 'wlan0
+ipv6leakintrf0
+proton0' not found.
+[CRITICAL] [core] Disconnected from pollfd id 1
+Io error: Broken pipe (os error 32)
+thread 'main' panicked at daemon/src/main.rs:191:30:
+Io error when reading wayland events: Broken pipe (os error 32)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Gdk-Message: 10:55:47.194: Error reading events from display: Broken pipe
+Gdk-Message: 10:55:47.199: Error reading events from display: Connection reset by peer
+Gdk-Message: 10:55:47.199: Error reading events from display: Broken pipe
+14:55:47 [0m[34m[INFO] [0m(main) Removed socket at "/run/user/1000/swww-wayland-1.socket"
+[144.188] [glfw error 65544]: Wayland: fatal display error: Broken pipe
+Gdk-Message: 10:55:47.221: Lost connection to Wayland compositor.
+Gdk-Message: 10:55:47.221: Error reading events from display: Broken pipe
+[2025-05-18T14:55:47Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[31mFATA[0m[May 18 10:55:47.266] Failed to launch                              [31merror[0m="exit status 255" [31mexe_path[0m=/home/mike/.local/share/protonmail/bridge-v3/updates/3.20.0/bridge-gui [31mexe_to_launch[0m=bridge-gui [31mlauncher_path[0m=/home/mike/.local/share/protonmail/bridge-v3/updates/3.20.0/proton-bridge [31mlauncher_version[0m=3.20.0
+[31mFATA[0m[May 18 10:55:47.267] Failed to launch                              [31merror[0m="exit status 1" [31mexe_path[0m=/home/mike/.local/share/protonmail/bridge-v3/updates/3.20.0/proton-bridge [31mlauncher_path[0m=/usr/lib/protonmail/bridge/proton-bridge [31mlauncher_version[0m=3.19.0
+X connection to :1 broken (explicit kill or server shutdown).
+XIO:  fatal IO error 13 (Permission denied) on X server ":1"
+      after 22 requests (22 known processed) with 0 events remaining.
+[0518/105547.359261:ERROR:process_memory.cc(41)] short read
+[0518/105547.359368:ERROR:process_memory.cc(41)] short read
+[0518/105547.359374:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161bbc2000
+[0518/105547.359430:ERROR:process_memory.cc(41)] short read
+[0518/105547.359435:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161bb94000
+[0518/105547.359489:ERROR:process_memory.cc(41)] short read
+[0518/105547.359495:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161bb58000
+[0518/105547.359549:ERROR:process_memory.cc(41)] short read
+[0518/105547.359554:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161bb04000
+[0518/105547.359621:ERROR:process_memory.cc(41)] short read
+[0518/105547.359628:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161b19c000
+[0518/105547.359682:ERROR:process_memory.cc(41)] short read
+[0518/105547.359688:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161afa3000
+[0518/105547.359744:ERROR:process_memory.cc(41)] short read
+[0518/105547.359750:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161b161000
+[0518/105547.359789:ERROR:process_memory.cc(41)] short read
+[0518/105547.359793:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161b0f4000
+[0518/105547.359828:ERROR:process_memory.cc(41)] short read
+[0518/105547.359831:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a7f9000
+[0518/105547.359881:ERROR:process_memory.cc(41)] short read
+[0518/105547.359887:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161bade000
+[0518/105547.359941:ERROR:process_memory.cc(41)] short read
+[0518/105547.359947:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161bad7000
+[0518/105547.360005:ERROR:process_memory.cc(41)] short read
+[0518/105547.360016:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a6bd000
+[0518/105547.360072:ERROR:process_memory.cc(41)] short read
+[0518/105547.360164:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161bad2000
+[0518/105547.360228:ERROR:process_memory.cc(41)] short read
+[0518/105547.360242:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a6a8000
+[0518/105547.360300:ERROR:process_memory.cc(41)] short read
+[0518/105547.360305:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a69b000
+[0518/105547.360363:ERROR:process_memory.cc(41)] short read
+[0518/105547.360367:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a694000
+[0518/105547.360425:ERROR:process_memory.cc(41)] short read
+[0518/105547.360430:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a66b000
+[0518/105547.360486:ERROR:process_memory.cc(41)] short read
+[0518/105547.360491:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a63f000
+[0518/105547.360548:ERROR:process_memory.cc(41)] short read
+[0518/105547.360553:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a5e9000
+[0518/105547.360607:ERROR:process_memory.cc(41)] short read
+[0518/105547.360612:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a5a0000
+[0518/105547.360668:ERROR:process_memory.cc(41)] short read
+[0518/105547.360673:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a4bc000
+[0518/105547.360729:ERROR:process_memory.cc(41)] short read
+[0518/105547.360734:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a485000
+[0518/105547.360789:ERROR:process_memory.cc(41)] short read
+[0518/105547.360794:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a38b000
+[0518/105547.360849:ERROR:process_memory.cc(41)] short read
+[0518/105547.360854:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a352000
+[0518/105547.360913:ERROR:process_memory.cc(41)] short read
+[0518/105547.360919:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161bcc0000
+[0518/105547.360974:ERROR:process_memory.cc(41)] short read
+[0518/105547.360980:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a16e000
+[0518/105547.361037:ERROR:process_memory.cc(41)] short read
+[0518/105547.361042:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a163000
+[0518/105547.361106:ERROR:process_memory.cc(41)] short read
+[0518/105547.361113:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a0b7000
+[0518/105547.361168:ERROR:process_memory.cc(41)] short read
+[0518/105547.361174:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a0ae000
+[0518/105547.361229:ERROR:process_memory.cc(41)] short read
+[0518/105547.361234:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a094000
+[0518/105547.361289:ERROR:process_memory.cc(41)] short read
+[0518/105547.361294:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a03f000
+[0518/105547.361348:ERROR:process_memory.cc(41)] short read
+[0518/105547.361353:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a03a000
+[0518/105547.361408:ERROR:process_memory.cc(41)] short read
+[0518/105547.361412:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161a026000
+[0518/105547.361467:ERROR:process_memory.cc(41)] short read
+[0518/105547.361472:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619f07000
+[0518/105547.361525:ERROR:process_memory.cc(41)] short read
+[0518/105547.361530:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619e25000
+[0518/105547.361584:ERROR:process_memory.cc(41)] short read
+[0518/105547.361589:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619e14000
+[0518/105547.361642:ERROR:process_memory.cc(41)] short read
+[0518/105547.361647:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619ce9000
+[0518/105547.361700:ERROR:process_memory.cc(41)] short read
+[0518/105547.361705:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619ccb000
+[0518/105547.361759:ERROR:process_memory.cc(41)] short read
+[0518/105547.361764:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619c7c000
+[0518/105547.361818:ERROR:process_memory.cc(41)] short read
+[0518/105547.361823:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619c59000
+[0518/105547.361878:ERROR:process_memory.cc(41)] short read
+[0518/105547.361883:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619c50000
+[0518/105547.361935:ERROR:process_memory.cc(41)] short read
+[0518/105547.361940:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619bff000
+[0518/105547.361990:ERROR:process_memory.cc(41)] short read
+[0518/105547.361995:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619aff000
+[0518/105547.362042:ERROR:process_memory.cc(41)] short read
+[0518/105547.362046:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619aec000
+[0518/105547.362098:ERROR:process_memory.cc(41)] short read
+[0518/105547.362106:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619ac6000
+[0518/105547.362154:ERROR:process_memory.cc(41)] short read
+[0518/105547.362159:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619a00000
+[0518/105547.362208:ERROR:process_memory.cc(41)] short read
+[0518/105547.362213:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16199f5000
+[0518/105547.362263:ERROR:process_memory.cc(41)] short read
+[0518/105547.362268:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16199b4000
+[0518/105547.362318:ERROR:process_memory.cc(41)] short read
+[0518/105547.362323:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16198f1000
+[0518/105547.362374:ERROR:process_memory.cc(41)] short read
+[0518/105547.362378:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16198e5000
+[0518/105547.362429:ERROR:process_memory.cc(41)] short read
+[0518/105547.362434:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16198d4000
+[0518/105547.362485:ERROR:process_memory.cc(41)] short read
+[0518/105547.362489:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16198c8000
+[0518/105547.362541:ERROR:process_memory.cc(41)] short read
+[0518/105547.362546:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619821000
+[0518/105547.362597:ERROR:process_memory.cc(41)] short read
+[0518/105547.362602:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161980a000
+[0518/105547.362653:ERROR:process_memory.cc(41)] short read
+[0518/105547.362659:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619805000
+[0518/105547.362710:ERROR:process_memory.cc(41)] short read
+[0518/105547.362789:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16197fb000
+[0518/105547.362831:ERROR:process_memory.cc(41)] short read
+[0518/105547.362836:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16197ea000
+[0518/105547.362885:ERROR:process_memory.cc(41)] short read
+[0518/105547.362890:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16197b4000
+[0518/105547.362937:ERROR:process_memory.cc(41)] short read
+[0518/105547.362942:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16197a3000
+[0518/105547.362989:ERROR:process_memory.cc(41)] short read
+[0518/105547.362994:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161979c000
+[0518/105547.363042:ERROR:process_memory.cc(41)] short read
+[0518/105547.363048:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619795000
+[0518/105547.363103:ERROR:process_memory.cc(41)] short read
+[0518/105547.363111:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619788000
+[0518/105547.363149:ERROR:process_memory.cc(41)] short read
+[0518/105547.363153:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619782000
+[0518/105547.363202:ERROR:process_memory.cc(41)] short read
+[0518/105547.363207:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619761000
+[0518/105547.363249:ERROR:process_memory.cc(41)] short read
+[0518/105547.363253:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16196bf000
+[0518/105547.363283:ERROR:process_memory.cc(41)] short read
+[0518/105547.363286:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619634000
+[0518/105547.363317:ERROR:process_memory.cc(41)] short read
+[0518/105547.363319:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619602000
+[0518/105547.363351:ERROR:process_memory.cc(41)] short read
+[0518/105547.363354:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16194c5000
+[0518/105547.363393:ERROR:process_memory.cc(41)] short read
+[0518/105547.363396:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161935c000
+[0518/105547.363426:ERROR:process_memory.cc(41)] short read
+[0518/105547.363470:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619353000
+[0518/105547.363503:ERROR:process_memory.cc(41)] short read
+[0518/105547.363507:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161933e000
+[0518/105547.363532:ERROR:process_memory.cc(41)] short read
+[0518/105547.363534:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161932f000
+[0518/105547.363560:ERROR:process_memory.cc(41)] short read
+[0518/105547.363563:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f161924a000
+[0518/105547.363588:ERROR:process_memory.cc(41)] short read
+[0518/105547.363590:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1619214000
+[0518/105547.363614:ERROR:process_memory.cc(41)] short read
+[0518/105547.363617:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f16191ec000
+[0518/105547.363641:ERROR:process_memory.cc(41)] short read
+[0518/105547.363643:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1618ffe000
+[0518/105547.363667:ERROR:process_memory.cc(41)] short read
+[0518/105547.363669:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1618e62000
+[0518/105547.363704:ERROR:process_memory.cc(41)] short read
+[0518/105547.363706:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1616e7e000
+[0518/105547.363730:ERROR:process_memory.cc(41)] short read
+[0518/105547.363732:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f158dfc6000
+[0518/105547.363756:ERROR:process_memory.cc(41)] short read
+[0518/105547.363759:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1612ff8000
+[0518/105547.363783:ERROR:process_memory.cc(41)] short read
+[0518/105547.363785:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1591cb6000
+[0518/105547.363808:ERROR:process_memory.cc(41)] short read
+[0518/105547.363811:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f15913ea000
+[0518/105547.363836:ERROR:process_memory.cc(41)] short read
+[0518/105547.363838:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1591367000
+[0518/105547.363863:ERROR:process_memory.cc(41)] short read
+[0518/105547.363866:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1618e6b000
+[0518/105547.363889:ERROR:process_memory.cc(41)] short read
+[0518/105547.363892:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1591c67000
+[0518/105547.363915:ERROR:process_memory.cc(41)] short read
+[0518/105547.363917:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f15912ca000
+[0518/105547.363940:ERROR:process_memory.cc(41)] short read
+[0518/105547.363947:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1591c5d000
+[0518/105547.363970:ERROR:process_memory.cc(41)] short read
+[0518/105547.363972:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f158951d000
+[0518/105547.363996:ERROR:process_memory.cc(41)] short read
+[0518/105547.363998:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f159124d000
+[0518/105547.364021:ERROR:process_memory.cc(41)] short read
+[0518/105547.364023:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f158e1b7000
+[0518/105547.364051:ERROR:process_memory.cc(41)] short read
+[0518/105547.364056:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f158e16e000
+[0518/105547.364102:ERROR:process_memory.cc(41)] short read
+[0518/105547.364109:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f158cff6000
+[0518/105547.364132:ERROR:process_memory.cc(41)] short read
+[0518/105547.364135:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f15895bc000
+[0518/105547.364157:ERROR:process_memory.cc(41)] short read
+[0518/105547.364159:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f157cfed000
+[0518/105547.364181:ERROR:process_memory.cc(41)] short read
+[0518/105547.364184:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1513d18000
+[0518/105547.364207:ERROR:process_memory.cc(41)] short read
+[0518/105547.364214:ERROR:process_reader_linux.cc(542)] no module mappings 0x7f1616bd8000
+[0518/105547.364220:ERROR:process_memory.cc(41)] short read
+[0518/105547.364223:ERROR:process_memory.cc(41)] short read
+[0518/105547.364226:ERROR:process_memory.cc(41)] short read
+[0518/105547.364229:ERROR:process_memory.cc(41)] short read
+[0518/105547.364232:ERROR:process_memory.cc(41)] short read
+[0518/105547.364235:ERROR:process_memory.cc(41)] short read
+[0518/105547.364238:ERROR:process_memory.cc(41)] short read
+[0518/105547.364240:ERROR:process_memory.cc(41)] short read
+[0518/105547.364243:ERROR:process_memory.cc(41)] short read
+[0518/105547.364246:ERROR:process_memory.cc(41)] short read
+[0518/105547.364250:ERROR:ptracer.cc(454)] ptrace: No such process (3)
+[0518/105547.364255:ERROR:ptracer.cc(480)] Unexpected registers size 0 != 216
+[0518/105547.364257:WARNING:process_reader_linux.cc(400)] Couldn't initialize main thread.
+[2025-05-18T14:55:47Z ERROR kidex::index] Failed to open file: No such file or directory (os error 2)
+[0518/105547.377730:ERROR:scoped_ptrace_attach.cc(37)] process not stopped
+[0518/105547.377753:ERROR:process_memory.cc(41)] short read
+[0518/105547.377757:ERROR:process_snapshot_linux.cc(78)] Couldn't read exception info
+[0518/105547.377835:ERROR:scoped_ptrace_attach.cc(45)] ptrace: No such process (3)
+[Parent 1752, IPC I/O Parent] WARNING: process 2577 exited on signal 11: file /usr/src/debug/thunderbird/thunderbird-138.0.1/ipc/chromium/src/chrome/common/process_watcher_posix_sigchld.cc:132
