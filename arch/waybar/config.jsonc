@@ -229,11 +229,11 @@
   // ────────────────────────────────────────────────────────────────┤ cpu ├───
 
   "cpu": {
-    "format": "󰻠 {usage}%",
+    "format": " {usage}%",
     "tooltip": true,
     "interval": 5,
-    "min-length": 6,
-    "max-length": 6
+    "min-length": 5,
+    "max-length": 5
   },
 
   
@@ -241,8 +241,8 @@
 
   "custom/nvidia": {
     "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,nounits,noheader | sed 's/\\([0-9]\\+\\), \\([0-9]\\+\\)/\\1%/g'",
-    "format": " {}%",
-    "min-length": 6,
+    "format": "󰚭{}%",
+    "min-length": 5,
     "max-length": 6,
     "tooltip": false,
     "interval": 5
