@@ -7,18 +7,38 @@
 /** LeftBar **************************************/
 /** Background **************************************/
 
-.leftbar {
+//.leftbar {
+	//border-radius:20px;
+	//background: rgba(26, 28, 42, 0.4);
+	//padding: 10px;
+//}
+.clockParent {
 	border-radius:20px;
 	background: rgba(26, 28, 42, 0.4);
 	padding: 10px;
 }
-
 .time{
 	font-size: 48px;
 }
 
 .date{
-	font-size: 32px;
+	font-size: 42px;
+}
+
+.clockTime {
+	font-size: 36px;
+}
+.clockIcon{
+	font-size: 48px;
+	margin-right: 24px;
+	margin-top: -64px;
+}
+.dateTime {
+	font-size: 36px;
+}
+.dateIcon{
+	font-size: 48px;
+	margin-right: 24px;
 }
 
 /** EOF *************************************************/

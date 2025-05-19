@@ -2,24 +2,22 @@
 ;======================(vibes)====================;
 (defwindow leftbar
 	:namespace "leftbar"
-  :monitor 0
-  :stacking "bg"
-  :wm-ignore true
-  :geometry (geometry
+	:monitor 0
+	:stacking "bg"
+	:wm-ignore true
+	:geometry (geometry
 	:y "10%"
 	:x "1%"
-	:width "20%"
-	:height "50%")
+	:width "10%"
+	:height "10%")
   (leftbarlayout))
 
 (defwidget leftbarlayout []
-    (box :orientation "v"
 	(box 
 		:vexpand true
 		:hexpand true
 		(box (clock))
-		(box (uptime))
-)))
+))
 
 
 ;(deflisten temp :initial "--"
@@ -53,18 +51,14 @@
 
 ;; clock
 (defpoll TIME :interval "5s" `date +\"%I:%M %p\"`)
-(defpoll DATE :interval "5s" `date +\"%b %d-(%A) \"`)
+(defpoll DATE :interval "5s" `date +\"%b %d-(%A)\"`)
 
 (defwidget clock []
 	(box :class "clockParent" :orientation "v"
-		(box :class "time" :orientation "h" :hexpand true :spacing 36 :space-evenly false
-			(label :class "clockIcon" :text "")
-			(label :class "clockTime" :text TIME)
-		)
-		(box :class "date" :orientation "h" :hexpand true :spacing 36 :space-evenly false
-			(label :class "" :text "")
-			(label :class "" :text DATE)
-		)
+			(label :class "clockTime" :halign "start" :text TIME)
+			(label :class "clockIcon" :halign "end" :text "")
+			(label :class "dateTime" :halign "end" :text DATE)
+			(label :class "dateIcon" :halign "start"  :text "")
 	)
 )
 
@@ -72,12 +66,11 @@
 (defpoll UPHOUR :interval "5s" `uptime -p | awk '{print $2 \" \" $3}' | sed 's/,//g'`)
 (defpoll UPMIN :interval "5s" `uptime -p | awk '{print $4 \" \" $5}'`)
 (defwidget uptime [] 
-	(box :class "genwin" 
-		(box :orientation "h" :halign "center" :spacing 40 :space-evenly "false" :vexpand "false" :hexpand "false" 
+		(box :orientation "h":space-evenly "false"
 			(label :class "icontimer" :valign "center" :text "󱦟")
 			(box :orientation "v" :valign "center" :spacing 0 :space-evenly "false" :vexpand "false" :hexpand "false" 
 				(label :class "uphour" :halign "start" :wrap "true" :limit-width 25 :text UPHOUR)
-				(label :class "upmin" :halign "start" :wrap "true" :limit-width 25 :text UPMIN)))))
+				(label :class "upmin" :halign "start" :wrap "true" :limit-width 25 :text UPMIN))))
 
 ;;; Music
 ;(defpoll SONG :interval "1s" `scripts/music_info --song`)
