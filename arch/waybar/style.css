@@ -29,6 +29,21 @@ tooltip label {
   color: @main-fg;
   margin: -1.5px 3px;
 }
+
+#tray menu{
+  background: @main-bg;
+  border: 4px @main-fg;
+  padding: 4px;
+}
+
+#tray menu menuitem{
+  transition: all 0.2s ease-in-out
+}
+
+#tray menu menuitem:hover{
+  background: @active-bg;
+}
+
 #privacy-item {
     background: #e64553;
     color: #15161e;
@@ -156,7 +171,7 @@ tooltip label {
   padding-right: 0px;
 }
 #custom-paddw {
-  padding-right: 130px;
+  padding-right: 100px;
 }
 
 #custom-left2 {

@@ -18,3 +18,4 @@ ln -sf ~/dots/arch/kidex.ron ~/.config/kidex.ron
 ln -sf ~/dots/arch/eww ~/.config/eww
 ln -sf ~/dots/arch/qt5ct/ ~/.config/qt5ct
 ln -sf ~/dots/arch/qt6ct/ ~/.config/qt6ct
+ln -sf ~/dots/arch/nwg-dock-hyprland/ ~/.config/nwg-dock-hyprland

@@ -243,7 +243,7 @@
     "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,nounits,noheader | sed 's/\\([0-9]\\+\\), \\([0-9]\\+\\)/\\1%/g'",
     "format": "󰚭{}%",
     "min-length": 5,
-    "max-length": 6,
+    "max-length": 5,
     "tooltip": false,
     "interval": 5
   },

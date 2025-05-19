@@ -5,6 +5,10 @@ declare -a positions=('top-left' 'top-right' 'center' 'bottom-right' 'bottom-lef
 
 
 while true; do
+    if ! pgrep -x "swww-daemon" > /dev/null; then
+        swww-daemon &>/dev/null
+        sleep 1
+    fi
     # get current wallpaper
     declare query=`swww query`
     IFS='/' read -r -a split <<< $query

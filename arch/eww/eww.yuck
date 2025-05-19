@@ -1,23 +1,32 @@
 ;======================Left Bar===================;
 ;======================(vibes)====================;
 (defwindow leftbar
-	:namespace "leftbar"
-	:monitor 0
-	:stacking "bg"
-	:wm-ignore true
-	:geometry (geometry
-	:y "10%"
-	:x "1%"
-	:width "10%"
-	:height "10%")
-  (leftbarlayout))
+:namespace "leftbar"
+:monitor 0
+:stacking "bg"
+:wm-ignore true
+:geometry (geometry
+:y "10%"
+:x "1%"
+:width "10%"
+:height "40%")
+	(leftbarlayout))
 
 (defwidget leftbarlayout []
 	(box 
-		:vexpand true
-		:hexpand true
-		(box (clock))
-))
+	:class "mainbody"
+	:orientation "v"
+	:spacing 24
+		(box 
+		:orientation "h" 
+		:spacing 24
+			;(clock)
+			(clock))
+		(box 
+		:orientation "h" 
+		:spacing 24
+			;(uptime)
+			(uptime))))
 
 
 ;(deflisten temp :initial "--"
@@ -30,7 +39,7 @@
   ;(box ))
 
 ;;; system
-;(defpoll HOST :interval "10m" `hostname`)
+(defpoll HOST :interval "10m" `hostname`)
 ;(defpoll CPU_USAGE :interval "1s" `scripts/sys_info --cpu`)
 ;(defpoll MEM_USAGE :interval "1s" `scripts/sys_info --mem`)
 ;;(defpoll BLIGHT :interval "1s" `scripts/sys_info --blight`)
@@ -51,14 +60,17 @@
 
 ;; clock
 (defpoll TIME :interval "5s" `date +\"%I:%M %p\"`)
-(defpoll DATE :interval "5s" `date +\"%b %d-(%A)\"`)
+(defpoll DATE :interval "5s" `date +\"%b %d\"`)
+(defpoll DAY :interval "5s" `date +\"%A\"`)
 
 (defwidget clock []
-	(box :class "clockParent" :orientation "v"
-			(label :class "clockTime" :halign "start" :text TIME)
-			(label :class "clockIcon" :halign "end" :text "")
-			(label :class "dateTime" :halign "end" :text DATE)
+	(box :class "widgetParent" :orientation "v"
+		(label :class "clockTime" :halign "start" :text TIME)
+		(label :class "clockIcon" :halign "end" :text "")
+		(box 
 			(label :class "dateIcon" :halign "start"  :text "")
+			(label :class "day" :halign "end" :text DAY))
+		(label :class "dateTime" :halign "end" :text DATE)
 	)
 )
 
@@ -66,11 +78,11 @@
 (defpoll UPHOUR :interval "5s" `uptime -p | awk '{print $2 \" \" $3}' | sed 's/,//g'`)
 (defpoll UPMIN :interval "5s" `uptime -p | awk '{print $4 \" \" $5}'`)
 (defwidget uptime [] 
-		(box :orientation "h":space-evenly "false"
-			(label :class "icontimer" :valign "center" :text "󱦟")
-			(box :orientation "v" :valign "center" :spacing 0 :space-evenly "false" :vexpand "false" :hexpand "false" 
-				(label :class "uphour" :halign "start" :wrap "true" :limit-width 25 :text UPHOUR)
-				(label :class "upmin" :halign "start" :wrap "true" :limit-width 25 :text UPMIN))))
+	(box :class "widgetParent" :orientation "h" :space-evenly "false"
+		(label :class "uptimeIcon" :text "󱦟")
+		(box :orientation "v" :spacing 4 :halign "end"
+			(label :class "uphour"  :wrap "true" :limit-width 25 :text UPHOUR)
+			(label :class "upmin" :wrap "true" :limit-width 25 :text UPMIN))))
 
 ;;; Music
 ;(defpoll SONG :interval "1s" `scripts/music_info --song`)

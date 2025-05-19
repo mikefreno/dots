@@ -1,2 +1,3 @@
 #!/bin/env sh
-protonmail-bridge
+protonmail-bridge &>/dev/null
+exit 0

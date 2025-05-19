@@ -42,7 +42,6 @@ while true; do
             ddcutil_fast setvcp 10 0
             ;;
         *)
-            echo $command >> ~/dots/arch/log
             ddcutil_fast setvcp 10 $command
             ;;
     esac
