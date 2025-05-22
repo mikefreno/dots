@@ -3,6 +3,9 @@ declare -a wallpapers=("33_paintress.jpeg" "abstract.jpg" "city.jpg" "cyber.jpg"
 
 declare -a positions=('top-left' 'top-right' 'center' 'bottom-right' 'bottom-left' )
 
+if pgrep -x "wallpaper_script" > /dev/null; then
+    exit 0
+fi
 
 while true; do
     if ! pgrep -x "swww-daemon" > /dev/null; then

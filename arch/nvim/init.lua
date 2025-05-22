@@ -155,7 +155,7 @@ require("lazy").setup({
 			end,
 		},
 	},
-	{ "neoclide/coc.nvim", branch = "release" },
+	--{ "neoclide/coc.nvim", branch = "release" },
 	{
 		"romgrk/barbar.nvim",
 		dependencies = {
@@ -538,14 +538,14 @@ require("lazy").setup({
 }, {})
 
 -- LSP's not supported by Mason
-require("lspconfig").sourcekit.setup({
-	cmd = { "sourcekit-lsp" },
-	filetypes = { "swift", "objective-c", "objective-cpp" },
-})
-require("lspconfig").ocamllsp.setup({
-	cmd = { "ocamllsp" },
-	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
-})
+--require("lspconfig").sourcekit.setup({
+	--cmd = { "sourcekit-lsp" },
+	--filetypes = { "swift", "objective-c", "objective-cpp" },
+--})
+--require("lspconfig").ocamllsp.setup({
+	--cmd = { "ocamllsp" },
+	--filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
+--})
 
 require("colors").setup_highlights()
 
@@ -785,24 +785,24 @@ local servers = {
 	ts_ls = { hint = { enable = true } },
 	lua_ls = {
 		Lua = {
-			workspace = { checkThirdParty = false },
+			--workspace = { checkThirdParty = false },
 			telemetry = { enable = false },
 			hint = { enable = true },
 		},
 	},
 }
 
-local sourcekit = {
-	cmd = {
-		"/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
-	},
-	filetypes = { "swift" },
-}
+--local sourcekit = {
+	--cmd = {
+		--"/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
+	--},
+	--filetypes = { "swift" },
+--}
 
-local ocamllsp = {
-	cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
-	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
-}
+--local ocamllsp = {
+	--cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
+	--filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
+--}
 require("neodev").setup()
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -825,8 +825,8 @@ mason_lspconfig.setup_handlers({
 	end,
 })
 
-require("lspconfig")["sourcekit"].setup(sourcekit)
-require("lspconfig")["ocamllsp"].setup(ocamllsp)
+--require("lspconfig")["sourcekit"].setup(sourcekit)
+--require("lspconfig")["ocamllsp"].setup(ocamllsp)
 
 local cmp = require("cmp")
 local luasnip = require("luasnip")

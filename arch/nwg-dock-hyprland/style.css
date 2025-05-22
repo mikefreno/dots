@@ -1,3 +1,6 @@
+*{
+	border-radius: 10px;
+}
 window {
 	background: rgba(26, 28, 42, 0.5);
 	border-radius: 10px;
