@@ -58,6 +58,14 @@ while true; do
             echo "Switched borders to light mode"
         fi
 
+        if [[ $isDarkMode == "Dark" ]]; then
+            osascript -e 'tell application "System Events" to tell every desktop to set picture to POSIX file "/Users/mike/Pictures/nondynamic bgs/apple-colors-big-4k.png"'
+            echo "Switched bg to dark mode"
+        else
+            osascript -e 'tell application "System Events" to tell every desktop to set picture to POSIX file "/Users/mike/Pictures/nondynamic bgs/apple-colors-big-4k-light.png"'
+            echo "Switched bg to light mode"
+        fi
+
         config_dir="$HOME/.config/sketchybar"
         colors_file="$config_dir/colors.lua"
         colors_dark_file="$config_dir/colors_dark.lua"

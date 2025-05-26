@@ -1,28 +1,26 @@
 return {
-  black      = 0xff0e0f16, -- crust
-  white      = 0xffb5c1f1, -- text
-  red        = 0xffea7183, -- red
-  green      = 0xff96d382, -- green
-  blue       = 0xff739df2, -- blue
-  yellow     = 0xffeaca89, -- yellow
-  orange     = 0xfff39967, -- peach
-  magenta    = 0xfff2a7de, -- pink
-  grey       = 0xff717997, -- overlay1
-  transparent = 0x00000000,
-
-  bar = {
-    bg     = 0xff1E1E2E, -- surface0
-    border = 0xff505469, -- surface1
-  },
-  popup = {
-    bg     = 0xff2c2f40, -- surface0 with alpha
-    border = 0xff505469  -- surface2
-  },
-  bg1 = 0xff141620, -- mantle
-  bg2 = 0xff1a1c2a, -- base
-
-  with_alpha = function(color, alpha)
-    if alpha > 1.0 or alpha < 0.0 then return color end
-    return (color & 0x00ffffff) | (math.floor(alpha * 255.0) << 24)
-  end,
+	black       = 0xff7b5d44,
+	white       = 0xff8f6f56,
+	red         = 0xffc14a4a,
+	green       = 0xff6c782e,
+	blue        = 0xff45707a,
+	yellow      = 0xffa96b2c,
+	orange      = 0xffc35e0a,
+	magenta     = 0xff945e80,
+	grey        = 0xff6e5949,
+	transparent = 0x00000000,
+	bar         = {
+		bg     = 0xf0fbf1c7,
+		border = 0xffa28368,
+	},
+	popup       = {
+		bg     = 0xfcfbf1c7,
+		border = 0xffc9c19f
+	},
+	bg1         = 0xfffbf1c7,
+	bg2         = 0xfff2e5bc,
+	with_alpha  = function(color, alpha)
+		if alpha > 1.0 or alpha < 0.0 then return color end
+		return (color & 0x00ffffff) | (math.floor(alpha * 255.0) << 24)
+	end,
 }

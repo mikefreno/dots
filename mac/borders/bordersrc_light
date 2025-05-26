@@ -1,9 +1,9 @@
 options=(
 	style=round
 	width=8.0
-	hidpi=off
-	active_color=0xff4c7a5d 
-    	inactive_color=0xffA79C86
+	hidpi=on
+	active_color=0xffa28368
+    	inactive_color=0xffa28368
 	blacklist="Simulator,qemu-system-aarch64,iPhone Mirroring,Transmission,Steam,Notes,Numi,Weather,SoundSource"
 )
 

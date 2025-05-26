@@ -1,12 +1,11 @@
 local colors = require("colors")
 local icons = require("icons")
-local settings = require("settings")
 
 -- Padding item required because of bracket
 
 local gear = sbar.add("item", {
 	icon = {
-		font = { size = 16.0 },
+		font = { size = 20.0 },
 		string = icons.gear,
 		padding_right = 6,
 		padding_left = 5,
