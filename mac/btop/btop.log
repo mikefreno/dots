@@ -305,3 +305,18 @@
 2025/04/23 (14:01:34) | ERROR: Stall in Runner thread, restarting!
 2025/04/23 (14:01:40) | ERROR: Stall in Runner thread, restarting!
 2025/04/23 (14:01:46) | ERROR: Stall in Runner thread, restarting!
+
+2025/05/16 (12:08:43) | ===> btop++ v.1.4.0
+2025/05/16 (12:08:43) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:16:50) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:18:44) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:18:50) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:18:56) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:19:02) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:19:08) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:19:14) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:19:20) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:19:26) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:32:44) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:32:50) | ERROR: Stall in Runner thread, restarting!
+2025/05/16 (12:32:53) | WARNING: Failed to get disk/partition stats with statvfs() for: 

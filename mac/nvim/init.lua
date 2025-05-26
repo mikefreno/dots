@@ -154,7 +154,7 @@ require("lazy").setup({
 			end,
 		},
 	},
-	{ "neoclide/coc.nvim", branch = "release" },
+	--{ "neoclide/coc.nvim", branch = "release" },
 	{
 		"romgrk/barbar.nvim",
 		dependencies = {

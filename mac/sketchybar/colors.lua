@@ -11,11 +11,11 @@ return {
   transparent = 0x00000000,
 
   bar = {
-    bg     = 0xB02c2f40, -- surface0
-    border = 0xff3e4255, -- surface1
+    bg     = 0xff1E1E2E, -- surface0
+    border = 0xff505469, -- surface1
   },
   popup = {
-    bg     = 0xcc2c2f40, -- surface0 with alpha
+    bg     = 0xff2c2f40, -- surface0 with alpha
     border = 0xff505469  -- surface2
   },
   bg1 = 0xff141620, -- mantle

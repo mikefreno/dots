@@ -26,7 +26,7 @@ M.colors = {
 		surface2 = "#505469",
 		surface1 = "#3e4255",
 		surface0 = "#2c2f40",
-		base = "#1a1c2a",
+		base = "#1E1E2E",
 		mantle = "#141620",
 		crust = "#0e0f16",
 	},

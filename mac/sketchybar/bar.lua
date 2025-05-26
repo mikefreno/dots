@@ -13,6 +13,6 @@ sbar.bar({
 	y_offset = 4,
 	margin = 12,
 	blur_radius = 20,
-	--shadow = true,
+	shadow = true,
 	notch_width = 200
 })
