@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# Required parameters:
-# @raycast.schemaVersion 1
-# @raycast.title colorswap
-# @raycast.mode silent
-
-# Optional parameters:
-# @raycast.icon 🤖
-
-# Documentation:
-# @raycast.author MikeFreno
-
-
-#!/bin/bash
-
 # Initialize last known state from a state file
 STATE_FILE="$HOME/.config/theme_state"
 if [[ -f "$STATE_FILE" ]]; then
@@ -58,13 +44,15 @@ while true; do
             echo "Switched borders to light mode"
         fi
 
+
         if [[ $isDarkMode == "Dark" ]]; then
-            osascript -e 'tell application "System Events" to tell every desktop to set picture to POSIX file "/Users/mike/Pictures/nondynamic bgs/apple-colors-big-4k.png"'
+            m wallpaper "/Users/mike/Pictures/nondynamic bgs/apple-colors-dark.png"
             echo "Switched bg to dark mode"
         else
-            osascript -e 'tell application "System Events" to tell every desktop to set picture to POSIX file "/Users/mike/Pictures/nondynamic bgs/apple-colors-big-4k-light.png"'
+            m wallpaper "/Users/mike/Pictures/nondynamic bgs/apple-colors-light.png"
             echo "Switched bg to light mode"
         fi
+
 
         config_dir="$HOME/.config/sketchybar"
         colors_file="$config_dir/colors.lua"

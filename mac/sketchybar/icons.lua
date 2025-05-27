@@ -8,10 +8,17 @@ local icons = {
     gear = "􀍟",
     cpu = "􀫥",
     clipboard = "􀉄",
-
+    package = "􀐛",
     switch = {
       on = "􁏮",
       off = "􁏯",
+    },
+    system ={
+      lock = "􀎠",
+      logout = "􀱍",
+      sleep = "􀥦",
+      shutdown = "􀆨",
+      restart = "􀎀"
     },
     volume = {
       _100="􀊩",
@@ -19,6 +26,12 @@ local icons = {
       _33="􀊥",
       _10="􀊡",
       _0="􀊣",
+    },
+    brightness={
+      _75 = "􀆮",
+      _50 = "􂱢",
+      _25 = "􀆭",
+      _0 = "􀆫",
     },
     battery = {
       _100 = "􀛨",
