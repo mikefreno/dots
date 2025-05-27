@@ -12,7 +12,7 @@ local gear = sbar.add("item", {
 		font = { size = 20.0 },
 		string = icons.gear,
 		padding_right = 6,
-		padding_left = 6,
+		padding_left = 4,
 	},
 	label = { drawing = false },
 	background = {
@@ -20,8 +20,6 @@ local gear = sbar.add("item", {
 		border_color = colors.black,
 		border_width = 1,
 	},
-	padding_left = 1,
-	padding_right = 1,
 	position = "right",
 })
 

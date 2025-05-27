@@ -2,6 +2,9 @@ local icons = require("icons")
 local colors = require("colors")
 local settings = require("settings")
 
+-- Execute the brew event provider
+sbar.exec("killall brew_load >/dev/null; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 30 &")
+
 local brew = sbar.add("item", "widgets.brew", {
 	position = "right",
 	icon = {
@@ -28,60 +31,45 @@ sbar.add("item", "widgets.brew.padding", {
 	width = settings.group_paddings,
 })
 
--- Function to update display from cache
-local function update_brew_display()
-	sbar.exec("cat /tmp/brew_outdated_count 2>/dev/null || echo '?'", function(result)
-		local count_str = result:gsub("%s+", "")
+-- Subscribe to brew updates
+brew:subscribe("brew_update", function(env)
+	local count = tonumber(env.outdated_count) or 0
+	local status = tonumber(env.status) or 0
 
-		if count_str == "?" then
-			brew:set({
-				icon = { color = colors.white },
-				label = {
-					string = "?",
-					color = colors.white,
-				},
-			})
-		else
-			local count = tonumber(count_str) or 0
-			if count > 0 then
-				brew:set({
-					icon = { color = colors.orange },
-					label = {
-						string = tostring(count),
-						color = colors.orange,
-					},
-				})
-			else
-				brew:set({
-					icon = { color = colors.green },
-					label = {
-						string = "0",
-						color = colors.green,
-					},
-				})
-			end
-		end
-	end)
-end
+	-- Handle error states
+	if status ~= 0 then
+		brew:set({
+			icon = { color = colors.red },
+			label = {
+				string = "!",
+				color = colors.red,
+			},
+		})
+		return
+	end
 
-local function trigger_brew_check()
-	sbar.exec("$CONFIG_DIR/helpers/event_providers/brew_check.sh &")
-end
-
--- Subscribe to the custom brew_update event
-brew:subscribe("brew_update", function()
-	update_brew_display()
+	-- Update based on count
+	if count > 0 then
+		brew:set({
+			icon = { color = colors.orange },
+			label = {
+				string = tostring(count),
+				color = colors.orange,
+			},
+		})
+	else
+		brew:set({
+			icon = { color = colors.green },
+			label = {
+				string = "0",
+				color = colors.green,
+			},
+		})
+	end
 end)
-
--- Trigger background check on routine (but don't wait for it)
-brew:subscribe("routine", function()
-	trigger_brew_check()
-end)
-
 
 brew:subscribe("mouse.clicked", function()
-	sbar.exec('osascript -e \'tell application "Terminal" to do script "brew upgrade && echo \\"\\nUpgrade complete! Press any key to close...\\" && read"\'')
+	sbar.exec('osascript -e \'tell application "Terminal" to do script "brew upgrade"\'')
+	-- Trigger immediate check after potential upgrade
+	sbar.exec("killall brew_load; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 300 &")
 end)
-
-update_brew_display()
-trigger_brew_check()

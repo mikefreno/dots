@@ -121,7 +121,6 @@ cmd + alt - w : yabai -m space --destroy
 cmd + shift - y : yabai --restart-service
 cmd + shift - r : yabai --restart-service && \
                   brew services restart sketchybar && \
-                  brew services restart borders  && \
                   ~/.config/btop/btop_colorswap.sh
 
 # Change desktop
