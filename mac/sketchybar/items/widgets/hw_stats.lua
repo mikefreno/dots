@@ -122,5 +122,5 @@ cpu:subscribe("mouse.clicked", function(env)
 end)
 
 gpu:subscribe("mouse.clicked", function(env)
-	sbar.exec("open -a 'Activity Monitor' || open -a 'Xcode' --args GPUReport")
+	sbar.exec("open -a 'Activity Monitor'")
 end)
