@@ -25,20 +25,20 @@ local cal = sbar.add("item", {
 	padding_left = 1,
 	padding_right = 1,
 	background = {
-		color = colors.bg2,
-		border_color = colors.black,
-		border_width = 1,
+		color = colors.bg1,
+		--border_color = colors.black,
+		--border_width = 1,
 	},
 })
 
 -- Double border for calendar using a single item bracket
-sbar.add("bracket", { cal.name }, {
-	background = {
-		color = colors.transparent,
-		height = 30,
-		border_color = colors.grey,
-	},
-})
+--sbar.add("bracket", { cal.name }, {
+	--background = {
+		--color = colors.transparent,
+		--height = 30,
+		--border_color = colors.grey,
+	--},
+--})
 
 -- Padding item required because of bracket
 sbar.add("item", { position = "right", width = settings.group_paddings })
