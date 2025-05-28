@@ -4,7 +4,7 @@ local colors = require("colors")
 sbar.bar({
 	topmost = "window",
 	height = 36,
-	color = colors.bar.bg,
+	color = colors.transparent,
 	border_color = colors.bar.border,
 	--border_width = 2,
 	padding_right = 10,
