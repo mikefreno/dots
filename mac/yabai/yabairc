@@ -186,17 +186,17 @@ setup_rules
 
 # General yabai configuration
 yabai -m config \
-    layout                 bsp             \
+    layout                 bsp            \
     top_padding            8              \
     bottom_padding         8              \
     left_padding           8              \
     right_padding          8              \
-    window_gap             12              \
-    window_shadow          float           \
-    mouse_modifier         cmd              \
-    mouse_action1          move            \
-    mouse_action2          resize          \
-    external_bar           all:40:0        \
+    window_gap             12             \
+    window_shadow          float          \
+    mouse_modifier         cmd            \
+    mouse_action1          move           \
+    mouse_action2          resize         \
+    external_bar           all:40:0       \
 
 # Apply rules
 yabai -m rule --apply

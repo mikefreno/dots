@@ -44,15 +44,7 @@ while true; do
             echo "Switched borders to light mode"
         fi
 
-
-        if [[ $isDarkMode == "Dark" ]]; then
-            m wallpaper "/Users/mike/Pictures/nondynamic bgs/apple-colors-dark.png"
-            echo "Switched bg to dark mode"
-        else
-            m wallpaper "/Users/mike/Pictures/nondynamic bgs/apple-colors-light.png"
-            echo "Switched bg to light mode"
-        fi
-
+        brew services restart borders
 
         config_dir="$HOME/.config/sketchybar"
         colors_file="$config_dir/colors.lua"

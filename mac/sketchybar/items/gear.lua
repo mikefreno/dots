@@ -42,7 +42,6 @@ local settings_item = sbar.add("item", {
 		string = icons.gear,
 		font = { size = 14.0 },
 		padding_left = 8,
-		padding_right = 8,
 	},
 	label = {
 		string = "Settings",
