@@ -1,5 +1,5 @@
 #!/bin/bash
-declare -a wallpapers=("33_paintress.jpeg" "abstract.jpg" "city.jpg" "cyber.jpg" "cyber_2.jpg" "cyberpunk_1.png" "cyberpunk_2.png" "frieren.png" "nature_forest.jpg" "nature_river.jpg" "painted.jpg" "painted_2.jpg" "street.jpg")
+declare -a wallpapers=("33_paintress.jpeg" "city.jpg" "cyber.jpg" "cyber_2.jpg" "cyberpunk_1.png" "cyberpunk_2.png" "frieren.png" "nature_forest.jpg" "nature_river.jpg" "painted.jpg" "painted_2.jpg" "street.jpg")
 
 declare -a positions=('top-left' 'top-right' 'center' 'bottom-right' 'bottom-left' )
 

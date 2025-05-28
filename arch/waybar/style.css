@@ -32,7 +32,7 @@ tooltip label {
 
 #tray menu{
   background: @main-bg;
-  border: 4px @main-fg;
+  border: 4px @active-bg;
   padding: 4px;
 }
 
