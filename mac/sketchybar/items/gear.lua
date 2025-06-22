@@ -13,10 +13,11 @@ local gear = sbar.add("item", {
 		string = icons.gear,
 		padding_right = 6,
 		padding_left = 4,
+		y_offset = 1,
 	},
 	label = { drawing = false },
 	background = {
-		color = colors.bg2,
+		color = colors.bg1,
 		border_color = colors.black,
 		border_width = 1,
 	},
