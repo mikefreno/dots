@@ -19,3 +19,4 @@ ln -sf ~/dots/arch/eww ~/.config/eww
 ln -sf ~/dots/arch/qt5ct/ ~/.config/qt5ct
 ln -sf ~/dots/arch/qt6ct/ ~/.config/qt6ct
 ln -sf ~/dots/arch/nwg-dock-hyprland/ ~/.config/nwg-dock-hyprland
+ln -sf ~/dots/arch/ghostty/ ~/.config/ghostty
