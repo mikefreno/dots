@@ -13,8 +13,7 @@ using json = nlohmann::json;
 #define WEATHER_API_URL                                                        \
   "http://api.weatherapi.com/v1/current.json?key=%s&q=%f,%f"
 #define TOMORROW_API_URL                                                       \
-  "https://api.tomorrow.io/v4/weather/"                                        \
-  "realtime?location=%f,%f&apikey=%s&units=imperial"
+  "https://api.tomorrow.io/v4/weather/realtime?location=%f,%f&apikey=%s&units=imperial"
 
 class WeatherProvider {
 public:

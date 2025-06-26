@@ -8,3 +8,4 @@ ln -sf ~/dots/mac/skhd ~/.config/skhd
 ln -sf ~/dots/mac/tmux ~/.config/tmux
 ln -sf ~/dots/mac/yabai ~/.config/yabai
 ln -sf ~/dots/mac/colorswap.sh ~/.config/colorswap.sh
+ln -sf ~/dots/mac/ghostty ~/.config/ghostty
