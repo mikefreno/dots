@@ -1,0 +1,109 @@
+# ===================================================================
+# SERVICE 1: Jellyfin Media Server
+# DOMAINS:   jellyfin.freno.me, mikefreno.tplinkdns.com
+# BACKEND:   http://127.0.0.1:8096
+# ===================================================================
+
+server {
+    listen 80;
+    server_name jellyfin.freno.me mikefreno.tplinkdns.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name jellyfin.freno.me mikefreno.tplinkdns.com;
+
+    ssl_certificate /etc/letsencrypt/live/jellyfin.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/jellyfin.freno.me/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    client_max_body_size 10G;
+
+    location / {
+        proxy_pass http://127.0.0.1:8096;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /socket {
+        proxy_pass http://127.0.0.1:8096;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }
+}
+
+
+# ===================================================================
+# SERVICE 2: Vaultwarden
+# DOMAIN:    vw.freno.me
+# BACKEND:   http://127.0.0.1:8081
+# ===================================================================
+
+server {
+    if ($host = vw.freno.me) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name vw.freno.me;
+    return 301 https://$server_name$request_uri;
+
+
+}
+
+server {
+    listen 443 ssl http2;
+    server_name vw.freno.me;
+
+    location / {
+        proxy_pass http://127.0.0.1:8081;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /notifications/hub {
+        proxy_pass http://127.0.0.1:8081;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    ssl_certificate /etc/letsencrypt/live/vw.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/vw.freno.me/privkey.pem; # managed by Certbot
+}
+
+
+server {
+    listen 80;
+    server_name ai.freno.me;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name ai.freno.me;
+
+    client_max_body_size 100M;
+
+    location / {
+        proxy_pass http://127.0.0.1:8082;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+
