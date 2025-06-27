@@ -6,7 +6,7 @@ step=5
 ddcutil_fast() {
     # adjust the bus number and the multiplier for your display
     # multiplier should be chosen so that it both works reliably and fast enough
-    ddcutil --noverify --bus 3 --sleep-multiplier .03 "$@" 2>/dev/null
+    ddcutil --noverify --bus 5 --sleep-multiplier .03 "$@" 2>/dev/null
 }
 
 ddcutil_slow() {
