@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Find the full path to docker to make the script more robust
 DOCKER_PATH=$(which docker)
+
+$DOCKER_PATH start filebrowser || \
 
 $DOCKER_PATH run -d \
   --name filebrowser \
