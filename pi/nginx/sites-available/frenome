@@ -4,23 +4,31 @@
 # BACKEND:   http://127.0.0.1:8096
 # ===================================================================
 
+# --- HTTP to HTTPS Redirect for both domains ---
 server {
     listen 80;
+    # Listen on both server names
     server_name jellyfin.freno.me mikefreno.tplinkdns.com;
     return 301 https://$host$request_uri;
 }
 
+# --- Main HTTPS Server Block for Jellyfin ---
 server {
     listen 443 ssl http2;
+    # Listen on both server names
     server_name jellyfin.freno.me mikefreno.tplinkdns.com;
 
+    # SSL Certificates - Certbot will manage these.
+    # It will pick one domain as the primary for the cert name.
     ssl_certificate /etc/letsencrypt/live/jellyfin.freno.me/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/jellyfin.freno.me/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
-    client_max_body_size 10G;
+    # Allow larger file uploads for media
+    client_max_body_size 10G; # Increased for Jellyfin typical use
 
+    # Standard proxy for all traffic
     location / {
         proxy_pass http://127.0.0.1:8096;
         proxy_set_header Host $host;
@@ -29,6 +37,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    # Specific location for Jellyfin's websockets
     location /socket {
         proxy_pass http://127.0.0.1:8096;
         proxy_http_version 1.1;
@@ -82,10 +91,23 @@ server {
 }
 
 
+# ===================================================================
+# SERVICE 3: AI Service
+# DOMAIN:    ai.freno.me
+# BACKEND:   http://127.0.0.1:8082
+# ===================================================================
+
 server {
+    if ($host = ai.freno.me) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
     listen 80;
     server_name ai.freno.me;
     return 301 https://$server_name$request_uri;
+
+
 }
 
 server {
@@ -101,12 +123,15 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         
+        # Websocket support (if needed by your AI service)
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
     }
-}
 
+    ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/ai.freno.me/privkey.pem; # managed by Certbot
+}
 # ===================================================================
 # SERVICE 4: File Browser
 # DOMAIN:    files.freno.me
@@ -114,9 +139,16 @@ server {
 # ===================================================================
 
 server {
+    if ($host = files.freno.me) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
     listen 80;
     server_name files.freno.me;
     return 301 https://$server_name$request_uri;
+
+
 }
 
 server {
@@ -124,6 +156,7 @@ server {
     server_name files.freno.me;
 
     location / {
+        # This points to your new File Browser container
         proxy_pass http://127.0.0.1:8083;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -133,4 +166,36 @@ server {
 
     ssl_certificate /etc/letsencrypt/live/files.freno.me/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/files.freno.me/privkey.pem; # managed by Certbot
+}
+
+server {
+    if ($host = comfy.freno.me) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name comfy.freno.me;
+    return 301 https://$server_name$request_uri;
+
+
+}
+
+server {
+    listen 443 ssl http2;
+    server_name comfy.freno.me;
+
+    location / {
+        proxy_pass http://atlas.local:8188;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/comfy.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/comfy.freno.me/privkey.pem; # managed by Certbot
 }
