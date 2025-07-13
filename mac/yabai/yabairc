@@ -135,7 +135,7 @@ setup_rules() {
     # Clear existing rules first
     yabai -m rule --remove ".*" 2>/dev/null
 
-    yabai -m rule --add app="^(Alacritty|kitty)$" space="$main_space"
+    yabai -m rule --add app="^(Alacritty|kitty|Ghostty)$" space="$main_space"
     yabai -m rule --add app="^Xcode(-beta)?$" space="$main_space"
     yabai -m rule --add app="^(Orion|Safari|Brave|SigmaOS|Zen Browser|Zen)$" space="$web_space"
     yabai -m rule --add app="^(Mail|Messages|Things|Obsidian)$" space="$comms_space"
