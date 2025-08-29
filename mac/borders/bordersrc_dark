@@ -4,7 +4,7 @@ options=(
 	hidpi=off
 	active_color=0xffbdbfff
 	inactive_color=0xaabdbfff
-	blacklist="Simulator,qemu-system-aarch64,iPhone Mirroring,Transmission,Steam,Notes,Numi,Weather,SoundSource"
+	blacklist="Simulator,qemu-system-aarch64,iPhone Mirroring,Transmission,Steam,Notes,Numi,Weather,SoundSource,CleanMyMac"
 )
 
 borders "${options[@]}"

@@ -4,11 +4,9 @@ sudo yabai --load-sa &>/dev/null
 display_count=$(yabai -m query --displays | jq length)
 echo "Number of displays detected: $display_count"
 
-# Function to check if LM Studio is running
-is_lm_studio_running() {
-    pgrep -x "LM Studio" >/dev/null
+is_blender_running() {
+    pgrep -x "Blender" >/dev/null
 }
-
 
 is_emulator_running() {
     pgrep -x "Simulator" >/dev/null || pgrep "qemu-system-aarch64" >/dev/null
@@ -38,15 +36,15 @@ adjust_space_count() {
 setup_spaces() {
     local needed_spaces
     if [ "$display_count" -eq 1 ]; then
-        if is_lm_studio_running; then
+        if is_blender_running; then
             needed_spaces=5  # main, web, comms, misc, audio
         else
             needed_spaces=4  # main, web, comms, audio
         fi
     else
-        if is_lm_studio_running && is_emulator_running; then
+        if is_blender_running && is_emulator_running; then
             needed_spaces=6  # audio, misc, main, web, comms, emulators
-        elif is_lm_studio_running; then
+        elif is_blender_running; then
             needed_spaces=5  # audio, misc, main, web, comms
         elif is_emulator_running; then
             needed_spaces=5  # audio, main, web, comms, emulators
@@ -63,7 +61,7 @@ setup_spaces() {
         yabai -m space 1 --label main
         yabai -m space 2 --label web
         yabai -m space 3 --label comms
-        if is_lm_studio_running; then
+        if is_blender_running; then
             yabai -m space 4 --label misc
             yabai -m space 5 --label audio
         else
@@ -74,13 +72,13 @@ setup_spaces() {
         # Label spaces
         yabai -m space 1 --label audio
         
-        if is_lm_studio_running && is_emulator_running; then
+        if is_blender_running && is_emulator_running; then
             yabai -m space 2 --label misc
             yabai -m space 3 --label main
             yabai -m space 4 --label web
             yabai -m space 5 --label comms
             yabai -m space 6 --label emulators
-        elif is_lm_studio_running; then
+        elif is_blender_running; then
             yabai -m space 2 --label misc
             yabai -m space 3 --label main
             yabai -m space 4 --label web
@@ -106,10 +104,10 @@ setup_spaces() {
         yabai -m space 3 --display $display2
         yabai -m space 4 --display $display2
         
-        if is_lm_studio_running && is_emulator_running; then
+        if is_blender_running && is_emulator_running; then
             yabai -m space 5 --display $display2
             yabai -m space 6 --display $display2
-        elif is_lm_studio_running || is_emulator_running; then
+        elif is_blender_running || is_emulator_running; then
             yabai -m space 5 --display $display2
         fi
     fi
@@ -141,8 +139,8 @@ setup_rules() {
     yabai -m rule --add app="^(Mail|Messages|Things|Obsidian)$" space="$comms_space"
     yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex|Jellyfin Media Player|Discord)$" space="$audio_space"
     
-    if is_lm_studio_running; then
-        yabai -m rule --add app="^(LM Studio|Blender)$" space="$misc_space"
+    if is_blender_running; then
+        yabai -m rule --add app="^(Blender)$" space="$misc_space"
     fi
     
     # Handle emulators based on display count
@@ -157,7 +155,7 @@ setup_rules() {
     yabai -m rule --add title="^Ubuntu$" space="$main_space" manage=off
     
     yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam)$" manage=off
-    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love)$" manage=off
+    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden)$" manage=off
 }
 
 # Function to handle display changes

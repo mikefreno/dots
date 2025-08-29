@@ -1,7 +1,7 @@
 local icons = require("icons")
 local colors = require("colors")
 
-local whitelist = { ["Spotify"] = true, ["Music"] = true, ["Podcasts"] = true, ["Zen"] = true }
+sbar.exec("killall media_provider >/dev/null; $CONFIG_DIR/helpers/event_providers/media/bin/media media_provider &")
 
 local media_cover = sbar.add("item", {
 	position = "right",
@@ -56,19 +56,19 @@ sbar.add("item", {
 	position = "popup." .. media_cover.name,
 	icon = { string = icons.media.back },
 	label = { drawing = false },
-	click_script = "nowplaying-cli previous",
+	click_script = "media-control previous-track",
 })
 sbar.add("item", {
 	position = "popup." .. media_cover.name,
 	icon = { string = icons.media.play_pause },
 	label = { drawing = false },
-	click_script = "nowplaying-cli togglePlayPause",
+	click_script = "media-control toggle-play-pause",
 })
 sbar.add("item", {
 	position = "popup." .. media_cover.name,
 	icon = { string = icons.media.forward },
 	label = { drawing = false },
-	click_script = "nowplaying-cli next",
+	click_script = "media-control next-track",
 })
 
 local interrupt = 0
