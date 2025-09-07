@@ -1,7 +1,6 @@
 #!/bin/bash
 DOCKER=$(which docker)
 
-# Start Watchtower if it isn’t already running
 if ! $DOCKER ps -q -f name=watchtower | grep -q .; then
   $DOCKER run -d \
     --name watchtower \
@@ -12,7 +11,6 @@ if ! $DOCKER ps -q -f name=watchtower | grep -q .; then
     --cleanup
 fi
 
-# Start chat if it isn’t already running
 if ! $DOCKER ps -q -f name=chat | grep -q .; then
   $DOCKER run -d \
     --name chat \
