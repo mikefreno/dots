@@ -1,5 +1,17 @@
 #!/bin/bash
 
+declare -a BLOCKED_TITLES=(
+    "Path of Exile 2"
+)
+
+current_title="$(hyprctl activewindow -j | jq -r '.title')"
+
+for blocked in "${BLOCKED_TITLES[@]}"; do
+    if [[ "$current_title" == *"$blocked"* ]]; then
+        exit 0
+    fi
+done
+
 current_workspace=$(hyprctl -j activeworkspace | jq -r '.id')
 current_monitor=$(hyprctl -j activeworkspace | jq -r '.monitorID')
 
