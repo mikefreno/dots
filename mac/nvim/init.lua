@@ -64,9 +64,18 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.hl.on_yank()
 	end,
 })
+
 -- keybinds --
-vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- wrap file
+vim.keymap.set("", "k", function()
+	return vim.api.nvim_win_get_cursor(0)[1] == 1 and "G" or "k"
+end, { expr = true, silent = true })
+
+vim.keymap.set("", "j", function()
+	local last_line = vim.api.nvim_buf_line_count(0)
+	return vim.api.nvim_win_get_cursor(0)[1] == last_line and "gg" or "j"
+end, { expr = true, silent = true })
 
 vim.api.nvim_command("source ~/.config/nvim/move_line.vim")
 vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>} <Esc>Oreturn err<Esc>")
@@ -74,20 +83,6 @@ vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>} <Esc>Oreturn err<Esc>")
 vim.api.nvim_set_keymap("n", "<leader>[", ":bp<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>]", ":bn<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>sx",
-	":lua vim.api.nvim_del_line(vim.api.nvim_get_current_line()); vim.api.nvim_put_line(vim.api.nvim_get_current_line() - 1, vim.api.nvim_get_line(vim.api.nvim_get_current_line()))<CR>",
-	{ noremap = true, silent = true }
-)
-
-vim.cmd([[
-  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-]])
-
-vim.api.nvim_set_keymap("i", "<Tab>", 'pumvisible() ? "\\<C-y>" : "\\<Tab>"', { expr = true, noremap = true })
 -- package manager setup --
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -154,9 +149,6 @@ require("lazy").setup({
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require("harpoon"):setup()
-		end,
 		keys = {
 			{
 				"<leader>a",
@@ -534,7 +526,7 @@ require("lazy").setup({
 				-- <c-k>: Toggle signature help
 				--
 				-- See :h blink-cmp-config-keymap for defining your own keymap
-				preset = "default",
+				preset = "super-tab",
 			},
 
 			appearance = {
@@ -670,9 +662,10 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 		},
+		keys = { "<leader>t", ":NvimTreeToggle<CR>", mode = "n", desc = "[U]ndo[T]ree" },
 		config = function()
 			require("nvim-tree").setup({
-				sort_by = "case_sensitive",
+				sort_by = "name",
 				view = {
 					relativenumber = true,
 					width = 30,
@@ -1053,52 +1046,21 @@ require("lazy").setup({
 		config = function()
 			local colors = require("colors")
 
-			local cfg_path = os.getenv("HOME") .. "/.config/ghostty/config"
-
-			-- Helper: replace the `theme` line with a new value
-			local function replace_theme_line(new_value)
-				-- Grab the whole file, replace the line that starts with "theme"
-				local file = vim.fn.readfile(cfg_path)
-				local found = false
-				for i, line in ipairs(file) do
-					if line:match("^theme%s*=") then
-						file[i] = "theme = " .. new_value
-						found = true
-						break
-					end
-				end
-				if not found then
-					-- If the line doesn't exist, append it
-					table.insert(file, "theme = " .. new_value)
-				end
-				vim.fn.writefile(file, cfg_path)
+			local function run_applescript(script)
+				-- Escape the script so osascript sees it correctly
+				local escaped = vim.fn.shellescape(script)
+				-- Either use vim.fn.system() or os.execute()
+				os.execute("osascript -e " .. escaped)
 			end
 
-			-- Toggle between the two settings
-			local function ghostty_toggle_theme()
-				-- Read the current config to decide what to switch to
-				local content = table.concat(vim.fn.readfile(cfg_path), "\n")
-				if content:find("^theme%s*=\\s*catppuccin%-mocha") then
-					replace_theme_line("dark:catppuccin-mocha,light:GruvboxLight")
-				else
-					replace_theme_line("catppuccin-mocha")
-				end
-				-- Tell Ghostty to reload
-				local script = [[
-        tell application "System Events"
-            keystroke "," using {command down, shift down}
-        end tell
-    ]]
-				vim.fn.system(string.format("osascript -e '%s'", script))
-			end
-
+			-- Toggle fullscreen (⌘‑⌃‑F)
 			local function toggle_fullscreen()
 				local script = [[
-        tell application "System Events"
-            keystroke "f" using {command down, control down}
-        end tell
-    ]]
-				vim.fn.system(string.format("osascript -e '%s'", script))
+    tell application "System Events"
+        keystroke "f" using {command down, control down}
+    end tell
+  ]]
+				run_applescript(script)
 			end
 
 			require("zen-mode").setup({
@@ -1127,12 +1089,7 @@ require("lazy").setup({
 					tmux = { enabled = true },
 				},
 				on_open = function()
-					vim.g.pre_zen_theme = vim.g.current_theme
-
-					colors.change_theme("mocha", true)
-
 					toggle_fullscreen()
-					ghostty_toggle_theme()
 
 					-- Safely handle notify
 					local ok, notify = pcall(require, "notify")
@@ -1145,7 +1102,6 @@ require("lazy").setup({
 				end,
 				on_close = function()
 					toggle_fullscreen()
-					colors.change_theme(vim.g.pre_zen_theme or colors.get_system_theme(), false)
 
 					local ok, notify = pcall(require, "notify")
 					if ok then
@@ -1191,10 +1147,31 @@ require("lazy").setup({
 	},
 })
 
-vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+--- package keymaps (don't support `keys`)
+local harpoon = require("harpoon")
+harpoon:setup()
 
-pcall(require("telescope").load_extension, "fzf")
-vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
+vim.keymap.set("n", "<leader>a", function()
+	harpoon:list():add()
+end)
+vim.keymap.set("n", "<leader>h", function()
+	harpoon.ui:toggle_quick_menu(harpoon:list())
+end)
+
+vim.keymap.set("n", "<leader>1", function()
+	harpoon:list():select(1)
+end)
+vim.keymap.set("n", "<leader>2", function()
+	harpoon:list():select(2)
+end)
+vim.keymap.set("n", "<leader>3", function()
+	harpoon:list():select(3)
+end)
+vim.keymap.set("n", "<leader>4", function()
+	harpoon:list():select(4)
+end)
+
+vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 -- Additional lsp servers --
 require("lspconfig").sourcekit.setup({
@@ -1207,6 +1184,7 @@ require("lspconfig").ocamllsp.setup({
 	cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
 	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
 })
+
 --tailwind sort
 vim.api.nvim_set_keymap("n", "<leader>st", ":TailwindSort<CR>", { noremap = true, silent = true })
 vim.cmd([[runtime macros/matchit.vim]])
