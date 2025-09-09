@@ -80,9 +80,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logger.Printf("Auth: %s", auth)
 	tokenStr := strings.TrimSpace(auth[len("Bearer "):])
-	logger.Printf("TokenStr: %s", tokenStr)
 
 	claims, err := parseAndValidate(tokenStr)
 	if err != nil {
