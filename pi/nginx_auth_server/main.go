@@ -19,6 +19,21 @@ func logRequest(r *http.Request) {
 
 }
 
+func parseAndValidate(jwtString string) {
+	parsed, err := jwt.Parse(jwtString, func(t *jwt.Token) (interface{}, error) {
+		if t.Method.Alg() != "EdDSA" {
+			return nil, errors.New("wrong alg")
+		}
+		return pub, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if parsed.Valid {
+		return parsed.claims, nil
+	}
+}
+
 // handler runs for every request; it logs the request and does the auth check.
 func handler(w http.ResponseWriter, r *http.Request) {
 	//logRequest(r)
