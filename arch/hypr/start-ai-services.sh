@@ -1,5 +1,6 @@
 #!/bin/bash
-OLLAMA_HOST=0.0.0.0 ollama serve &>/dev/null &
+OLLAMA_HOST=0.0.0.0 nohup ollama serve &>/dev/null &
+nohup lms server start &>/dev/null &
 
 #COMFYUI_DIR="/home/mike/ComfyUI"
 

@@ -47,8 +47,8 @@ require("lazy").setup({
 	"OmniSharp/omnisharp-vim",
 	"ionide/Ionide-vim",
 	"tikhomirov/vim-glsl",
-  "vuciv/golf",
-  "elkowar/yuck.vim",
+	"vuciv/golf",
+	"elkowar/yuck.vim",
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
@@ -539,12 +539,12 @@ require("lazy").setup({
 
 -- LSP's not supported by Mason
 --require("lspconfig").sourcekit.setup({
-	--cmd = { "sourcekit-lsp" },
-	--filetypes = { "swift", "objective-c", "objective-cpp" },
+--cmd = { "sourcekit-lsp" },
+--filetypes = { "swift", "objective-c", "objective-cpp" },
 --})
 --require("lspconfig").ocamllsp.setup({
-	--cmd = { "ocamllsp" },
-	--filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
+--cmd = { "ocamllsp" },
+--filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
 --})
 
 require("colors").setup_highlights()
@@ -785,7 +785,7 @@ local servers = {
 	ts_ls = { hint = { enable = true } },
 	lua_ls = {
 		Lua = {
-      --workspace = { checkThirdParty = false },
+			workspace = { checkThirdParty = false },
 			telemetry = { enable = false },
 			hint = { enable = true },
 		},
