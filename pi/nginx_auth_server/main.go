@@ -2,6 +2,8 @@ package main
 
 import (
 	"crypto/ed25519"
+	"crypto/x509"
+	"encoding/pem"
 	"errors"
 	"fmt"
 	"log"
@@ -27,16 +29,32 @@ func logRequest(r *http.Request) {
 }
 
 func loadPublicKey(path string) (ed25519.PublicKey, error) {
-	// Example: load a raw 32‑byte key from a file
-	// (you could also read a PEM block and call x509.ParsePKIXPublicKey)
-	data, err := os.ReadFile(path)
+	raw, err := os.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("read %s: %w", path, err)
 	}
-	if len(data) != ed25519.PublicKeySize {
-		return nil, fmt.Errorf("public key must be %d bytes, got %d", ed25519.PublicKeySize, len(data))
+
+	// If the file is PEM‑encoded (most OpenSSL outputs are PEM)
+	block, _ := pem.Decode(raw)
+	if block == nil {
+		// maybe it’s already the raw DER file – try to use it directly
+		if len(raw) == ed25519.PublicKeySize {
+			return ed25519.PublicKey(raw), nil
+		}
+		return nil, fmt.Errorf("key is not PEM‑encoded and is not 32 bytes")
 	}
-	return ed25519.PublicKey(data), nil
+
+	// block.Bytes contains the DER‑encoded SubjectPublicKeyInfo
+	pub, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		return nil, fmt.Errorf("parse PKIX: %w", err)
+	}
+
+	edPub, ok := pub.(ed25519.PublicKey)
+	if !ok {
+		return nil, fmt.Errorf("not an Ed25519 key")
+	}
+	return edPub, nil
 }
 
 func parseAndValidate(jwtString string) (map[string]interface{}, error) {
