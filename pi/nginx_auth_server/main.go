@@ -14,42 +14,38 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var pubKey ed25519.PublicKey
+var (
+	pubKey ed25519.PublicKey
+	logger *log.Logger
+)
 
 func logRequest(r *http.Request) {
-	log.Printf("%s %s %s", r.Method, r.URL.RequestURI(), r.Proto)
-
-	// Headers
+	logger.Printf("=== REQUEST ===")
+	logger.Printf("%s %s %s", r.Method, r.RequestURI, r.Proto)
 	for k, v := range r.Header {
 		for _, h := range v {
-			log.Printf("%s: %s", k, h)
+			logger.Printf("Header: %s=%s", k, h)
 		}
 	}
-
 }
 
+// reads an Ed25519 public key from the given PEM file.
 func loadPublicKey(path string) (ed25519.PublicKey, error) {
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("read %s: %w", path, err)
 	}
-
-	// If the file is PEM‑encoded (most OpenSSL outputs are PEM)
 	block, _ := pem.Decode(raw)
-	if block == nil {
-		// maybe it’s already the raw DER file – try to use it directly
+	if block == nil { // maybe raw DER
 		if len(raw) == ed25519.PublicKeySize {
 			return ed25519.PublicKey(raw), nil
 		}
-		return nil, fmt.Errorf("key is not PEM‑encoded and is not 32 bytes")
+		return nil, fmt.Errorf("key is not PEM‑encoded and is not 32 bytes")
 	}
-
-	// block.Bytes contains the DER‑encoded SubjectPublicKeyInfo
 	pub, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
 		return nil, fmt.Errorf("parse PKIX: %w", err)
 	}
-
 	edPub, ok := pub.(ed25519.PublicKey)
 	if !ok {
 		return nil, fmt.Errorf("not an Ed25519 key")
@@ -59,63 +55,71 @@ func loadPublicKey(path string) (ed25519.PublicKey, error) {
 
 func parseAndValidate(jwtString string) (map[string]interface{}, error) {
 	parsed, err := jwt.Parse(jwtString, func(t *jwt.Token) (interface{}, error) {
-		// 1️⃣ Make sure the alg is EdDSA
 		if t.Method.Alg() != "EdDSA" {
 			return nil, errors.New("wrong alg")
 		}
-		// 2️⃣ Provide the public key that should be used for verification
 		return pubKey, nil
 	})
 	if err != nil {
 		return nil, err
 	}
-
 	claims, ok := parsed.Claims.(jwt.MapClaims)
 	if !ok {
-		return nil, errors.New("claims are not a MapClaims")
+		return nil, errors.New("claims are not MapClaims")
 	}
-
 	return map[string]interface{}(claims), nil
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	logRequest(r)
 
 	origURI := r.Header.Get("X-Original-Uri")
 	if origURI == "" {
 		http.Error(w, "token missing", http.StatusUnauthorized)
 		return
 	}
-
 	u, err := url.Parse(origURI)
 	if err != nil {
 		http.Error(w, "token parse error", http.StatusUnauthorized)
 		return
 	}
-
 	tokenStr := u.Query().Get("token")
-	log.Printf(tokenStr)
+	if tokenStr == "" {
+		http.Error(w, "token missing", http.StatusUnauthorized)
+		return
+	}
 
 	claims, err := parseAndValidate(tokenStr)
 	if err != nil {
-		log.Printf("⚠️  token rejected: %v", err)
+		logger.Printf("⚠️  token rejected: %v", err)
 		http.Error(w, "invalid token", http.StatusUnauthorized)
 		return
 	}
-	log.Print(claims)
+
+	logger.Printf("Claims: %+v", claims)
+	w.WriteHeader(http.StatusOK)
 }
 
 func main() {
-	var err error
-	pubKey, err = loadPublicKey("/etc/auth/client_public.pem")
+	f, err := os.OpenFile(
+		"auth_server.log",
+		os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0640)
 	if err != nil {
-		panic(err)
+		log.Fatalf("could not open audit log file: %v", err)
+	}
+	defer f.Close()
+	logger = log.New(f, "", log.LstdFlags|log.Lshortfile)
+
+	var errLoad error
+	pubKey, errLoad = loadPublicKey("/etc/auth/client_public.pem")
+	if errLoad != nil {
+		logger.Fatalf("could not load public key: %v", errLoad)
 	}
 
 	http.HandleFunc("/", handler)
-
 	addr := ":9000"
-	log.Printf("Starting auth server on %s\n", addr)
+	logger.Printf("Starting auth server on %s", addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {
-		log.Fatalf("ListenAndServe: %v", err)
+		logger.Fatalf("ListenAndServe: %v", err)
 	}
 }
