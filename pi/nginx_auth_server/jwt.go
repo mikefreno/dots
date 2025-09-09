@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/golang-jwt/jwt/v5"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 // ----- 1️⃣  Load the secret ------------------------------------
@@ -14,7 +14,7 @@ var jwtSecret []byte
 
 func init() {
 	// Read once at start‑up.  Change the path if you moved the file.
-	const secretFile = "~/dots/pi/nginx_auth_server/secret.key"
+	const secretFile = "/etc/auth/secret.key"
 
 	b, err := os.ReadFile(secretFile)
 	if err != nil {
