@@ -157,10 +157,6 @@ server {
 # ===================================================================
 
 server {
-    if ($host = lm.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
 
     listen 80;
     server_name lm.freno.me;
@@ -195,6 +191,8 @@ server {
 
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
+
+    	proxy_set_header Authorization $http_authorization;
     }
 }
 
