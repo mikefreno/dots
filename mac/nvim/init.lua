@@ -471,15 +471,16 @@ require("lazy").setup({
 				go = { "gofmt" },
 				c = { "clang-format" },
 				cpp = { "clang-format" },
-				json = {
-					{
-						command = "jq",
-						args = { "." }, -- `jq .` pretty‑prints
-						stdin = true, -- send the buffer to stdin
-						-- Optional, but you can specify which exit codes count as success
-						exit_codes = { 0, 1 }, -- jq returns 1 for already‑formatted files
-					},
-				},
+				json = { "jq" },
+				--json = {
+				--{
+				--command = "jq",
+				--args = { "." }, -- `jq .` pretty‑prints
+				--stdin = true, -- send the buffer to stdin
+				---- Optional, but you can specify which exit codes count as success
+				--exit_codes = { 0, 1 }, -- jq returns 1 for already‑formatted files
+				--},
+				--},
 				-- You can use option 'stop_after_first = true' to run the first available formatter from the list
 			},
 		},
