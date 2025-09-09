@@ -92,7 +92,7 @@ server {
 
 
 # ===================================================================
-# SERVICE 3: AI Service
+# SERVICE 3: OpenWebUI + direct API
 # DOMAIN:    ai.freno.me
 # BACKEND:   http://127.0.0.1:8082
 # ===================================================================
@@ -106,8 +106,6 @@ server {
     listen 80;
     server_name ai.freno.me;
     return 301 https://$server_name$request_uri;
-
-
 }
 
 server {
@@ -123,17 +121,91 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         
-        # Websocket support (if needed by your AI service)
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
     }
 
+    location /apid {
+        auth_request /auth;
+        auth_request_set $auth_status $upstream_status;
+
+        proxy_pass http://0.0.0.0:11434;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    location = /auth {
+        internal;
+        proxy_pass http://127.0.0.1:9000;
+        proxy_set_header  X-Original-URI $request_uri;  # helpful for debugging
+
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+    }
+
     ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/ai.freno.me/privkey.pem; # managed by Certbot
 }
+
 # ===================================================================
-# SERVICE 4: File Browser
+# SERVICE 4: lm studio
+# DOMAIN:    lm.freno.me
+# BACKEND:   http://127.0.0.1:8084
+# ===================================================================
+
+server {
+    if ($host = lm.freno.me) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+
+    listen 80;
+    server_name lm.freno.me;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name lm.freno.me;
+
+    client_max_body_size 100M;
+
+    location / {
+        auth_request /auth;
+        auth_request_set $auth_status $upstream_status;
+
+        proxy_pass http://atlas.local:8084;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    location = /auth {
+        internal;
+        proxy_pass http://127.0.0.1:9000;
+        proxy_set_header  X-Original-URI $request_uri;
+
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+
+    	proxy_set_header Authorization $http_authorization;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/lm.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/lm.freno.me/privkey.pem; # managed by Certbot
+}
+
+# ===================================================================
+# SERVICE 5: File Browser
 # DOMAIN:    files.freno.me
 # BACKEND:   http://127.0.0.1:8083
 # ===================================================================
@@ -168,9 +240,17 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/files.freno.me/privkey.pem; # managed by Certbot
 }
 
+
+# ===================================================================
+# SERVICE 6: Comfy (ai image pipeline)
+# DOMAIN:    ai.freno.me
+# BACKEND:   http://atlas.local:8188;
+# ===================================================================
+
+
 server {
     if ($host = comfy.freno.me) {
-        return 301 https://$host$request_uri;
+	return 301 https://$host$request_uri;
     } # managed by Certbot
 
 
@@ -186,14 +266,14 @@ server {
     server_name comfy.freno.me;
 
     location / {
-        proxy_pass http://atlas.local:8188;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+	proxy_pass http://atlas.local:8188;
+	proxy_set_header Host $host;
+	proxy_set_header X-Real-IP $remote_addr;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Forwarded-Proto $scheme;
 
-        auth_basic "Restricted Access";
-        auth_basic_user_file /etc/nginx/.htpasswd;
+	auth_basic "Restricted Access";
+	auth_basic_user_file /etc/nginx/.htpasswd;
     }
 
     ssl_certificate /etc/letsencrypt/live/comfy.freno.me/fullchain.pem; # managed by Certbot

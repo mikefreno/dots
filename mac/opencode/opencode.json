@@ -1,0 +1,21 @@
+{
+  "tui": {
+    "theme": "system"
+  },
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio",
+      "options": {
+        "baseURL": "https://lm.freno.me/v1",
+        "apiKey": "{file:~/.config/opencode/my.key}"
+      },
+      "models": {
+        "qwen3/qwen3-coder-30b": {
+          "name": "Qwen3 coder"
+        }
+      }
+    }
+  }
+}

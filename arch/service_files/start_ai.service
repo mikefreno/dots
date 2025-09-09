@@ -1,0 +1,17 @@
+[Unit]
+Description=Start ai services
+After=network.target
+
+[Service]
+Type=simple
+User=mike
+WorkingDirectory=/home/mike/dots/arch/hypr
+ExecStart=/home/mike/dots/arch/hypr/start-ai-services.sh
+Restart=on-failure
+RestartSec=10s
+# Send stdout/stderr straight to journalctl
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

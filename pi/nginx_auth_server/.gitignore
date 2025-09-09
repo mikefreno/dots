@@ -1,0 +1,4 @@
+*private*.pem
+*.env
+*.log
+auth

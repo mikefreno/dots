@@ -7,15 +7,15 @@ return {
 	-- This is a font configuration for SF Pro and SF Mono (installed manually)
 	font = require("helpers.default_font"),
 
-	 --font = {
-	   --text = "SauceCodePro Nerd Font", -- Used for text
-	   --numbers = "SauceCodePro Nerd Font", -- Used for numbers
-	   --style_map = {
-		 --["Regular"] = "Regular",
-		 --["Semibold"] = "Medium",
-		 --["Bold"] = "SemiBold",
-		 --["Heavy"] = "Bold",
-		 --["Black"] = "ExtraBold",
-	   --},
-	 --},
+	--font = {
+	--text = "SauceCodePro Nerd Font Mono", -- Used for text
+	--numbers = "SauceCodePro Nerd Font Mono", -- Used for numbers
+	--style_map = {
+	--["Regular"] = "Regular",
+	--["Semibold"] = "Medium",
+	--["Bold"] = "SemiBold",
+	--["Heavy"] = "Bold",
+	--["Black"] = "ExtraBold",
+	--},
+	--},
 }

@@ -1,0 +1,17 @@
+[Unit]
+Description=Auth Endpoint
+After=network.target
+
+[Service]
+Type=simple
+User=mike
+WorkingDirectory=/home/mike/dots/pi/nginx_auth_server
+ExecStart=/home/mike/dots/pi/nginx_auth_server/auth
+Restart=on-failure
+RestartSec=10s
+# Send stdout/stderr straight to journalctl
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
