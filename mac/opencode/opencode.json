@@ -1,0 +1,21 @@
+{
+  "tui": {
+    "theme": "system"
+  },
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama",
+      "options": {
+        "baseURL": "https://lm.freno.me/v1",
+        "apiKey": "{files:~/.config/opencode/api.key}"
+      },
+      "models": {
+        "qwen3-coder:latest": {
+          "name": "Qwen3 coder"
+        }
+      }
+    }
+  }
+}
