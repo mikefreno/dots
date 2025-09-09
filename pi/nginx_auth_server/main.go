@@ -1,11 +1,18 @@
 package main
 
 import (
+	"crypto/ed25519"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"net/url"
+	"os"
+
+	"github.com/golang-jwt/jwt/v4"
 )
+
+var pubKey ed25519.PublicKey
 
 func logRequest(r *http.Request) {
 	log.Printf("%s %s %s", r.Method, r.URL.RequestURI(), r.Proto)
@@ -19,26 +26,42 @@ func logRequest(r *http.Request) {
 
 }
 
-func parseAndValidate(jwtString string) {
+func loadPublicKey(path string) (ed25519.PublicKey, error) {
+	// Example: load a raw 32‑byte key from a file
+	// (you could also read a PEM block and call x509.ParsePKIXPublicKey)
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	if len(data) != ed25519.PublicKeySize {
+		return nil, fmt.Errorf("public key must be %d bytes, got %d", ed25519.PublicKeySize, len(data))
+	}
+	return ed25519.PublicKey(data), nil
+}
+
+func parseAndValidate(jwtString string) (map[string]interface{}, error) {
 	parsed, err := jwt.Parse(jwtString, func(t *jwt.Token) (interface{}, error) {
+		// 1️⃣ Make sure the alg is EdDSA
 		if t.Method.Alg() != "EdDSA" {
 			return nil, errors.New("wrong alg")
 		}
-		return pub, nil
+		// 2️⃣ Provide the public key that should be used for verification
+		return pubKey, nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	if parsed.Valid {
-		return parsed.claims, nil
+
+	claims, ok := parsed.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, errors.New("claims are not a MapClaims")
 	}
+
+	return map[string]interface{}(claims), nil
 }
 
-// handler runs for every request; it logs the request and does the auth check.
 func handler(w http.ResponseWriter, r *http.Request) {
-	//logRequest(r)
 
-	// 1️⃣  Pull the token – you can also pull it from a header
 	origURI := r.Header.Get("X-Original-Uri")
 	if origURI == "" {
 		http.Error(w, "token missing", http.StatusUnauthorized)
@@ -60,13 +83,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid token", http.StatusUnauthorized)
 		return
 	}
-
-	// 3️⃣  (Optional)  Use the claims in your business logic
-	//    e.g. user ID is claims.Sub, roles are claims.Roles
-	fmt.Fprintf(w, "✅  Auth OK – user=%s, roles=%v\n", claims.Sub, claims.Roles)
+	log.Print(claims)
 }
 
 func main() {
+	var err error
+	pubKey, err = loadPublicKey("/etc/auth/client_public.pem")
+	if err != nil {
+		panic(err)
+	}
+
 	http.HandleFunc("/", handler)
 
 	addr := ":9000"
