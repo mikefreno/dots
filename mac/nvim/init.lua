@@ -78,10 +78,15 @@ vim.keymap.set("", "j", function()
 end, { expr = true, silent = true })
 
 vim.api.nvim_command("source ~/.config/nvim/move_line.vim")
-vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>} <Esc>Oreturn err<Esc>")
 
 vim.api.nvim_set_keymap("n", "<leader>[", ":bp<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>]", ":bn<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>} <Esc>Oreturn err<Esc>")
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- package manager setup --
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
