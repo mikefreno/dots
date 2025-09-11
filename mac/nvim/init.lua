@@ -128,17 +128,16 @@ require("lazy").setup({
 			vim.g.vimtex_compiler_method = "latexmk"
 		end,
 	},
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		opts = {},
-		config = function()
-			require("ibl").setup()
-		end,
-	},
+	--{
+	--"lukas-reineke/indent-blankline.nvim",
+	--main = "ibl",
+	--opts = {},
+	--config = function()
+	--require("ibl").setup()
+	--end,
+	--},
 	{
 		"mbbill/undotree",
-		keys = { "<leader>ut", ":UndotreeToggle", mode = "n", desc = "[U]ndo[T]ree" },
 	},
 	{
 		"S1M0N38/love2d.nvim",
@@ -154,56 +153,6 @@ require("lazy").setup({
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		keys = {
-			{
-				"<leader>a",
-				function()
-					require("harpoon").list():add()
-				end,
-				mode = "n",
-				desc = "[A]dd file to Harpoon list",
-			},
-			{
-				"<leader>h",
-				function()
-					require("harpoon").ui:toggle_quick_menu(require("harpoon").list())
-				end,
-				mode = "n",
-				desc = "Toggle [H]arpoon quick‑menu",
-			},
-			{
-				"<leader>1",
-				function()
-					require("harpoon").list():select(1)
-				end,
-				mode = "n",
-				desc = "Select Harpoon item [1]",
-			},
-			{
-				"<leader>2",
-				function()
-					require("harpoon").list():select(2)
-				end,
-				mode = "n",
-				desc = "Select Harpoon item [2]",
-			},
-			{
-				"<leader>3",
-				function()
-					require("harpoon").list():select(3)
-				end,
-				mode = "n",
-				desc = "Select Harpoon item [3]",
-			},
-			{
-				"<leader>4",
-				function()
-					require("harpoon").list():select(4)
-				end,
-				mode = "n",
-				desc = "Select Harpoon item [4]",
-			},
-		},
 	},
 	{
 		"chrisgrieser/nvim-spider",
@@ -522,33 +471,19 @@ require("lazy").setup({
 		--- @type blink.cmp.Config
 		opts = {
 			keymap = {
-				-- For an understanding of why the 'default' preset is recommended,
-				-- you will need to read `:help ins-completion`
-				-- All presets have the following mappings:
-				-- <tab>/<s-tab>: move to right/left of your snippet expansion
-				-- <c-space>: Open menu or open docs if already open
-				-- <c-n>/<c-p> or <up>/<down>: Select next/previous item
-				-- <c-e>: Hide menu
-				-- <c-k>: Toggle signature help
-				--
-				-- See :h blink-cmp-config-keymap for defining your own keymap
 				preset = "super-tab",
 			},
 
 			appearance = {
-				-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-				-- Adjusts spacing to ensure icons are aligned
 				nerd_font_variant = "mono",
 			},
 
 			completion = {
-				-- By default, you may press `<c-space>` to show the documentation.
-				-- Optionally, set `auto_show = true` to show the documentation after a delay.
-				documentation = { auto_show = false, auto_show_delay_ms = 500 },
+				documentation = { auto_show = true, auto_show_delay_ms = 500 },
 			},
 
 			sources = {
-				default = { "lsp", "path", "snippets", "lazydev" },
+				default = { "lsp", "path", "snippets", "lazydev", "buffer" },
 				providers = {
 					lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
 				},
@@ -563,7 +498,7 @@ require("lazy").setup({
 			-- the rust implementation via `'prefer_rust_with_warning'`
 			--
 			-- See :h blink-cmp-config-fuzzy for more information
-			fuzzy = { implementation = "lua" },
+			fuzzy = { implementation = "prefer_rust_with_warning" },
 
 			-- Shows a signature help window while you type arguments for a function
 			signature = { enabled = true },
@@ -1131,6 +1066,65 @@ require("lazy").setup({
 		end,
 		config = true,
 	},
+	{
+		"NickvanDyke/opencode.nvim",
+		dependencies = {
+			-- Recommended for better prompt input, and required to use `opencode.nvim`'s embedded terminal — otherwise optional
+			{ "folke/snacks.nvim", opts = { input = { enabled = true } } },
+		},
+		config = function()
+			vim.g.opencode_opts = {
+				-- Your configuration, if any — see `lua/opencode/config.lua`
+			}
+
+			-- Required for `opts.auto_reload`
+			vim.opt.autoread = true
+
+			-- Recommended keymaps
+			vim.keymap.set("n", "<leader>ot", function()
+				require("opencode").toggle()
+			end, { desc = "[O]pencode [t]oggle" })
+
+			vim.keymap.set("n", "<leader>oA", function()
+				require("opencode").ask()
+			end, { desc = "[O]pencode [A]sk" })
+
+			vim.keymap.set("n", "<leader>oa", function()
+				require("opencode").ask("@cursor: ")
+			end, { desc = "[O]pencode [a]sk about cursor" })
+
+			vim.keymap.set("v", "<leader>oa", function()
+				require("opencode").ask("@selection: ")
+			end, { desc = "[O]pencode [a]sk about selection" })
+
+			vim.keymap.set("n", "<leader>oab", function()
+				require("opencode").ask("@buffer: ")
+			end, { desc = "[O]pencode [a]sk about current [b]uffer" })
+
+			vim.keymap.set("n", "<leader>oaB", function()
+				require("opencode").ask("@buffers: ")
+			end, { desc = "[O]pencode [a]sk about all [B]uffers" })
+
+			vim.keymap.set("n", "<leader>on", function()
+				require("opencode").command("session_new")
+			end, { desc = "[O]pencode [n]ew session" })
+
+			vim.keymap.set("n", "<leader>oy", function()
+				require("opencode").command("messages_copy")
+			end, { desc = "[O]pencode [y]ank response" })
+
+			vim.keymap.set("n", "<S-C-u>", function()
+				require("opencode").command("messages_half_page_up")
+			end, { desc = "Messages half page up" })
+			vim.keymap.set("n", "<S-C-d>", function()
+				require("opencode").command("messages_half_page_down")
+			end, { desc = "Messages half page down" })
+
+			vim.keymap.set({ "n", "v" }, "<leader>os", function()
+				require("opencode").select()
+			end, { desc = "[O]pencode [s]elect prompt" })
+		end,
+	},
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1178,6 +1172,7 @@ vim.keymap.set("n", "<leader>4", function()
 end)
 
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = true, silent = true })
 
 -- Additional lsp servers --
 require("lspconfig").sourcekit.setup({
