@@ -3,6 +3,7 @@
     "theme": "system"
   },
   "$schema": "https://opencode.ai/config.json",
+  "snapshot": false,
   "provider": {
     "lmstudio": {
       "npm": "@ai-sdk/openai-compatible",
@@ -12,7 +13,18 @@
         "apiKey": "{file:~/.config/opencode/my.key}"
       },
       "models": {
-        "unsloth/GLM-4.5-Air-GGUF/GLM-4.5-Air-UD-IQ2_XX": {}
+        "unsloth/GLM-4.5-Air-GGUF/GLM-4.5-Air-UD-IQ2_XX": {},
+        "bytedance/seed-oss-36b": {}
+      }
+    },
+    "local": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM-Local",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1",
+      },
+      "models": {
+				"qwen/qwen3-4b-thinking-2507": {}
       }
     }
   },
@@ -55,6 +67,18 @@
     "lua": {
       "command": [
         "lua-language-server"
+      ],
+      "extensions": [
+        ".lua"
+      ]
+    }
+  },
+  "formatter": {
+    "stylua": {
+      "command": [
+        "stylua",
+        "--check",
+        "$FILE"
       ],
       "extensions": [
         ".lua"
