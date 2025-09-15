@@ -110,6 +110,7 @@ require("lazy").setup({
 	"wakatime/vim-wakatime",
 	"mattn/emmet-vim",
 	"preservim/nerdcommenter",
+	"mbbill/undotree",
 	"luckasRanarison/tailwind-tools.nvim",
 	-- language specific plugins
 	"keith/swift.vim",
@@ -129,9 +130,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"mbbill/undotree",
-	},
-	{
 		"S1M0N38/love2d.nvim",
 		cmd = "LoveRun",
 		opts = {},
@@ -140,6 +138,13 @@ require("lazy").setup({
 			{ "<leader>vv", "<cmd>LoveRun<cr>", ft = "lua", desc = "Run LÖVE" },
 			{ "<leader>vs", "<cmd>LoveStop<cr>", ft = "lua", desc = "Stop LÖVE" },
 		},
+	},
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
 	},
 	{
 		"ThePrimeagen/harpoon",
