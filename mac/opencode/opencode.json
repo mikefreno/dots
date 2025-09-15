@@ -14,8 +14,8 @@
 	"timeout": 900000
       },
       "models": {
-        "unsloth/GLM-4.5-Air-GGUF/GLM-4.5-Air-UD-IQ2_XX": {},
-        "bytedance/seed-oss-36b": {}
+        "openai/gpt-oss-20": {},
+        "qwen/qwen3-coder-30": {}
       }
     },
     "local": {
@@ -25,7 +25,7 @@
         "baseURL": "http://127.0.0.1:1234/v1",
       },
       "models": {
-				"qwen/qwen3-4b-thinking-2507": {}
+	"qwen/qwen3-4b-thinking-2507": {}
       }
     }
   },
