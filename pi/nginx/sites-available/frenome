@@ -126,26 +126,6 @@ server {
         proxy_set_header Connection "upgrade";
     }
 
-    location /apid {
-        auth_request /auth;
-        auth_request_set $auth_status $upstream_status;
-
-        proxy_pass http://0.0.0.0:11434;
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-    }
-
-    location = /auth {
-        internal;
-        proxy_pass http://127.0.0.1:9000;
-        proxy_set_header  X-Original-URI $request_uri;  # helpful for debugging
-
-        proxy_pass_request_body off;
-        proxy_set_header Content-Length "";
-    }
-
     ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/ai.freno.me/privkey.pem; # managed by Certbot
 }
@@ -173,6 +153,7 @@ server {
     server_name lm.freno.me;
 
     client_max_body_size 100M;
+    client_body_buffer_size 32K;
 
     location / {
         auth_request /auth;
@@ -183,6 +164,8 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffers 8 16k;
+        proxy_buffer_size 16k;
         
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
