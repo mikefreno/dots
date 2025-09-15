@@ -128,14 +128,6 @@ require("lazy").setup({
 			vim.g.vimtex_compiler_method = "latexmk"
 		end,
 	},
-	--{
-	--"lukas-reineke/indent-blankline.nvim",
-	--main = "ibl",
-	--opts = {},
-	--config = function()
-	--require("ibl").setup()
-	--end,
-	--},
 	{
 		"mbbill/undotree",
 	},
@@ -334,7 +326,7 @@ require("lazy").setup({
 				ts_ls = { hint = { enable = true } },
 				lua_ls = {
 					Lua = {
-						workspace = { checkThirdParty = false },
+						workspace = { checkThirdParty = true },
 						telemetry = { enable = false },
 						hint = { enable = true },
 					},
