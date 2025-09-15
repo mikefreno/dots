@@ -1,6 +1,7 @@
 ---
 description: Core agent for the project, handles coordination
 mode: primary
+model: openai/gpt-oss-20
 temperature: 1.0
 tools:
   read: true
