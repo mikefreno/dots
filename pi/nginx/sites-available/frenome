@@ -118,6 +118,11 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
+        
+        # Add longer timeout settings for OpenWebUI
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
     }
 
     ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem; # managed by Certbot
@@ -163,6 +168,11 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
+        
+        # Add longer timeout settings for lm studio
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
     }
 
     location = /auth {
@@ -219,7 +229,7 @@ server {
 
 # ===================================================================
 # SERVICE 6: Comfy (ai image pipeline)
-# DOMAIN:    ai.freno.me
+# DOMAIN:    comfy.freno.me
 # BACKEND:   http://atlas.local:8188;
 # ===================================================================
 
