@@ -15,20 +15,15 @@ server {
 # --- Main HTTPS Server Block for Jellyfin ---
 server {
     listen 443 ssl http2;
-    # Listen on both server names
     server_name jellyfin.freno.me mikefreno.tplinkdns.com;
 
-    # SSL Certificates - Certbot will manage these.
-    # It will pick one domain as the primary for the cert name.
     ssl_certificate /etc/letsencrypt/live/jellyfin.freno.me/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/jellyfin.freno.me/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
-    # Allow larger file uploads for media
-    client_max_body_size 10G; # Increased for Jellyfin typical use
+    client_max_body_size 10G;
 
-    # Standard proxy for all traffic
     location / {
         proxy_pass http://127.0.0.1:8096;
         proxy_set_header Host $host;
@@ -37,7 +32,6 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    # Specific location for Jellyfin's websockets
     location /socket {
         proxy_pass http://127.0.0.1:8096;
         proxy_http_version 1.1;
@@ -114,17 +108,27 @@ server {
 
     client_max_body_size 100M;
 
-    location / {
-        proxy_pass http://127.0.0.1:8082;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-    }
+location / {
+    proxy_pass http://127.0.0.1:8082;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For
+$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+
+    # Add longer timeout settings for OpenWebUI
+    proxy_connect_timeout 60s;
+    proxy_send_timeout 60s;
+    proxy_read_timeout 60s;
+
+    # Add streaming optimizations
+    proxy_buffering off;
+    proxy_request_buffering off;
+}
 
     ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/ai.freno.me/privkey.pem; # managed by Certbot
@@ -152,25 +156,35 @@ server {
     listen 443 ssl http2;
     server_name lm.freno.me;
 
-    client_max_body_size 100M;
-    client_body_buffer_size 32K;
+    client_max_body_size 10G;
+    proxy_socket_keepalive on;
 
-    location / {
-        auth_request /auth;
-        auth_request_set $auth_status $upstream_status;
+location / {
+    auth_request /auth;
+    auth_request_set $auth_status
+$upstream_status;
 
-        proxy_pass http://atlas.local:8084;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_buffers 8 16k;
-        proxy_buffer_size 16k;
-        
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-    }
+    proxy_pass http://atlas.local:8084;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For
+$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+
+    # Add longer timeout settings for lm studio
+    proxy_connect_timeout 60s;
+    proxy_send_timeout 60s;
+    proxy_read_timeout 60s;
+
+    # Add streaming optimizations
+    proxy_buffering off;
+    proxy_request_buffering off;
+}
 
     location = /auth {
         internal;
@@ -226,7 +240,7 @@ server {
 
 # ===================================================================
 # SERVICE 6: Comfy (ai image pipeline)
-# DOMAIN:    ai.freno.me
+# DOMAIN:    comfy.freno.me
 # BACKEND:   http://atlas.local:8188;
 # ===================================================================
 

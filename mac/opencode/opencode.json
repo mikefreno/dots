@@ -10,7 +10,8 @@
       "name": "LM Studio",
       "options": {
         "baseURL": "https://lm.freno.me/v1",
-        "apiKey": "{file:~/.config/opencode/my.key}"
+        "apiKey": "{file:~/.config/opencode/my.key}",
+	"timeout": 900000
       },
       "models": {
         "unsloth/GLM-4.5-Air-GGUF/GLM-4.5-Air-UD-IQ2_XX": {},
@@ -25,41 +26,6 @@
       },
       "models": {
 				"qwen/qwen3-4b-thinking-2507": {}
-      }
-    }
-  },
-  "agent": {
-    "buildqwen": {
-      "mode": "primary",
-      "model": "qwen/qwen3-coder-30",
-      "temperature": 0.55,
-      "description": "Qwen set a prefered temperature",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "buildoss": {
-      "mode": "primary",
-      "model": "openai/gpt-oss-20",
-      "description": "OSS set a prefered temperature",
-      "temperature": 0,
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "planoss": {
-      "mode": "primary",
-      "model": "openai/gpt-oss-20",
-      "temperature": 0,
-      "description": "OSS set a prefered temperature, in readonly",
-      "tools": {
-        "write": false,
-        "edit": false,
-        "bash": false
       }
     }
   },
