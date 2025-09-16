@@ -10,7 +10,7 @@
       "name": "LM Studio",
       "options": {
         "baseURL": "http://192.168.0.104:8084/v1",
-        "timeout": 900000
+        "timeout": false
       },
       "models": {
         "openai/gpt-oss-20": {},

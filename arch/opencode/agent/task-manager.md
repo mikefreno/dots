@@ -1,7 +1,7 @@
 ---
 description: "Breaks down complex features into small, verifiable subtasks"
 mode: primary
-model: qwen/qwen3-coder-30
+model: qwen/qwen3-coder-30b
 temperature: 0.7
 tools:
   read: true

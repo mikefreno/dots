@@ -1,7 +1,7 @@
 ---
 description: "Executes coding subtasks in sequence, ensuring completion as specified"
 mode: subagent
-model: qwen/qwen3-coder-30
+model: qwen/qwen3-coder-30b
 temperature: 0.55
 tools:
   read: true

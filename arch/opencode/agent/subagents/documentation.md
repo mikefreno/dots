@@ -1,7 +1,7 @@
 ---
 description: "Documentation authoring agent"
 mode: subagent
-model: openai/gpt-oss-20
+model: qwen/qwen3-coder-30b
 temperature: 0.5
 tools:
   read: true
