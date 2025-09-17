@@ -11,7 +11,7 @@
       "options": {
         "baseURL": "https://lm.freno.me/v1",
         "apiKey": "{file:~/.config/opencode/my.key}",
-	"timeout": 900000
+        "timeout": false
       },
       "models": {
         "openai/gpt-oss-20": {},

@@ -1,7 +1,7 @@
 ---
 description: "Code review, security, and quality assurance agent"
 mode: subagent
-model:  qwen/qwen3-coder-30
+model: qwen/qwen3-coder-30b
 temperature: 0.5
 tools:
   read: true

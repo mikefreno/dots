@@ -1,4 +1,4 @@
 font-size = 16
 font-family = SauceCodePro Nerd Font Mono
-theme = dark:catppuccin-mocha,light:GruvboxLight
+theme = dark:CatppuccinMochaModified,light:GruvboxLightModified
 macos-titlebar-style = hidden

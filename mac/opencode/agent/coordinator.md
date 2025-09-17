@@ -1,8 +1,8 @@
 ---
 description: Core agent for the project, handles coordination
 mode: primary
-model: openai/gpt-oss-20
-temperature: 1.0
+model: qwen/qwen3-coder-30b
+temperature: 0.55
 tools:
   read: true
   edit: true
@@ -72,7 +72,7 @@ After each increment:
 - Use appropriate runtime (node/bun) to execute the code and check for errors before moving on to the next step
 - Run linting (if configured)
 - Run build checks
-- Execute relevant tests
+- Execute *relevant* tests, no need to run unrelated tests
 
 For simple tasks, use the `@subagents/coder-agent` to implement the code to save time.
 
