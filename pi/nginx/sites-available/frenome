@@ -320,7 +320,7 @@ server {
         # Websocket
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Connection "upgrade";
     }
 
     ssl_certificate /etc/letsencrypt/live/nc.freno.me/fullchain.pem; # managed by Certbot
