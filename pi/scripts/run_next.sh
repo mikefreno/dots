@@ -5,8 +5,7 @@ $DOCKER_PATH run -d \
 --sig-proxy=false \
 --name nextcloud-aio-mastercontainer \
 --restart always \
---publish 8080:8080 \
---publish 11000:11000 \
+--publish 8085:8080 \
 --env APACHE_PORT=11000 \
 --env APACHE_IP_BINDING=0.0.0.0 \
 --volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
