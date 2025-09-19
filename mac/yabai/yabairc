@@ -155,7 +155,7 @@ setup_rules() {
     yabai -m rule --add title="^Ubuntu$" space="$main_space" manage=off
     
     yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam)$" manage=off
-    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden)$" manage=off
+    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden|App Store)$" manage=off
 }
 
 # Function to handle display changes
@@ -174,7 +174,6 @@ yabai -m signal --add event=display_added action="$0"
 yabai -m signal --add event=display_removed action="$0"
 yabai -m signal --add event=application_launched app="^LM Studio$" action="$0"
 yabai -m signal --add event=application_terminated app="^LM Studio$" action="$0"
-yabai -m window --focus recent :: svim --mode insert
 
 # Set up spaces
 setup_spaces
