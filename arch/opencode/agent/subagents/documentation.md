@@ -1,7 +1,6 @@
 ---
 description: "Documentation authoring agent"
 mode: subagent
-model: qwen/qwen3-coder-30b
 temperature: 0.5
 tools:
   read: true
