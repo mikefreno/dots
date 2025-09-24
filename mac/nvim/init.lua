@@ -26,6 +26,16 @@ end)
 vim.o.breakindent = true
 vim.o.undofile = true
 
+-- Indentation settings
+vim.o.tabstop = 4        -- Number of spaces a tab counts for
+vim.o.shiftwidth = 4     -- Number of spaces for each step of autoindent
+vim.o.softtabstop = 4    -- Number of spaces a tab counts for while editing
+vim.o.expandtab = true   -- Use spaces instead of tabs
+vim.o.autoindent = true  -- Copy indent from current line when starting new line
+vim.o.smartindent = true -- Smart autoindenting when starting new line
+vim.o.cindent = true     -- Stricter rules for C programs (also works well for other languages)
+vim.o.shiftround = true  -- Round indent to multiple of shiftwidth
+
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
@@ -65,6 +75,36 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+-- Filetype-specific indentation
+vim.api.nvim_create_autocmd("FileType", {
+	desc = "Set indentation for specific file types",
+	group = vim.api.nvim_create_augroup("indentation-settings", { clear = true }),
+	callback = function()
+		local ft = vim.bo.filetype
+		local indent_settings = {
+			lua = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
+			javascript = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
+			typescript = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
+			html = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
+			css = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
+			json = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
+			yaml = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
+			go = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = false }, -- Go uses tabs
+			python = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
+			c = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
+			cpp = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
+			rust = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
+		}
+		
+		local settings = indent_settings[ft]
+		if settings then
+			for option, value in pairs(settings) do
+				vim.bo[option] = value
+			end
+		end
+	end,
+})
+
 -- keybinds --
 
 -- wrap file
@@ -83,6 +123,7 @@ vim.api.nvim_set_keymap("n", "<leader>[", ":bp<CR>", { noremap = true, silent = 
 vim.api.nvim_set_keymap("n", "<leader>]", ":bn<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>} <Esc>Oreturn err<Esc>")
+vim.keymap.set("n", "<leader>gi", ":GuessIndent<CR>", { desc = "[G]uess [I]ndent" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
@@ -106,12 +147,42 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- NOTE: First, some plugins that don't require any configuration
 	{ "tpope/vim-repeat", lazy = false },
-	"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
+	{
+		"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
+		config = function()
+			require("guess-indent").setup({
+				auto_cmd = true, -- Set to false to disable automatic execution
+				override_editorconfig = false, -- Set to true to override settings set by .editorconfig
+				filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
+					"netrw",
+					"tutor",
+				},
+				buftype_exclude = { -- A list of buffer types for which the auto command gets disabled
+					"help",
+					"nofile",
+					"terminal",
+					"prompt",
+				},
+			})
+		end,
+	},
 	"wakatime/vim-wakatime",
 	"mattn/emmet-vim",
 	"preservim/nerdcommenter",
 	"mbbill/undotree",
 	"luckasRanarison/tailwind-tools.nvim",
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
+	},
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
 	-- language specific plugins
 	"keith/swift.vim",
 	"rhysd/vim-clang-format",
@@ -119,6 +190,25 @@ require("lazy").setup({
 	"OmniSharp/omnisharp-vim",
 	"ionide/Ionide-vim",
 	"tikhomirov/vim-glsl",
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
+		keys = {
+			{
+				"<leader>rm",
+				function()
+					require("render-markdown").toggle()
+				end,
+				mode = { "n" },
+				desc = "[R]ender [M]arkdown",
+			},
+		},
+	},
 	{
 		"lervag/vimtex",
 		lazy = false, -- we don't want to lazy load VimTeX
@@ -139,18 +229,7 @@ require("lazy").setup({
 			{ "<leader>vs", "<cmd>LoveStop<cr>", ft = "lua", desc = "Stop LÖVE" },
 		},
 	},
-	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		config = true,
-		-- use opts = {} for passing setup options
-		-- this is equivalent to setup({}) function
-	},
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		dependencies = { "nvim-lua/plenary.nvim" },
-	},
+	-- more complex, non specifics
 	{
 		"chrisgrieser/nvim-spider",
 		opts = {
