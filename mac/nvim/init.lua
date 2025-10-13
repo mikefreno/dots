@@ -27,14 +27,14 @@ vim.o.breakindent = true
 vim.o.undofile = true
 
 -- Indentation settings
-vim.o.tabstop = 4        -- Number of spaces a tab counts for
-vim.o.shiftwidth = 4     -- Number of spaces for each step of autoindent
-vim.o.softtabstop = 4    -- Number of spaces a tab counts for while editing
-vim.o.expandtab = true   -- Use spaces instead of tabs
-vim.o.autoindent = true  -- Copy indent from current line when starting new line
+vim.o.tabstop = 4 -- Number of spaces a tab counts for
+vim.o.shiftwidth = 4 -- Number of spaces for each step of autoindent
+vim.o.softtabstop = 4 -- Number of spaces a tab counts for while editing
+vim.o.expandtab = true -- Use spaces instead of tabs
+vim.o.autoindent = true -- Copy indent from current line when starting new line
 vim.o.smartindent = true -- Smart autoindenting when starting new line
-vim.o.cindent = true     -- Stricter rules for C programs (also works well for other languages)
-vim.o.shiftround = true  -- Round indent to multiple of shiftwidth
+vim.o.cindent = true -- Stricter rules for C programs (also works well for other languages)
+vim.o.shiftround = true -- Round indent to multiple of shiftwidth
 
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -95,7 +95,7 @@ vim.api.nvim_create_autocmd("FileType", {
 			cpp = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
 			rust = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
 		}
-		
+
 		local settings = indent_settings[ft]
 		if settings then
 			for option, value in pairs(settings) do
@@ -314,11 +314,7 @@ require("lazy").setup({
 					---@param bufnr? integer some lsp support methods only in specific files
 					---@return boolean
 					local function client_supports_method(client, method, bufnr)
-						if vim.fn.has("nvim-0.11") == 1 then
-							return client:supports_method(method, bufnr)
-						else
-							return client.supports_method(method, { bufnr = bufnr })
-						end
+						return client:supports_method(method, bufnr)
 					end
 
 					-- The following two autocommands are used to highlight references of the
@@ -366,9 +362,9 @@ require("lazy").setup({
 						client
 						and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
 					then
-						map("<leader>Th", function()
+						map("<leader>ih", function()
 							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-						end, "[T]oggle Inlay [H]ints")
+						end, "Toggle [I]nlay [H]ints")
 					end
 				end,
 			})
@@ -408,11 +404,24 @@ require("lazy").setup({
 				gopls = { hint = { enable = true } },
 				rust_analyzer = { hint = { enable = true } },
 				ts_ls = { hint = { enable = true } },
+				stylua = { enabled = false },
 				lua_ls = {
-					Lua = {
-						workspace = { checkThirdParty = true },
-						telemetry = { enable = false },
-						hint = { enable = true },
+					settings = {
+						Lua = {
+							workspace = { checkThirdParty = false },
+							telemetry = { enable = false },
+							hint = {
+								enable = true,
+								setType = false,
+								paramType = true,
+								paramName = "Disable",
+								semicolon = "Disable",
+								arrayIndex = "Disable",
+							},
+							runtime = {
+								version = "LuaJIT",
+							},
+						},
 					},
 				},
 			}
@@ -431,9 +440,6 @@ require("lazy").setup({
 			-- You can add other tools here that you want Mason to install
 			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format Lua code
-			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
@@ -556,6 +562,9 @@ require("lazy").setup({
 
 			completion = {
 				documentation = { auto_show = true, auto_show_delay_ms = 500 },
+				keyword = {
+					range = "full",
+				},
 			},
 
 			sources = {
@@ -1251,16 +1260,16 @@ vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = tru
 vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = true, silent = true })
 
 -- Additional lsp servers --
-require("lspconfig").sourcekit.setup({
-	cmd = {
-		"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
-	},
-	filetypes = { "swift" },
-})
-require("lspconfig").ocamllsp.setup({
-	cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
-	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
-})
+--require("lspconfig").sourcekit.setup({
+--cmd = {
+--"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
+--},
+--filetypes = { "swift" },
+--})
+--require("lspconfig").ocamllsp.setup({
+--cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
+--filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
+--})
 
 --tailwind sort
 vim.api.nvim_set_keymap("n", "<leader>st", ":TailwindSort<CR>", { noremap = true, silent = true })
