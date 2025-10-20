@@ -158,32 +158,32 @@ server {
     client_max_body_size 10G;
     proxy_socket_keepalive on;
 
-location / {
-    auth_request /auth;
-    auth_request_set $auth_status
-    $upstream_status;
+    location / {
+        auth_request /auth;
+        auth_request_set $auth_status
+        $upstream_status;
 
-    proxy_pass http://atlas.local:8084;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For
-    $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://atlas.local:8084;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For
+        $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
 
 
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
 
-    proxy_read_timeout 1800;
-    proxy_connect_timeout 1800;
-    proxy_send_timeout 1800;
-    send_timeout 1800;
+        proxy_read_timeout 1800;
+        proxy_connect_timeout 1800;
+        proxy_send_timeout 1800;
+        send_timeout 1800;
 
-    # Add streaming optimizations
-    proxy_buffering off;
-    proxy_request_buffering off;
-}
+        # Add streaming optimizations
+        proxy_buffering off;
+        proxy_request_buffering off;
+    }
 
     location = /auth {
         internal;
@@ -236,96 +236,69 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/files.freno.me/privkey.pem; # managed by Certbot
 }
 
-
 # ===================================================================
-# SERVICE 6: Comfy (ai image pipeline)
-# DOMAIN:    comfy.freno.me
-# BACKEND:   http://atlas.local:8188;
-# ===================================================================
-
-
-server {
-    if ($host = comfy.freno.me) {
-	return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    listen 80;
-    server_name comfy.freno.me;
-    return 301 https://$server_name$request_uri;
-
-
-}
-
-server {
-    listen 443 ssl http2;
-    server_name comfy.freno.me;
-
-    location / {
-	proxy_pass http://atlas.local:8188;
-	proxy_set_header Host $host;
-	proxy_set_header X-Real-IP $remote_addr;
-	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	proxy_set_header X-Forwarded-Proto $scheme;
-
-	auth_basic "Restricted Access";
-	auth_basic_user_file /etc/nginx/.htpasswd;
-    }
-
-    ssl_certificate /etc/letsencrypt/live/comfy.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/comfy.freno.me/privkey.pem; # managed by Certbot
-}
-
-# ===================================================================
-# SERVICE 7: Nextcloud
-# DOMAIN:    nc.freno.me
-# BACKEND:   http://127.0.0.1:8085
+# SERVICE 6: llamacpp infill
+# DOMAIN:    infill.freno.me
+# BACKEND:   http://127.0.0.1:8084
 # ===================================================================
 
 server {
-    if ($host = nc.freno.me) {
+    if ($host = infill.freno.me) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
+
+
     listen 80;
-    server_name nc.freno.me;
+    server_name infill.freno.me;
     return 301 https://$server_name$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name nc.freno.me;
+    server_name infill.freno.me;
 
-    proxy_buffering off;
-    proxy_request_buffering off;
-    client_max_body_size 0;
-    client_body_buffer_size 512k;
+    client_max_body_size 10G;
+    proxy_socket_keepalive on;
 
     location / {
-        proxy_pass http://0:0:0:0:11000$request_uri;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Port $server_port;
-        proxy_set_header X-Forwarded-Scheme $scheme;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Real-IP $remote_addr;
+        auth_request /auth;
+        auth_request_set $auth_status
+        $upstream_status;
+
+        proxy_pass http://atlas.local:8123;
         proxy_set_header Host $host;
-        proxy_set_header Early-Data $ssl_early_data;
-        
-        # Websocket support
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For
+        $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_read_timeout 1800;
+        proxy_connect_timeout 1800;
+        proxy_send_timeout 1800;
+        send_timeout 1800;
+
+        # Add streaming optimizations
+        proxy_buffering off;
+        proxy_request_buffering off;
     }
 
-    ssl_certificate /etc/letsencrypt/live/nc.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/nc.freno.me/privkey.pem; # managed by Certbot
-    ssl_dhparam /etc/dhparam;
-    ssl_early_data on;
-    ssl_session_timeout 1d;
-    ssl_session_cache shared:SSL:10m;
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ecdh_curve x25519:x448:secp521r1:secp384r1:secp256r1;
-    ssl_prefer_server_ciphers on;
-    ssl_conf_command Options PrioritizeChaCha;
-    ssl_ciphers TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256;
-}
+    location = /auth {
+        internal;
+        proxy_pass http://127.0.0.1:9000;
+        proxy_set_header  X-Original-URI $request_uri;
 
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+
+    	proxy_set_header Authorization $http_authorization;
+    }
+
+
+    ssl_certificate /etc/letsencrypt/live/infill.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/infill.freno.me/privkey.pem; # managed by Certbot
+}
