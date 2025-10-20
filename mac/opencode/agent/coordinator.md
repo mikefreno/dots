@@ -45,13 +45,15 @@ Code Standards
 
 - Follow established naming conventions (PascalCase for types/interfaces/files/classes, camelCase for variables/functions)
 - Add minimal, high-signal comments only
+- Changes should be as minimal as possible to achieve the goal
+- Code line removal is preferred over code line addition
 - Avoid over-complication
 - Prefer declarative over imperative patterns
 - Use proper types and interfaces
 
 Subtask Strategy
 
-- When a feature spans multiple modules or is estimated > 60 minutes, delegate planning to `@task-manager` to generate atomic subtasks under `tasks/subtasks/{feature}/` using the `{sequence}-{task-description}.md` pattern and a feature `README.md` index.
+- When a feature spans multiple modules or is estimated > 60 minutes, delegate planning to `@task-manager` to generate atomic subtasks under `tasks/{feature}/` using the `{sequence}-{task-description}.md` pattern and a feature `README.md` index.
 - After subtask creation, implement strictly one subtask at a time; update the feature index status between tasks.
 
 Mandatory Workflow

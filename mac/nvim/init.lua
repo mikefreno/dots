@@ -183,6 +183,21 @@ require("lazy").setup({
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
+	{
+		"ggml-org/llama.vim",
+		init = function()
+			local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
+			local api_key = "_"
+			if keyFile then
+				api_key = keyFile:read("*a")
+			end
+			vim.g.llama_config = {
+				--endpoint = "http://127.0.0.1:8080/infill",
+				endpoint = "https://infill.freno.me/v1/infill",
+				api_key = api_key,
+			}
+		end,
+	},
 	-- language specific plugins
 	"keith/swift.vim",
 	"rhysd/vim-clang-format",
@@ -412,11 +427,6 @@ require("lazy").setup({
 							telemetry = { enable = false },
 							hint = {
 								enable = true,
-								setType = false,
-								paramType = true,
-								paramName = "Disable",
-								semicolon = "Disable",
-								arrayIndex = "Disable",
 							},
 							runtime = {
 								version = "LuaJIT",
