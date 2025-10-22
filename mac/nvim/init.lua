@@ -189,12 +189,17 @@ require("lazy").setup({
 			local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
 			local api_key = "_"
 			if keyFile then
-				api_key = keyFile:read("*a")
+				api_key = keyFile:read("*l")
 			end
 			vim.g.llama_config = {
-				--endpoint = "http://127.0.0.1:8080/infill",
-				endpoint = "https://infill.freno.me/v1/infill",
+				endpoint = "https://infill.freno.me/infill",
 				api_key = api_key,
+				keymap_trigger = "<M-Enter>",
+				keymap_accept_line = "<S-Tab>",
+				keymap_accept_full = "<C-Enter>",
+				keymap_accept_word = "<C-Tab>",
+				stop_strings = { "\n" },
+				show_info = 0,
 			}
 		end,
 	},
@@ -1266,7 +1271,11 @@ vim.keymap.set("n", "<leader>4", function()
 	harpoon:list():select(4)
 end)
 
-vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>it", ":LlamaToggle<CR>", { noremap = true, desc = "[i]nfill [t]oggle" })
+vim.api.nvim_set_keymap("n", "<leader>ie", ":LlamaEnable<CR>", { noremap = true, desc = "[i]nfill [e]nable" })
+vim.api.nvim_set_keymap("n", "<leader>id", ":LlamaDisable<CR>", { noremap = true, desc = "[i]nfill [d]isable" })
+
+vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true, des })
 vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = true, silent = true })
 
 -- Additional lsp servers --
