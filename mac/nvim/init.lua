@@ -18,6 +18,12 @@ vim.o.showmode = false
 vim.o.redrawtime = 100
 vim.o.hlsearch = false
 
+vim.o.textwidth = 0
+vim.o.wrapmargin = 10
+vim.o.wrap = true
+
+vim.o.linebreak = true
+
 vim.o.mouse = "a"
 vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
@@ -73,6 +79,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.hl.on_yank()
 	end,
+})
+
+vim.api.nvim_create_autocmd("VimResized", {
+	group = vim.api.nvim_create_augroup("autoresize_windows", { clear = true }),
+	command = "wincmd =",
 })
 
 -- Filetype-specific indentation
@@ -184,6 +195,15 @@ require("lazy").setup({
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{
+		"ThePrimeagen/refactoring.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		lazy = false,
+		opts = {},
+	},
+	{
 		"ggml-org/llama.vim",
 		init = function()
 			local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
@@ -192,11 +212,12 @@ require("lazy").setup({
 				api_key = keyFile:read("*l")
 			end
 			vim.g.llama_config = {
-				endpoint = "https://infill.freno.me/infill",
-				api_key = api_key,
+				endpoint = "http://localhost:8123/infill",
+				--endpoint = "https://infill.freno.me/infill",
+				--api_key = api_key,
 				keymap_trigger = "<M-Enter>",
-				keymap_accept_line = "<S-Tab>",
-				keymap_accept_full = "<A-Tab>",
+				keymap_accept_line = "<A-Tab>",
+				keymap_accept_full = "<S-Tab>",
 				keymap_accept_word = "<Right>",
 				stop_strings = {},
 				n_prefix = 512,
@@ -426,7 +447,6 @@ require("lazy").setup({
 				gopls = { hint = { enable = true } },
 				rust_analyzer = { hint = { enable = true } },
 				ts_ls = { hint = { enable = true } },
-				stylua = { enabled = false },
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -1273,11 +1293,23 @@ vim.keymap.set("n", "<leader>4", function()
 	harpoon:list():select(4)
 end)
 
+vim.keymap.set("x", "<leader>re", ":Refactor extract ")
+vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
+
+vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
+
+vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
+
+vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
+
+vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
+vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
+
 vim.api.nvim_set_keymap("n", "<leader>it", ":LlamaToggle<CR>", { noremap = true, desc = "[i]nfill [t]oggle" })
 vim.api.nvim_set_keymap("n", "<leader>ie", ":LlamaEnable<CR>", { noremap = true, desc = "[i]nfill [e]nable" })
 vim.api.nvim_set_keymap("n", "<leader>id", ":LlamaDisable<CR>", { noremap = true, desc = "[i]nfill [d]isable" })
 
-vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true, des })
+vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = true, silent = true })
 
 -- Additional lsp servers --
