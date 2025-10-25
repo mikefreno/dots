@@ -17,11 +17,6 @@ server {
     listen 443 ssl; http2 on;
     server_name jellyfin.freno.me mikefreno.tplinkdns.com;
 
-    ssl_certificate /etc/letsencrypt/live/jellyfin.freno.me/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/jellyfin.freno.me/privkey.pem;
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-
     client_max_body_size 10G;
 
     location / {
@@ -49,10 +44,6 @@ server {
 # ===================================================================
 
 server {
-    if ($host = vw.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
 
     listen 80;
     server_name vw.freno.me;
@@ -80,8 +71,6 @@ server {
         proxy_set_header Connection "upgrade";
     }
 
-    ssl_certificate /etc/letsencrypt/live/vw.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/vw.freno.me/privkey.pem; # managed by Certbot
 }
 
 
@@ -92,9 +81,6 @@ server {
 # ===================================================================
 
 server {
-    if ($host = ai.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
 
 
     listen 80;
@@ -129,8 +115,6 @@ server {
 	    proxy_request_buffering off;
 	}
 
-    ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/ai.freno.me/privkey.pem; # managed by Certbot
 }
 
 # ===================================================================
@@ -140,9 +124,6 @@ server {
 # ===================================================================
 
 server {
-    if ($host = lm.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
 
 
 
@@ -196,8 +177,6 @@ server {
     	proxy_set_header Authorization $http_authorization;
     }
 
-    ssl_certificate /etc/letsencrypt/live/lm.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/lm.freno.me/privkey.pem; # managed by Certbot
 }
 
 # ===================================================================
@@ -207,9 +186,6 @@ server {
 # ===================================================================
 
 server {
-    if ($host = files.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
 
 
     listen 80;
@@ -232,8 +208,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    ssl_certificate /etc/letsencrypt/live/files.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/files.freno.me/privkey.pem; # managed by Certbot
+
 }
 
 # ===================================================================
@@ -243,9 +218,6 @@ server {
 # ===================================================================
 
 server {
-    if ($host = infill.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
 
 
     listen 80;
@@ -298,7 +270,4 @@ server {
     	proxy_set_header Authorization $http_authorization;
     }
 
-
-    ssl_certificate /etc/letsencrypt/live/infill.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/infill.freno.me/privkey.pem; # managed by Certbot
 }
