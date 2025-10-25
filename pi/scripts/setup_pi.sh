@@ -1,6 +1,6 @@
 sudo systemctl start ssh
 sudo systemctl enable ssh
-sudo apt install vim git zsh docker pip nginx fastfetch nodejs tmux clangd golang npm
+sudo apt install vim git zsh docker pip nginx fastfetch nodejs tmux clangd golang npm certbot python3-certbot-nginx docker-io ufw -y
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -30,6 +30,11 @@ touch $HOME/.hushlogin
 git clone git@github.com:mikefreno/dots.git
 cp -r ~/dots/mac/nvim ~/.config/
 
+cd ~/dots/pi/nginx_auth_server/ && go build
+
+sudo cp ~/dots/pi/service_files/* /etc/systemd/system/
+
+cd
 sudo tee /etc/nginx/sites-enabled/temp-certbot > /dev/null <<'EOF'
 server {
     listen 80;
@@ -39,9 +44,25 @@ EOF
 
 sudo nginx -t
 sudo systemctl reload nginx
-sudo certbot --nginx -d jellyfin.freno.me -d mikefreno.tplinkdns.com -d vw.freno.me -d ai.freno.me -d lm.freno.me -d files.freno.me -d infill.freno.me
+sudo certbot --nginx -d jellyfin.freno.me
+sudo certbot --nginx -d vw.freno.me
+sudo certbot --nginx -d ai.freno.me
+sudo certbot --nginx -d lm.freno.me
+sudo certbot --nginx -d files.freno.me
+sudo certbot --nginx -d infill.freno.me
 
-sudo cp ~/dots/pi/nginx/sites-available/frenome /etc/nginx/sites-enabled/frenome
+sudo cp ~/dots/pi/nginx/sites-available/frenome /etc/nginx/sites-available/frenome
+sudo ln -s /etc/nginx/sites-available/frenome /etc/nginx/sites-enabled/frenome
 
 sudo nginx -t
 sudo systemctl reload nginx
+
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+sudo ufw allow 22/tcp
+
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+sudo ufw enable
