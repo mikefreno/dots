@@ -25,10 +25,14 @@ int main(int argc, char** argv) {
         // Prepare the event message
         snprintf(trigger_message,
                  512,
-                 "--trigger '%s' outdated_count='%d' status='%d'",
+                 "--trigger '%s' outdated_count=%d status=%d",
                  argv[1],
                  brew.outdated_count,
                  brew.last_check_status);
+
+        // Log to stdout
+        printf("%s\n", trigger_message);
+        fflush(stdout);
 
         // Trigger the event
         sketchybar(trigger_message);

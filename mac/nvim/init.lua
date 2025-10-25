@@ -212,9 +212,9 @@ require("lazy").setup({
 				api_key = keyFile:read("*l")
 			end
 			vim.g.llama_config = {
-				endpoint = "http://localhost:8123/infill",
-				--endpoint = "https://infill.freno.me/infill",
-				--api_key = api_key,
+				--endpoint = "http://localhost:8123/infill",
+				endpoint = "https://infill.freno.me/infill",
+				api_key = api_key,
 				keymap_trigger = "<M-Enter>",
 				keymap_accept_line = "<A-Tab>",
 				keymap_accept_full = "<S-Tab>",

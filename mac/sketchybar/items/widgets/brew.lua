@@ -3,7 +3,9 @@ local colors = require("colors")
 local settings = require("settings")
 
 -- Execute the brew event provider
-sbar.exec("killall brew_load >/dev/null; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 30 &")
+sbar.exec(
+	"killall brew_update >/dev/null; sleep 30; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 300 &"
+)
 
 local brew = sbar.add("item", "widgets.brew", {
 	position = "right",
@@ -33,8 +35,8 @@ sbar.add("item", "widgets.brew.padding", {
 
 -- Subscribe to brew updates
 brew:subscribe("brew_update", function(env)
-	local count = tonumber(env.outdated_count) or 0
-	local status = tonumber(env.status) or 0
+	local count = tonumber(env.outdated_count)
+	local status = tonumber(env.status)
 
 	-- Handle error states
 	if status ~= 0 then
@@ -71,5 +73,5 @@ end)
 brew:subscribe("mouse.clicked", function()
 	sbar.exec('osascript -e \'tell application "Terminal" to do script "brew upgrade"\'')
 	-- Trigger immediate check after potential upgrade
-	sbar.exec("killall brew_load; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 300 &")
+	sbar.exec("killall brew_update; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 300 &")
 end)
