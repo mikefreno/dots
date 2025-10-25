@@ -9,7 +9,7 @@ Type=simple
 # Make sure this user exists and owns the script!
 User=mike
 # Use the full path to your script
-ExecStart=/home/mike/dots/pi/service_files/run_filebrowser.sh
+ExecStart=/home/mike/dots/pi/scripts/run_filebrowser.sh
 Restart=on-failure
 RestartSec=10s
 
