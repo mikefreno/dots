@@ -1,7 +1,6 @@
 ---
 description: "Breaks down complex features into small, verifiable subtasks"
 mode: primary
-model: unsloth/gpt-oss-20
 temperature: 0.7
 tools:
   read: true
