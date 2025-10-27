@@ -4,7 +4,7 @@ local settings = require("settings")
 
 -- Execute the brew event provider
 sbar.exec(
-	"killall brew_update >/dev/null; sleep 30; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 300 &"
+	"killall brew_update >/dev/null; sleep 30; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 30 &"
 )
 
 local brew = sbar.add("item", "widgets.brew", {
@@ -50,28 +50,18 @@ brew:subscribe("brew_update", function(env)
 		return
 	end
 
-	-- Update based on count
-	if count > 0 then
-		brew:set({
-			icon = { color = colors.orange },
-			label = {
-				string = tostring(count),
-				color = colors.orange,
-			},
-		})
-	else
-		brew:set({
-			icon = { color = colors.green },
-			label = {
-				string = "0",
-				color = colors.green,
-			},
-		})
-	end
+	local color = count > 0 and colors.orange or colors.green
+	brew:set({
+		icon = { color = color },
+		label = {
+			string = env.outdated_count,
+			color = color,
+		},
+	})
 end)
 
 brew:subscribe("mouse.clicked", function()
 	sbar.exec('osascript -e \'tell application "Terminal" to do script "brew upgrade"\'')
 	-- Trigger immediate check after potential upgrade
-	sbar.exec("killall brew_update; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 300 &")
+	sbar.exec("killall brew_update; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 30 &")
 end)
