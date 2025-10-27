@@ -222,7 +222,7 @@ require("lazy").setup({
 				stop_strings = {},
 				n_prefix = 512,
 				n_suffix = 512,
-				show_info = 0,
+				show_info = 2,
 			}
 		end,
 	},
@@ -1305,9 +1305,12 @@ vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
 vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
 vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
 
+--- Additional infill config
 vim.api.nvim_set_keymap("n", "<leader>it", ":LlamaToggle<CR>", { noremap = true, desc = "[i]nfill [t]oggle" })
 vim.api.nvim_set_keymap("n", "<leader>ie", ":LlamaEnable<CR>", { noremap = true, desc = "[i]nfill [e]nable" })
 vim.api.nvim_set_keymap("n", "<leader>id", ":LlamaDisable<CR>", { noremap = true, desc = "[i]nfill [d]isable" })
+vim.api.nvim_set_hl(0, "llama_hl_hint", { fg = vim.g.current_colors.flamingo, ctermfg = 209 })
+vim.api.nvim_set_hl(0, "llama_hl_info", { fg = vim.g.current_colors.lavender, ctermfg = 119 })
 
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = true, silent = true })
