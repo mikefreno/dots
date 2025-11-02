@@ -204,6 +204,19 @@ require("lazy").setup({
 		opts = {},
 	},
 	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		opts = { direction = "float", float_opts = { width = 100, height = 30 } },
+		keys = {
+			{
+				"<leader>F",
+				":ToggleTerm<CR>",
+				mode = { "n" },
+				desc = "Toggle [F]loating terminal",
+			},
+		},
+	},
+	{
 		"ggml-org/llama.vim",
 		init = function()
 			local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")

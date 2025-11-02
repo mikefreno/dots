@@ -4,7 +4,7 @@ local settings = require("settings")
 
 -- Execute the brew event provider
 sbar.exec(
-	"killall brew_update >/dev/null; sleep 30; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 30 &"
+	"pkill brew_check; sleep 5; /Users/mike/.config/sketchybar/helpers/event_providers/brew_check/bin/brew_check brew_check 300 &"
 )
 
 local brew = sbar.add("item", "widgets.brew", {
@@ -34,11 +34,10 @@ sbar.add("item", "widgets.brew.padding", {
 })
 
 -- Subscribe to brew updates
-brew:subscribe("brew_update", function(env)
-	local count = tonumber(env.outdated_count)
+brew:subscribe("brew_check", function(env)
+	local count = tonumber(env.outdated_count) - 1
 	local status = tonumber(env.status)
 
-	-- Handle error states
 	if status ~= 0 then
 		brew:set({
 			icon = { color = colors.red },
@@ -54,7 +53,7 @@ brew:subscribe("brew_update", function(env)
 	brew:set({
 		icon = { color = color },
 		label = {
-			string = env.outdated_count,
+			string = tostring(count),
 			color = color,
 		},
 	})
@@ -63,5 +62,5 @@ end)
 brew:subscribe("mouse.clicked", function()
 	sbar.exec('osascript -e \'tell application "Terminal" to do script "brew upgrade"\'')
 	-- Trigger immediate check after potential upgrade
-	sbar.exec("killall brew_update; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_update 30 &")
+	sbar.exec("killall brew_check; $CONFIG_DIR/helpers/event_providers/brew_check/bin/brew_check brew_check 30 &")
 end)

@@ -24,6 +24,7 @@ static inline void brew_update(struct brew_info *brew) {
     return;
   }
 
+  // Read the count directly
   if (fgets(buffer, sizeof(buffer), fp) != NULL) {
     brew->outdated_count = atoi(buffer);
   } else {

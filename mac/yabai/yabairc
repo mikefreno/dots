@@ -11,6 +11,9 @@ is_blender_running() {
 is_emulator_running() {
     pgrep -x "Simulator" >/dev/null || pgrep "qemu-system-aarch64" >/dev/null
 }
+is_bambu_running() {
+    pgrep -x "BambuStudio" >/dev/null
+}
 
 # Function to get current space count
 get_space_count() {
@@ -36,18 +39,16 @@ adjust_space_count() {
 setup_spaces() {
     local needed_spaces
     if [ "$display_count" -eq 1 ]; then
-        if is_blender_running; then
+        if is_blender_running || is_bambu_running; then
             needed_spaces=5  # main, web, comms, misc, audio
         else
             needed_spaces=4  # main, web, comms, audio
         fi
     else
-        if is_blender_running && is_emulator_running; then
+        if (is_blender_running || is_bambu_running) && is_emulator_running; then
             needed_spaces=6  # audio, misc, main, web, comms, emulators
-        elif is_blender_running; then
+        elif is_blender_running || is_bambu_running || is_bambu_running; then
             needed_spaces=5  # audio, misc, main, web, comms
-        elif is_emulator_running; then
-            needed_spaces=5  # audio, main, web, comms, emulators
         else
             needed_spaces=4  # audio, main, web, comms
         fi
@@ -61,7 +62,7 @@ setup_spaces() {
         yabai -m space 1 --label main
         yabai -m space 2 --label web
         yabai -m space 3 --label comms
-        if is_blender_running; then
+        if is_blender_running || is_bambu_running; then
             yabai -m space 4 --label misc
             yabai -m space 5 --label audio
         else
@@ -139,8 +140,8 @@ setup_rules() {
     yabai -m rule --add app="^(Mail|Messages|Things|Obsidian)$" space="$comms_space"
     yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex|Jellyfin Media Player|Discord)$" space="$audio_space"
     
-    if is_blender_running; then
-        yabai -m rule --add app="^(Blender)$" space="$misc_space"
+    if is_blender_running || is_bambu_running; then
+        yabai -m rule --add app="^(Blender|Bambu Studio)$" space="$misc_space"
     fi
     
     # Handle emulators based on display count

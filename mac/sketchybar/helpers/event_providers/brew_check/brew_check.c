@@ -22,10 +22,6 @@ int main(int argc, char **argv) {
     // Update brew info
     brew_update(&brew);
 
-    // Log to stdout
-    printf("%d\n", brew.outdated_count);
-    fflush(stdout);
-
     // Prepare the event message
     snprintf(trigger_message, 512, "--trigger '%s' outdated_count=%d status=%d",
              argv[1], brew.outdated_count, brew.last_check_status);
