@@ -1,9 +1,6 @@
 {
-  "tui": {
-    "theme": "system"
-  },
   "$schema": "https://opencode.ai/config.json",
-  "snapshot": false,
+  "theme": "system",
   "provider": {
     "lmstudio": {
       "npm": "@ai-sdk/openai-compatible",
@@ -31,10 +28,18 @@
         "apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
-        "unsloth/qwen3-coder-30b-a3b-instruct": {"limit":{
-        "context": 100000,
+        "unsloth/qwen3-coder-130k": {"limit":{
+        "context": 130000,
         "output": 100000
       }},
+        "unsloth/qwen3-coder-70k": {"limit":{
+        "context": 70000,
+        "output": 100000
+      }},
+      "unsloth/gpt-oss-20b": {"limit":{
+        "context": 131000,
+        "output": 100000
+      }}
       }
     }
   },

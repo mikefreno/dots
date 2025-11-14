@@ -76,7 +76,7 @@ Once approved:
    - Create feature README.md index
    - Create individual task files
 
-2. **Use these exact templates:**
+2. **Use these exact templates (Dependencies only if applicable):**
 
 **Feature Index Template** (`tasks/subtasks/{feature}/README.md`):
 ```
@@ -143,7 +143,7 @@ Next suggested task: {seq} — {title}
 - **Naming:** Always use kebab-case for features and task descriptions
 - **Sequencing:** 2-digits (01, 02, 03...)
 - **File pattern:** `{seq}-{task-description}.md`
-- **Dependencies:** Always map task relationships
+- **Dependencies:** Always map task relationships (if applicable)
 - **Tests:** Every task must include test requirements
 - **Acceptance:** Must have binary pass/fail criteria
 

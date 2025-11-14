@@ -122,6 +122,7 @@ cmd + shift - r : yabai --restart-service && \
                   brew services restart sketchybar && \
                   brew services restart borders    && \
                   ~/.config/btop/btop_colorswap.sh
+cmd + shift - o : restart_obsidian_connection
 
 # Change desktop
 #cmd + alt - 1 : yabai -m space --focus  1 || skhd -k "alt + alt + cmd - 1"
