@@ -28,8 +28,7 @@ alt - l : yabai -m window --swap east
 
 # Move focus container to display (use "space" instead of display to move to just per space instead)
 alt + shift - x : yabai -m window --display 1 --focus #laptop
-alt + shift - z : yabai -m window --display 2 --focus #left monitor
-alt + shift - c : yabai -m window --display 3 --focus #right monitor
+alt + shift - z : yabai -m window --display 2 --focus #desktop monitor
 
 cmd - 1 : yabai -m space --focus 1
 cmd - 2 : yabai -m space --focus 2
@@ -53,15 +52,15 @@ ctrl + cmd - 8 : yabai -m window --space 8
 ctrl + cmd - 9 : yabai -m window --space 9
 
 # Move focus container to space
-shift + cmd - 1 : yabai -m window --space 1 --focus 
-shift + cmd - 2 : yabai -m window --space 2 --focus
-shift + cmd - 3 : yabai -m window --space 3 --focus
-shift + cmd - 4 : yabai -m window --space 4 --focus
-shift + cmd - 5 : yabai -m window --space 5 --focus
-shift + cmd - 6 : yabai -m window --space 6 --focus 
-shift + cmd - 7 : yabai -m window --space 7 --focus
-shift + cmd - 8 : yabai -m window --space 8 --focus
-shift + cmd - 9 : yabai -m window --space 9 --focus
+alt + cmd - 1 : yabai -m window --space 1 --focus 
+alt + cmd - 2 : yabai -m window --space 2 --focus
+alt + cmd - 3 : yabai -m window --space 3 --focus
+alt + cmd - 4 : yabai -m window --space 4 --focus
+alt + cmd - 5 : yabai -m window --space 5 --focus
+alt + cmd - 6 : yabai -m window --space 6 --focus 
+alt + cmd - 7 : yabai -m window --space 7 --focus
+alt + cmd - 8 : yabai -m window --space 8 --focus
+alt + cmd - 9 : yabai -m window --space 9 --focus
 
 # Resize windows
 alt - a : yabai -m window --resize left:-50:0 ;

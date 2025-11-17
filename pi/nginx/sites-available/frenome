@@ -1,26 +1,23 @@
 # ===================================================================
-# SERVICE 1: Jellyfin Media Server
-# DOMAINS:   jellyfin.freno.me, mikefreno.tplinkdns.com
-# BACKEND:   http://127.0.0.1:8096
+# HTTP to HTTPS Redirect for ALL domains
 # ===================================================================
-
-# --- HTTP to HTTPS Redirect for both domains ---
 server {
     listen 80;
-    # Listen on both server names
-    server_name jellyfin.freno.me mikefreno.tplinkdns.com;
+    server_name jellyfin.freno.me mikefreno.tplinkdns.com vw.freno.me ai.freno.me lm.freno.me files.freno.me infill.freno.me;
     return 301 https://$host$request_uri;
 }
 
-# --- Main HTTPS Server Block for Jellyfin ---
+# ===================================================================
+# SERVICE 1: Jellyfin Media Server
+# ===================================================================
 server {
-    listen 443 ssl http2;
-    server_name jellyfin.freno.me mikefreno.tplinkdns.com;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name jellyfin.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/jellyfin.freno.me/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/jellyfin.freno.me/privkey.pem;
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     client_max_body_size 10G;
 
@@ -41,29 +38,17 @@ server {
     }
 }
 
-
 # ===================================================================
 # SERVICE 2: Vaultwarden
-# DOMAIN:    vw.freno.me
-# BACKEND:   http://127.0.0.1:8081
 # ===================================================================
-
 server {
-    if ($host = vw.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    listen 80;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
     server_name vw.freno.me;
-    return 301 https://$server_name$request_uri;
 
-
-}
-
-server {
-    listen 443 ssl http2;
-    server_name vw.freno.me;
+    ssl_certificate /etc/letsencrypt/live/vw.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/vw.freno.me/privkey.pem;
 
     location / {
         proxy_pass http://127.0.0.1:8081;
@@ -79,97 +64,28 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
     }
-
-    ssl_certificate /etc/letsencrypt/live/vw.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/vw.freno.me/privkey.pem; # managed by Certbot
 }
 
-
 # ===================================================================
-# SERVICE 3: OpenWebUI + direct API
-# DOMAIN:    ai.freno.me
-# BACKEND:   http://127.0.0.1:8082
+# SERVICE 3: OpenWebUI
 # ===================================================================
-
 server {
-    if ($host = ai.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    listen 80;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
     server_name ai.freno.me;
-    return 301 https://$server_name$request_uri;
-}
 
-server {
-    listen 443 ssl http2;
-    server_name ai.freno.me;
+    ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/ai.freno.me/privkey.pem;
 
     client_max_body_size 100M;
 
-	location / {
-	    proxy_pass http://127.0.0.1:8082;
-	    proxy_set_header Host $host;
-	    proxy_set_header X-Real-IP $remote_addr;
-	    proxy_set_header X-Forwarded-For
-	    $proxy_add_x_forwarded_for;
-	    proxy_set_header X-Forwarded-Proto $scheme;
-
-	    proxy_http_version 1.1;
-	    proxy_set_header Upgrade $http_upgrade;
-	    proxy_set_header Connection "upgrade";
-
-	    proxy_read_timeout 1800;
-	    proxy_connect_timeout 1800;
-	    proxy_send_timeout 1800;
-	    send_timeout 1800;
-
-	    proxy_buffering off;
-	    proxy_request_buffering off;
-	}
-
-    ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/ai.freno.me/privkey.pem; # managed by Certbot
-}
-
-# ===================================================================
-# SERVICE 4: lm studio
-# DOMAIN:    lm.freno.me
-# BACKEND:   http://atlas.local:8084
-# ===================================================================
-
-server {
-    if ($host = lm.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-
-    listen 80;
-    server_name lm.freno.me;
-    return 301 https://$server_name$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    server_name lm.freno.me;
-
-    client_max_body_size 10G;
-    proxy_socket_keepalive on;
-
     location / {
-        auth_request /auth;
-        auth_request_set $auth_status
-        $upstream_status;
-
-        proxy_pass http://atlas.local:8084;
+        proxy_pass http://127.0.0.1:8082;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For
-        $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-
 
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -180,7 +96,45 @@ server {
         proxy_send_timeout 1800;
         send_timeout 1800;
 
-        # Add streaming optimizations
+        proxy_buffering off;
+        proxy_request_buffering off;
+    }
+}
+
+# ===================================================================
+# SERVICE 4: LM Studio
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name lm.freno.me;
+
+    ssl_certificate /etc/letsencrypt/live/lm.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/lm.freno.me/privkey.pem;
+
+    client_max_body_size 10G;
+    proxy_socket_keepalive on;
+
+    location / {
+        auth_request /auth;
+        auth_request_set $auth_status $upstream_status;
+
+        proxy_pass http://atlas.local:8084;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_read_timeout 1800;
+        proxy_connect_timeout 1800;
+        proxy_send_timeout 1800;
+        send_timeout 1800;
+
         proxy_buffering off;
         proxy_request_buffering off;
     }
@@ -188,90 +142,58 @@ server {
     location = /auth {
         internal;
         proxy_pass http://127.0.0.1:9000;
-        proxy_set_header  X-Original-URI $request_uri;
-
+        proxy_set_header X-Original-URI $request_uri;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
-
-    	proxy_set_header Authorization $http_authorization;
+        proxy_set_header Authorization $http_authorization;
     }
-
-    ssl_certificate /etc/letsencrypt/live/lm.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/lm.freno.me/privkey.pem; # managed by Certbot
 }
 
 # ===================================================================
 # SERVICE 5: File Browser
-# DOMAIN:    files.freno.me
-# BACKEND:   http://127.0.0.1:8083
 # ===================================================================
-
 server {
-    if ($host = files.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    listen 80;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
     server_name files.freno.me;
-    return 301 https://$server_name$request_uri;
 
-
-}
-
-server {
-    listen 443 ssl http2;
-    server_name files.freno.me;
+    ssl_certificate /etc/letsencrypt/live/files.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/files.freno.me/privkey.pem;
 
     location / {
-        # This points to your new File Browser container
         proxy_pass http://127.0.0.1:8083;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
-
-    ssl_certificate /etc/letsencrypt/live/files.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/files.freno.me/privkey.pem; # managed by Certbot
 }
 
 # ===================================================================
-# SERVICE 6: llamacpp infill
-# DOMAIN:    infill.freno.me
-# BACKEND:   http://atlas.local:8123
+# SERVICE 6: LlamaCPP Infill
 # ===================================================================
-
 server {
-    if ($host = infill.freno.me) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    listen 80;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
     server_name infill.freno.me;
-    return 301 https://$server_name$request_uri;
-}
 
-server {
-    listen 443 ssl http2;
-    server_name infill.freno.me;
+    ssl_certificate /etc/letsencrypt/live/infill.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/infill.freno.me/privkey.pem;
 
     client_max_body_size 10G;
     proxy_socket_keepalive on;
 
     location / {
         auth_request /auth;
-        auth_request_set $auth_status
-        $upstream_status;
+        auth_request_set $auth_status $upstream_status;
 
         proxy_pass http://atlas.local:8123;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For
-        $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-
 
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -282,7 +204,6 @@ server {
         proxy_send_timeout 1800;
         send_timeout 1800;
 
-        # Add streaming optimizations
         proxy_buffering off;
         proxy_request_buffering off;
     }
@@ -290,15 +211,9 @@ server {
     location = /auth {
         internal;
         proxy_pass http://127.0.0.1:9000;
-        proxy_set_header  X-Original-URI $request_uri;
-
+        proxy_set_header X-Original-URI $request_uri;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
-
         proxy_set_header Authorization $http_authorization;
     }
-
-
-    ssl_certificate /etc/letsencrypt/live/infill.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/infill.freno.me/privkey.pem; # managed by Certbot
 }

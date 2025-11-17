@@ -7,7 +7,7 @@ After=network.target docker.service
 [Service]
 Type=simple
 User=mike
-ExecStart=/home/mike/Docker/run_next.sh
+ExecStart=/home/mike/dots/pi/service_files/run_next.sh
 Restart=on-failure
 RestartSec=10s
 

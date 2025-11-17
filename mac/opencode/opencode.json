@@ -11,21 +11,30 @@
       "options": {
         "baseURL": "https://lm.freno.me/v1",
         "apiKey": "{file:~/.config/opencode/my.key}",
-        "timeout": false
       },
       "models": {
-        "openai/gpt-oss-20": {},
-        "qwen/qwen3-coder-30": {}
+        "unsloth/qwen3-coder-30b-a3b-instruct": {"limit":{
+        "context": 80000,
+        "output": 100000
+      }},
+        "unsloth/gpt-oss-20b": {"limit":{
+        "context": 100000,
+        "output": 100000
+      }}
       }
     },
-    "local": {
+    "infill": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "LM-Local",
+      "name": "Llama-server (infill)",
       "options": {
-        "baseURL": "http://127.0.0.1:1234/v1",
+        "baseURL": "https://infill.freno.me/v1",
+        "apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
-	"qwen/qwen3-4b-thinking-2507": {}
+        "unsloth/qwen3-coder-30b-a3b-instruct": {"limit":{
+        "context": 100000,
+        "output": 100000
+      }},
       }
     }
   },

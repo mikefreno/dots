@@ -26,6 +26,16 @@ end)
 vim.o.breakindent = true
 vim.o.undofile = true
 
+-- Indentation settings
+vim.o.tabstop = 4 -- Number of spaces a tab counts for
+vim.o.shiftwidth = 4 -- Number of spaces for each step of autoindent
+vim.o.softtabstop = 4 -- Number of spaces a tab counts for while editing
+vim.o.expandtab = true -- Use spaces instead of tabs
+vim.o.autoindent = true -- Copy indent from current line when starting new line
+vim.o.smartindent = true -- Smart autoindenting when starting new line
+vim.o.cindent = true -- Stricter rules for C programs (also works well for other languages)
+vim.o.shiftround = true -- Round indent to multiple of shiftwidth
+
 vim.o.ignorecase = true
 vim.o.smartcase = true
 

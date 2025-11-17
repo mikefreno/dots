@@ -72,7 +72,7 @@ Approval needed before file creation.
 Once approved:
 
 1. **Create directory structure:**
-   - Base: `tasks/subtasks/{feature}/`
+   - Base: `tasks/{feature}/`
    - Create feature README.md index
    - Create individual task files
 
@@ -133,8 +133,8 @@ notes:
 3. **Provide creation summary:**
 ```
 ## Subtasks Created
-- tasks/subtasks/{feature}/README.md
-- tasks/subtasks/{feature}/{seq}-{task-description}.md
+- tasks/{feature}/README.md
+- tasks/{feature}/{seq}-{task-description}.md
 
 Next suggested task: {seq} — {title}
 ```

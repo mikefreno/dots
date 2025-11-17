@@ -1,7 +1,6 @@
 ---
 description: Core agent for the project, handles coordination
 mode: primary
-model: qwen/qwen3-coder-30b
 temperature: 0.55
 tools:
   read: true
