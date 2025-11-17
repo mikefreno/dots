@@ -1,0 +1,40 @@
+#!/bin/bash
+
+VERBOSE=false
+
+while getopts "v" opt; do
+    case $opt in
+        v)
+            VERBOSE=true
+            ;;
+        \?)
+            echo "Usage: $0 [-v] <IP_ADDRESS>"
+            exit 1
+            ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 [-v] <IP_ADDRESS>"
+    exit 1
+fi
+
+IP_ADDRESS=$1
+
+if ! [[ $IP_ADDRESS =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+    echo "Error: Invalid IP address format"
+    exit 1
+fi
+
+if ! sudo ufw status | grep -q "Status: active"; then
+    sudo ufw enable
+fi
+
+sudo ufw deny from $IP_ADDRESS
+sudo ufw deny out from any to $IP_ADDRESS
+
+if [ "$VERBOSE" = true ]; then
+    sudo ufw status verbose
+fi
