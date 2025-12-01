@@ -81,6 +81,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "*",
+	command = "GuessIndent",
+})
+
 vim.api.nvim_create_autocmd("VimResized", {
 	group = vim.api.nvim_create_augroup("autoresize_windows", { clear = true }),
 	command = "wincmd =",
@@ -182,6 +187,8 @@ require("lazy").setup({
 	"preservim/nerdcommenter",
 	"mbbill/undotree",
 	"luckasRanarison/tailwind-tools.nvim",
+	"mfussenegger/nvim-dap",
+	{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
@@ -354,16 +361,16 @@ require("lazy").setup({
 						mode = mode or "n"
 						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
-					map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
-					map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
-					map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-					map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-					map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-					map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-					map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
-					map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
+					map("gn", vim.lsp.buf.rename, "Re[n]ame")
+					map("ga", vim.lsp.buf.code_action, "[G]oto Code [a]ction", { "n", "x" })
+					map("gr", require("telescope.builtin").lsp_references, "[G]oto [r]eferences")
+					map("gi", require("telescope.builtin").lsp_implementations, "[G]oto [i]mplementation")
+					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [d]efinition")
+					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+					map("gO", require("telescope.builtin").lsp_document_symbols, "[O]pen Document Symbols")
+					map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open [W]orkspace Symbols")
 
-					map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
+					map("gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [t]ype Definition")
 					-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
 					---@param client vim.lsp.Client
 					---@param method vim.lsp.protocol.Method
@@ -696,6 +703,7 @@ require("lazy").setup({
 		ft = "lua",
 		opts = {
 			library = {
+				"nvim-dap-ui",
 				-- Load luvit types when the `vim.uv` word is found
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 			},
@@ -1317,11 +1325,190 @@ vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
 
 vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
 vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
+--- DAP(debugger) keybinds
+vim.keymap.set(
+	"n",
+	"<leader>dtb",
+	":DapToggleBreakpoint",
+	{ noremap = true, desc = "[d]ebugger [t]oggle [b]reakpoint", silent = true }
+)
+vim.keymap.set("n", "<leader>dn", ":DapNew", { noremap = true, desc = "[d]ebugger [n]ew session", silent = true })
+vim.keymap.set(
+	"n",
+	"<leader>dc",
+	":DapContinue",
+	{ noremap = true, desc = "[d]ebugger [c]ontinue execution", silent = true }
+)
+vim.keymap.set("n", "<leader>dsi", ":DapStepInto", { noremap = true, desc = "[d]ebugger [s]tep [i]nto", silent = true })
+vim.keymap.set("n", "<leader>dso", ":DapStepOver", { noremap = true, desc = "[d]ebugger [s]tep [o]ver", silent = true })
+---DAP configuration
+---
+---Currently configured: C/C++/Rust/Go/Lua/Python
+local dap = require("dap")
+dap.adapters.lldb = {
+	type = "executable",
+	command = "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-dap", -- adjust as needed, must be absolute path
+	name = "lldb",
+}
+dap.configurations.cpp = {
+	{
+		name = "Launch",
+		type = "lldb",
+		request = "launch",
+		program = function()
+			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+		end,
+		cwd = "${workspaceFolder}",
+		stopOnEntry = false,
+		args = {},
+
+		-- 💀
+		-- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+		--
+		--    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+		--
+		-- Otherwise you might get the following error:
+		--
+		--    Error on launch: Failed to attach to the target process
+		--
+		-- But you should be aware of the implications:
+		-- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+		-- runInTerminal = false,
+	},
+}
+
+dap.adapters["local-lua"] = {
+	type = "executable",
+	command = "node",
+	args = {
+		"/absolute/path/to/local-lua-debugger-vscode/extension/debugAdapter.js",
+	},
+	enrich_config = function(config, on_config)
+		if not config["extensionPath"] then
+			local c = vim.deepcopy(config)
+			-- 💀 If this is missing or wrong you'll see
+			-- "module 'lldebugger' not found" errors in the dap-repl when trying to launch a debug session
+			c.extensionPath = "/absolute/path/to/local-lua-debugger-vscode/"
+			on_config(c)
+		else
+			on_config(config)
+		end
+	end,
+}
+dap.adapters.go = {
+	type = "executable",
+	command = "node",
+	args = { os.getenv("HOME") .. "/dev/golang/vscode-go/extension/dist/debugAdapter.js" },
+}
+dap.configurations.go = {
+	{
+		type = "go",
+		name = "Debug",
+		request = "launch",
+		showLog = false,
+		program = "${file}",
+		dlvToolPath = vim.fn.exepath("dlv"), -- Adjust to where delve is installed
+	},
+}
+dap.adapters.python = function(cb, config)
+	if config.request == "attach" then
+		---@diagnostic disable-next-line: undefined-field
+		local port = (config.connect or config).port
+		---@diagnostic disable-next-line: undefined-field
+		local host = (config.connect or config).host or "127.0.0.1"
+		cb({
+			type = "server",
+			port = assert(port, "`connect.port` is required for a python `attach` configuration"),
+			host = host,
+			options = {
+				source_filetype = "python",
+			},
+		})
+	else
+		cb({
+			type = "executable",
+			command = os.getenv("HOME") .. "/dev/python.venvs/debugpy/bin/python",
+			args = { "-m", "debugpy.adapter" },
+			options = {
+				source_filetype = "python",
+			},
+		})
+	end
+end
+
+dap.configurations.python = {
+	{
+		-- The first three options are required by nvim-dap
+		type = "python", -- the type here established the link to the adapter definition: `dap.adapters.python`
+		request = "launch",
+		name = "Launch file",
+
+		-- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
+
+		program = "${file}", -- This configuration will launch the current file if used.
+		pythonPath = function()
+			-- debugpy supports launching an application with a different interpreter then the one used to launch debugpy itself.
+			-- The code below looks for a `venv` or `.venv` folder in the current directly and uses the python within.
+			-- You could adapt this - to for example use the `VIRTUAL_ENV` environment variable.
+			local cwd = vim.fn.getcwd()
+			if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+				return cwd .. "/venv/bin/python"
+			elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+				return cwd .. "/.venv/bin/python"
+			else
+				return "/usr/bin/python"
+			end
+		end,
+	},
+}
+
+dap.adapters["pwa-node"] = {
+	type = "server",
+	host = "localhost",
+	port = "${port}",
+	executable = {
+		command = "node",
+		-- 💀 Make sure to update this path to point to your installation
+		args = { os.getenv("HOME") .. "/dev/js/js-debug/src/dapDebugServer.js", "${port}" },
+	},
+}
+
+dap.configurations.typescript = {
+	{
+		type = "pwa-node",
+		request = "launch",
+		name = "Launch file",
+		runtimeExecutable = "deno",
+		runtimeArgs = {
+			"run",
+			"--inspect-wait",
+			"--allow-all",
+		},
+		program = "${file}",
+		cwd = "${workspaceFolder}",
+		attachSimplePort = 9229,
+	},
+}
 
 --- Additional infill config
-vim.api.nvim_set_keymap("n", "<leader>it", ":LlamaToggle<CR>", { noremap = true, desc = "[i]nfill [t]oggle" })
-vim.api.nvim_set_keymap("n", "<leader>ie", ":LlamaEnable<CR>", { noremap = true, desc = "[i]nfill [e]nable" })
-vim.api.nvim_set_keymap("n", "<leader>id", ":LlamaDisable<CR>", { noremap = true, desc = "[i]nfill [d]isable" })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>it",
+	":LlamaToggle<CR>",
+	{ noremap = true, desc = "[i]nfill [t]oggle", silent = true }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>ie",
+	":LlamaEnable<CR>",
+	{ noremap = true, desc = "[i]nfill [e]nable", silent = true }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>id",
+	":LlamaDisable<CR>",
+	{ noremap = true, desc = "[i]nfill [d]isable", silent = true }
+)
 vim.api.nvim_set_hl(0, "llama_hl_hint", { fg = vim.g.current_colors.flamingo, ctermfg = 209 })
 vim.api.nvim_set_hl(0, "llama_hl_info", { fg = vim.g.current_colors.lavender, ctermfg = 119 })
 

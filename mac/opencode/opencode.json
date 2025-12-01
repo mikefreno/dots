@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "system",
+  "theme": "mysystem",
   "provider": {
     "lmstudio": {
       "npm": "@ai-sdk/openai-compatible",
@@ -28,8 +28,20 @@
         "apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
-        "unsloth/qwen3-coder-130k": {"limit":{
-        "context": 130000,
+        "unsloth/qwen3-coder-175k": {"limit":{
+        "context": 175000,
+        "output": 100000
+      }},
+        "unsloth/qwen3-coder-150k": {"limit":{
+        "context": 150000,
+        "output": 100000
+      }},
+        "unsloth/qwen3-coder-125k": {"limit":{
+        "context": 125000,
+        "output": 100000
+      }},
+        "unsloth/qwen3-coder-100k": {"limit":{
+        "context": 100000,
         "output": 100000
       }},
         "unsloth/qwen3-coder-70k": {"limit":{

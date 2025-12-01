@@ -17,6 +17,8 @@ permissions:
     "sudo *": "deny"
     "chmod *": "ask"
     "curl *": "ask"
+    "git commit *": "deny"
+    "git push *": "deny"
   edit:
     "**/*.env*": "deny"
     "**/*.key": "deny"
