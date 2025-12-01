@@ -1328,19 +1328,35 @@ vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
 --- DAP(debugger) keybinds
 vim.keymap.set(
 	"n",
-	"<leader>dtb",
-	":DapToggleBreakpoint",
-	{ noremap = true, desc = "[d]ebugger [t]oggle [b]reakpoint", silent = true }
+	"<leader>db",
+	":DapToggleBreakpoint<CR>",
+	{ noremap = true, desc = "[d]ebugger toggle [b]reakpoint", silent = true }
 )
-vim.keymap.set("n", "<leader>dn", ":DapNew", { noremap = true, desc = "[d]ebugger [n]ew session", silent = true })
+vim.keymap.set("n", "<leader>dn", ":DapNew<CR>", { noremap = true, desc = "[d]ebugger [n]ew session", silent = true })
+vim.keymap.set(
+	"n",
+	"<leader>dd",
+	":DapDisconnect<CR>",
+	{ noremap = true, desc = "[d]ebugger [d]isconnect", silent = true }
+)
 vim.keymap.set(
 	"n",
 	"<leader>dc",
-	":DapContinue",
+	":DapContinue<CR>",
 	{ noremap = true, desc = "[d]ebugger [c]ontinue execution", silent = true }
 )
-vim.keymap.set("n", "<leader>dsi", ":DapStepInto", { noremap = true, desc = "[d]ebugger [s]tep [i]nto", silent = true })
-vim.keymap.set("n", "<leader>dso", ":DapStepOver", { noremap = true, desc = "[d]ebugger [s]tep [o]ver", silent = true })
+vim.keymap.set(
+	"n",
+	"<leader>dsi",
+	":DapStepInto<CR>",
+	{ noremap = true, desc = "[d]ebugger [s]tep [i]nto", silent = true }
+)
+vim.keymap.set(
+	"n",
+	"<leader>dso",
+	":DapStepOver<CR>",
+	{ noremap = true, desc = "[d]ebugger [s]tep [o]ver", silent = true }
+)
 ---DAP configuration
 ---
 ---Currently configured: C/C++/Rust/Go/Lua/Python
@@ -1489,6 +1505,21 @@ dap.configurations.typescript = {
 		attachSimplePort = 9229,
 	},
 }
+--- Dap UI
+local dapui = require("dapui")
+dapui.setup()
+dap.listeners.before.attach.dapui_config = function()
+	dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+	dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+	dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+	dapui.close()
+end
 
 --- Additional infill config
 vim.api.nvim_set_keymap(
