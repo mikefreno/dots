@@ -1505,9 +1505,134 @@ dap.configurations.typescript = {
 		attachSimplePort = 9229,
 	},
 }
---- Dap UI
+--- Dap UI Configuration
 local dapui = require("dapui")
-dapui.setup()
+dapui.setup({
+	-- ICONS: Configure icons used in the UI
+	icons = {
+		expanded = "▾", -- Icon when a section is expanded
+		collapsed = "▸", -- Icon when a section is collapsed
+		current_frame = "▸", -- Icon for the current stack frame
+	},
+
+	-- MAPPINGS: Keybindings within dapui windows
+	mappings = {
+		expand = { "<CR>", "<2-LeftMouse>" }, -- Expand/collapse variables
+		open = "o", -- Open value in new window
+		remove = "d", -- Remove watch/breakpoint
+		edit = "e", -- Edit variable value
+		repl = "r", -- Open REPL with expression
+		toggle = "t", -- Toggle breakpoint on current line
+	},
+
+	-- ELEMENT_MAPPINGS: Specific mappings for certain elements
+	element_mappings = {
+		-- Custom mappings for the stacks element
+		stacks = {
+			open = "<CR>", -- Jump to stack frame
+			expand = "o", -- Expand stack trace
+		},
+	},
+
+	-- EXPAND_LINES: Use full width when expanding variable values
+	expand_lines = true,
+
+	-- LAYOUTS: Define how windows are arranged
+	layouts = {
+		-- LEFT SIDEBAR: Shows scopes, breakpoints, stacks, and watches
+		{
+			elements = {
+				-- SCOPES: Local and global variables in current context
+				{ id = "scopes", size = 0.40 }, -- 40% of sidebar height
+				-- BREAKPOINTS: All breakpoints in project
+				{ id = "breakpoints", size = 0.20 }, -- 20% of sidebar height
+				-- STACKS: Call stack / stack frames
+				{ id = "stacks", size = 0.20 }, -- 20% of sidebar height
+				-- WATCHES: Custom watch expressions
+				{ id = "watches", size = 0.20 }, -- 20% of sidebar height
+			},
+			size = 50, -- Width in columns
+			position = "left", -- Position on screen
+		},
+
+		-- BOTTOM PANEL: Shows REPL and console output
+		{
+			elements = {
+				-- REPL: Interactive debugger console
+				{ id = "repl", size = 0.50 }, -- 50% of panel height
+				-- CONSOLE: Program output/stderr
+				{ id = "console", size = 0.50 }, -- 50% of panel height
+			},
+			size = 12, -- Height in rows
+			position = "bottom", -- Position on screen
+		},
+	},
+
+	-- CONTROLS: Show control buttons at top of sidebar
+	controls = {
+		enabled = true, -- Enable control buttons
+		-- ELEMENT: Which sidebar element to show controls in
+		element = "repl",
+
+		-- ICONS: Control button icons and their actions
+		icons = {
+			pause = "⏸", -- Pause execution
+			play = "▶", -- Continue execution
+			step_into = "⏎", -- Step into function
+			step_out = "⏩", -- Step out of function
+			step_over = "⏭", -- Step over line
+			step_back = "⏮", -- Step backwards (if supported)
+			run_last = "↻", -- Restart last debug session
+			terminate = "⏹", -- Stop debugging
+			disconnect = "⏚", -- Disconnect from debuggee
+		},
+	},
+
+	-- FLOATING: Configuration for floating windows
+	floating = {
+		max_height = 0.8, -- Max height as percentage of editor
+		max_width = 0.8, -- Max width as percentage of editor
+		border = "rounded", -- Border style: "single", "double", "rounded", "solid", "shadow"
+		mappings = {
+			close = { "q", "<Esc>" }, -- Close floating window
+		},
+	},
+
+	-- WINDOWS: Default window settings
+	windows = {
+		indent = 1, -- Indentation size for nested items
+	},
+
+	-- RENDER: How to render values
+	render = {
+		max_type_length = nil, -- Max length for type names (nil = no limit)
+		max_value_lines = 100, -- Max lines for multi-line values
+		indent = 1, -- Indentation size
+	},
+})
+
+-- KEYMAPS: Global keymaps for dapui
+vim.keymap.set("n", "<leader>du", function()
+	dapui.toggle()
+end, { noremap = true, desc = "[d]ebugger toggle [u]i", silent = true })
+
+vim.keymap.set("n", "<leader>de", function()
+	dapui.eval()
+end, { noremap = true, desc = "[d]ebugger [e]val expression under cursor", silent = true })
+
+vim.keymap.set("v", "<leader>de", function()
+	dapui.eval()
+end, { noremap = true, desc = "[d]ebugger [e]val selected expression", silent = true })
+
+vim.keymap.set("n", "<leader>df", function()
+	dapui.float_element()
+end, { noremap = true, desc = "[d]ebugger open element in [f]loating window", silent = true })
+
+vim.keymap.set("n", "<leader>dh", function()
+	require("dap.ui.widgets").hover()
+end, { noremap = true, desc = "[d]ebugger [h]over information", silent = true })
+
+-- AUTO-OPEN/CLOSE: Automatically open/close dapui when debugging starts/stops
 dap.listeners.before.attach.dapui_config = function()
 	dapui.open()
 end
