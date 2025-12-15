@@ -81,10 +81,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*",
-	command = "GuessIndent",
-})
+--vim.api.nvim_create_autocmd("BufEnter", {
+--pattern = "*",
+--command = "GuessIndent",
+--})
 
 vim.api.nvim_create_autocmd("VimResized", {
 	group = vim.api.nvim_create_augroup("autoresize_windows", { clear = true }),
@@ -139,7 +139,7 @@ vim.api.nvim_set_keymap("n", "<leader>[", ":bp<CR>", { noremap = true, silent = 
 vim.api.nvim_set_keymap("n", "<leader>]", ":bn<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>} <Esc>Oreturn err<Esc>")
-vim.keymap.set("n", "<leader>gi", ":GuessIndent<CR>", { desc = "[G]uess [I]ndent" })
+--vim.keymap.set("n", "<leader>gi", ":GuessIndent<CR>", { desc = "[G]uess [I]ndent" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
@@ -1366,6 +1366,15 @@ dap.adapters.lldb = {
 	command = "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-dap", -- adjust as needed, must be absolute path
 	name = "lldb",
 }
+
+dap.adapters.codelldb = {
+	type = "server",
+	port = "${port}",
+	executable = {
+		command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+		args = { "--port", "${port}" },
+	},
+}
 dap.configurations.cpp = {
 	{
 		name = "Launch",
@@ -1390,6 +1399,34 @@ dap.configurations.cpp = {
 		-- But you should be aware of the implications:
 		-- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
 		-- runInTerminal = false,
+	},
+}
+dap.configurations.rust = {
+	{
+		name = "Launch",
+		type = "codelldb",
+		request = "launch",
+		program = function()
+			local cwd = vim.fn.getcwd()
+			local project_name = vim.fn.fnamemodify(cwd, ":t")
+			local exe_name = project_name:gsub("-", "_")
+			local exe_path = cwd .. "/target/debug/" .. exe_name
+
+			if vim.fn.executable(exe_path) == 1 then
+				return exe_path
+			else
+				local build_result = vim.fn.system("cargo build --quiet")
+
+				if vim.v.shell_error == 0 and vim.fn.executable(exe_path) == 1 then
+					return exe_path
+				else
+					return vim.fn.input("Path to executable: ", cwd .. "/target/debug/", "file")
+				end
+			end
+		end,
+		cwd = "${workspaceFolder}",
+		stopOnEntry = false,
+		args = {},
 	},
 }
 
@@ -1544,10 +1581,8 @@ dapui.setup({
 			elements = {
 				-- SCOPES: Local and global variables in current context
 				{ id = "scopes", size = 0.40 }, -- 40% of sidebar height
-				-- BREAKPOINTS: All breakpoints in project
-				{ id = "breakpoints", size = 0.20 }, -- 20% of sidebar height
 				-- STACKS: Call stack / stack frames
-				{ id = "stacks", size = 0.20 }, -- 20% of sidebar height
+				{ id = "stacks", size = 0.40 }, -- 20% of sidebar height
 				-- WATCHES: Custom watch expressions
 				{ id = "watches", size = 0.20 }, -- 20% of sidebar height
 			},
@@ -1559,12 +1594,14 @@ dapui.setup({
 		{
 			elements = {
 				-- REPL: Interactive debugger console
-				{ id = "repl", size = 0.50 }, -- 50% of panel height
+				{ id = "repl", size = 0.4 }, -- 50% of panel height
+				-- -- BREAKPOINTS: All breakpoints in project
+				{ id = "breakpoints", size = 0.20 }, -- 20% of sidebar height
 				-- CONSOLE: Program output/stderr
-				{ id = "console", size = 0.50 }, -- 50% of panel height
+				{ id = "console", size = 0.4 }, -- 50% of panel height
 			},
-			size = 12, -- Height in rows
-			position = "bottom", -- Position on screen
+			size = 50, -- Height in rows
+			position = "right", -- Position on screen
 		},
 	},
 
