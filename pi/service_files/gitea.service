@@ -1,16 +1,16 @@
 [Unit]
-Description=Gitea Docker Container
-Requires=docker.service
+Description=Gitea Docker Compose
 After=network.target docker.service
+Requires=docker.service
 
 [Service]
-Type=simple
+Type=oneshot
+RemainAfterExit=yes
 User=mike
-ExecStart=/home/mike/dots/pi/scripts/run_gitea.sh
-Restart=on-failure
-RestartSec=10s
-StandardOutput=journal
-StandardError=journal
+WorkingDirectory=/home/mike/dots/pi/compose/gitea/
+ExecStart=/usr/bin/docker-compose up -d
+ExecStop=/usr/bin/docker-compose down
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
