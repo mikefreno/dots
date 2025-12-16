@@ -217,3 +217,36 @@ server {
         proxy_set_header Authorization $http_authorization;
     }
 }
+
+# ===================================================================
+# SERVICE 7: Gitea
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name git.freno.me;
+
+    location / {
+        auth_request /auth;
+        auth_request_set $auth_status $upstream_status;
+
+        proxy_pass http://127.0.0.1:8085;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location = /auth {
+        internal;
+        proxy_pass http://127.0.0.1:9000;
+        proxy_set_header X-Original-URI $request_uri;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header Authorization $http_authorization;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/git.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/git.freno.me/privkey.pem; # managed by Certbot
+}
