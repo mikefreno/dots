@@ -1,0 +1,13 @@
+[Unit]
+Description=Gitea Backup Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/home/mike/dots/pi/scripts/backup_gitea.sh
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

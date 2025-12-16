@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Gitea backup every 12 hours
+Requires=gitea-backup.service
+
+[Timer]
+OnBootSec=10min
+OnCalendar=00/12:00:00
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
