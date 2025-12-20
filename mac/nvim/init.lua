@@ -186,7 +186,17 @@ require("lazy").setup({
 	"mattn/emmet-vim",
 	"preservim/nerdcommenter",
 	"mbbill/undotree",
-	"luckasRanarison/tailwind-tools.nvim",
+	{
+		"patrickreid-li/tailwind-tools.nvim",
+		name = "tailwind-tools",
+		build = ":UpdateRemotePlugins",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-telescope/telescope.nvim", -- optional
+			"neovim/nvim-lspconfig", -- optional
+		},
+		opts = {}, -- your configuration
+	},
 	"mfussenegger/nvim-dap",
 	{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 	{
@@ -1720,8 +1730,6 @@ vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = tr
 --filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
 --})
 
---tailwind sort
-vim.api.nvim_set_keymap("n", "<leader>st", ":TailwindSort<CR>", { noremap = true, silent = true })
 vim.cmd([[runtime macros/matchit.vim]])
 -- ocaml fix, so i can still use nvimtree
 vim.cmd("autocmd FileType ocaml nnoremap <leader>t :NvimTreeToggle<CR>")
