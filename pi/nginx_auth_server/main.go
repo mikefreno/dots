@@ -19,17 +19,6 @@ var (
 	logger *log.Logger
 )
 
-func logRequest(r *http.Request) {
-	logger.Printf("=== REQUEST ===")
-	logger.Printf("%s %s %s", r.Method, r.RequestURI, r.Proto)
-	for k, v := range r.Header {
-		for _, h := range v {
-			logger.Printf("Header: %s=%s", k, h)
-		}
-	}
-}
-
-// reads an Ed25519 public key from the given PEM file.
 func loadPublicKey(path string) (ed25519.PublicKey, error) {
 	raw, err := os.ReadFile(path)
 	if err != nil {
@@ -40,7 +29,7 @@ func loadPublicKey(path string) (ed25519.PublicKey, error) {
 		if len(raw) == ed25519.PublicKeySize {
 			return ed25519.PublicKey(raw), nil
 		}
-		return nil, fmt.Errorf("key is not PEM‑encoded and is not 32 bytes")
+		return nil, fmt.Errorf("key is not PEM-encoded and is not 32 bytes")
 	}
 	pub, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
@@ -71,25 +60,21 @@ func parseAndValidate(jwtString string) (map[string]interface{}, error) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	logRequest(r)
-
+	// logRequest(r) // Commented out
 	auth := r.Header.Get("Authorization")
 	if auth == "" {
-		logger.Printf("⚠️  no token received")
+		// logger.Printf("⚠️  no token received") // Commented out
 		http.Error(w, "invalid token", http.StatusUnauthorized)
 		return
 	}
-
 	tokenStr := strings.TrimSpace(auth[len("Bearer "):])
-
 	claims, err := parseAndValidate(tokenStr)
 	if err != nil {
-		logger.Printf("⚠️  token rejected: %v", err)
+		// logger.Printf("⚠️  token rejected: %v", err) // Commented out
 		http.Error(w, "invalid token", http.StatusUnauthorized)
 		return
 	}
-
-	logger.Printf("Claims: %+v", claims)
+	// logger.Printf("Claims: %+v", claims) // Commented out
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -101,6 +86,7 @@ func main() {
 		log.Fatalf("could not open audit log file: %v", err)
 	}
 	defer f.Close()
+
 	logger = log.New(f, "", log.LstdFlags|log.Lshortfile)
 
 	var errLoad error
