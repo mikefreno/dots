@@ -178,36 +178,54 @@ server {
     listen [::]:443 ssl;
     http2 on;
     server_name infill.freno.me;
-
     ssl_certificate /etc/letsencrypt/live/infill.freno.me/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/infill.freno.me/privkey.pem;
-
     client_max_body_size 10G;
     proxy_socket_keepalive on;
-
     location / {
+        # Handle OPTIONS (preflight) requests - RESTRICTED TO SPECIFIC ORIGINS
+        if ($request_method = 'OPTIONS') {
+            set $cors '';
+            
+            # Allow specific origins for OPTIONS
+            if ($http_origin ~* (https://freno\.me|https://www\.freno\.me|https://freno\.dev|https://www\.freno\.dev|http://localhost:3000)) {
+                set $cors 'true';
+            }
+            
+            # If origin is allowed, return CORS headers
+            if ($cors = 'true') {
+                add_header 'Access-Control-Allow-Origin' '$http_origin' always;
+                add_header 'Access-Control-Allow-Methods' 'POST, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Authorization, Content-Type' always;
+                add_header 'Access-Control-Allow-Credentials' 'true' always;
+                add_header 'Access-Control-Max-Age' 86400 always;
+                return 204;
+            }
+            
+            # If origin not allowed, reject
+            return 403;
+        }
+        # Regular auth for POST requests (ANY origin, secured by Bearer token)
         auth_request /auth;
         auth_request_set $auth_status $upstream_status;
-
+        # Add CORS header for actual POST requests (mirrors the origin)
+        add_header 'Access-Control-Allow-Origin' '$http_origin' always;
+        add_header 'Access-Control-Allow-Credentials' 'true' always;
         proxy_pass http://atlas.local:8123;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
-
         proxy_read_timeout 1800;
         proxy_connect_timeout 1800;
         proxy_send_timeout 1800;
         send_timeout 1800;
-
         proxy_buffering off;
         proxy_request_buffering off;
     }
-
     location = /auth {
         internal;
         proxy_pass http://127.0.0.1:9000;
