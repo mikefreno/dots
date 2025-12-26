@@ -183,17 +183,25 @@ server {
     client_max_body_size 10G;
     proxy_socket_keepalive on;
     location / {
-        # Handle OPTIONS (preflight) requests first WITHOUT auth
+        # Handle OPTIONS (preflight)
         if ($request_method = 'OPTIONS') {
-            add_header 'Access-Control-Allow-Origin' '*' always;
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+            add_header 'Access-Control-Allow-Origin' '$http_origin' always;
+            add_header 'Access-Control-Allow-Methods' 'POST, OPTIONS' always;
             add_header 'Access-Control-Allow-Headers' 'Authorization, Content-Type' always;
+            add_header 'Access-Control-Allow-Credentials' 'true' always;
             add_header 'Access-Control-Max-Age' 86400 always;
             return 204;
         }
+        # Regular auth for POST requests
         auth_request /auth;
         auth_request_set $auth_status $upstream_status;
-        add_header 'Access-Control-Allow-Origin' '*' always;
+        # Hide CORS headers from backend (if any)
+        proxy_hide_header 'Access-Control-Allow-Origin';
+        proxy_hide_header 'Access-Control-Allow-Credentials';
+        
+        # Add our own CORS headers
+        add_header 'Access-Control-Allow-Origin' '$http_origin' always;
+        add_header 'Access-Control-Allow-Credentials' 'true' always;
         proxy_pass http://atlas.local:8123;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
