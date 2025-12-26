@@ -173,8 +173,6 @@ handle_display_change() {
 # Add signal handlers
 yabai -m signal --add event=display_added action="$0"
 yabai -m signal --add event=display_removed action="$0"
-yabai -m signal --add event=application_launched app="^LM Studio$" action="$0"
-yabai -m signal --add event=application_terminated app="^LM Studio$" action="$0"
 
 # Set up spaces
 setup_spaces
@@ -204,4 +202,3 @@ if ! pgrep -x "borders" >/dev/null; then
 fi
 
 echo "yabai configuration loaded successfully"
-

@@ -104,4 +104,4 @@ cmd + shift - r : yabai --restart-service && \
                   brew services restart borders    && \
                   ~/.config/btop/btop_colorswap.sh
 
-cmd + shift - o : restart_obsidian_connection
+lalt + shift - o : restart_obsidian_connection
