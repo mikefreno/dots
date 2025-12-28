@@ -67,7 +67,8 @@ lalt - l : yabai -m window --swap east
 alt - space : yabai -m window --toggle float \
           yabai -m window --grid 4:4:1:1:2:2
 # Make fullscreen
-alt - f : yabai -m window --toggle native-fullscreen
+lalt - f : yabai -m window --toggle windowed-fullscreen
+ralt - f : yabai -m window --toggle native-fullscreen
 # Mouse focus
 alt - o         : yabai -m config focus_follows_mouse autoraise
 alt - p         : yabai -m config focus_follows_mouse off
