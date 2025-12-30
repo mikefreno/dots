@@ -10,7 +10,6 @@ local volume_percent = sbar.add("item", "widgets.volume1", {
 		padding_left = -1,
 		font = { family = settings.font.numbers },
 	},
-
 	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 'Control Center,Sound'",
 })
 
@@ -35,16 +34,17 @@ local volume_icon = sbar.add("item", "widgets.volume2", {
 			size = 14.0,
 		},
 	},
-
 	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 'Control Center,Sound'",
 })
 
-sbar.add("bracket", "widgets.volume.bracket", {
+local volume_bracket = sbar.add("bracket", "widgets.volume.bracket", {
 	volume_icon.name,
 	volume_percent.name,
 }, {
 	background = { color = colors.bg1 },
 	popup = { align = "center" },
+
+	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 'Control Center,Sound'",
 })
 
 sbar.add("item", "widgets.volume.padding", {
