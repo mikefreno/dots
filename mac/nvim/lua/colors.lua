@@ -87,6 +87,11 @@ M.setup_highlights = function()
 		vim.api.nvim_set_hl(0, "RainbowGreen", { fg = colors.green })
 		vim.api.nvim_set_hl(0, "RainbowViolet", { fg = colors.mauve })
 		vim.api.nvim_set_hl(0, "RainbowCyan", { fg = colors.teal })
+
+		-- Treesitter Context highlights
+		vim.api.nvim_set_hl(0, "TreesitterContext", { bg = colors.surface0 })
+		vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = colors.surface2 })
+		vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = true, sp = colors.surface2 })
 	end
 end
 
@@ -102,6 +107,13 @@ function M.setup()
 	vim.g.current_theme = current_theme
 	vim.g.current_colors = M.colors[current_theme]
 	vim.g.transparency = current_theme == "mocha"
+
+	-- Ensure highlights are re-applied on theme change
+	vim.api.nvim_create_autocmd("ColorScheme", {
+		callback = function()
+			M.setup_highlights()
+		end,
+	})
 
 	-- Set up theme change detection
 	vim.api.nvim_create_autocmd({ "FocusGained" }, {

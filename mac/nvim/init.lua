@@ -221,6 +221,24 @@ require("lazy").setup({
 		opts = {},
 	},
 	{
+		"nvim-treesitter/nvim-treesitter-context",
+		event = "BufReadPre", -- Load when you start reading a file
+		opts = {
+			enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+			max_lines = 10, -- How many lines the window should span. Values <= 0 mean no limit.
+			min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+			line_numbers = true,
+			multiline_threshold = 20, -- Maximum number of lines to show for a single context
+			trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+			mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+			-- Separator between context and content. Should be a single character string, like '-'.
+			-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+			separator = nil, -- I prefer a border via highlights (see below) instead of a character separator
+			zindex = 20, -- The Z-index of the context window
+			on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+		},
+	},
+	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
 		opts = { direction = "float", float_opts = { width = 100, height = 30 } },
@@ -1661,7 +1679,7 @@ dapui.setup({
 -- KEYMAPS: Global keymaps for dapui
 vim.keymap.set("n", "<leader>du", function()
 	dapui.toggle()
-end, { noremap = true, desc = "[d]ebugger toggle [u]i", silent = true })
+end, { noremap = true, desc = "toggle [d]ebugger [u]i", silent = true })
 
 vim.keymap.set("n", "<leader>de", function()
 	dapui.eval()
@@ -1716,7 +1734,18 @@ vim.api.nvim_set_hl(0, "llama_hl_hint", { fg = vim.g.current_colors.flamingo, ct
 vim.api.nvim_set_hl(0, "llama_hl_info", { fg = vim.g.current_colors.lavender, ctermfg = 119 })
 
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>ut",
+	":UndotreeToggle<CR>",
+	{ noremap = true, silent = true, desc = "Toggle Undotree" }
+)
+vim.keymap.set("n", "[c", function()
+	require("treesitter-context").go_to_context(vim.v.count1)
+end, { silent = true, desc = "Jump to upper context" })
+vim.keymap.set("n", "<leader>ct", function()
+	require("treesitter-context").toggle()
+end, { silent = true, desc = "Toggle Treesitter Context" })
 
 -- Additional lsp servers --
 --require("lspconfig").sourcekit.setup({
