@@ -63,18 +63,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// logRequest(r) // Commented out
 	auth := r.Header.Get("Authorization")
 	if auth == "" {
-		// logger.Printf("⚠️  no token received") // Commented out
+		// logger.Printf("⚠️  no token received")
 		http.Error(w, "invalid token", http.StatusUnauthorized)
 		return
 	}
 	tokenStr := strings.TrimSpace(auth[len("Bearer "):])
-	claims, err := parseAndValidate(tokenStr)
+	_, err := parseAndValidate(tokenStr)
 	if err != nil {
-		// logger.Printf("⚠️  token rejected: %v", err) // Commented out
+		// logger.Printf("⚠️  token rejected: %v", err)
 		http.Error(w, "invalid token", http.StatusUnauthorized)
 		return
 	}
-	// logger.Printf("Claims: %+v", claims) // Commented out
+	// logger.Printf("Claims: %+v", claims)
 	w.WriteHeader(http.StatusOK)
 }
 
