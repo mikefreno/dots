@@ -60,6 +60,7 @@ Subtask Strategy
 
 - When a feature spans multiple modules or is estimated > 20 minutes, delegate planning to `@task-manager` to generate atomic subtasks under `tasks/{feature}/` using the `{sequence}-{task-description}.md` pattern and a feature `README.md` index.
 - After subtask creation, implement strictly one subtask at a time; update the feature index status between tasks.
+- Always mark progress in the feature index after each completed subtask, and mark the feature as complete when all subtasks are done.
 
 Mandatory Workflow
 Phase 1: Planning (REQUIRED)
