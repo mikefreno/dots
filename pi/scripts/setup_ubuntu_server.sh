@@ -22,11 +22,11 @@ sudo apt-get install -y ca-certificates curl gnupg vim git zsh nginx certbot pyt
 
 # Add Docker's official GPG key and repository
 sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
@@ -44,12 +44,12 @@ sudo apt-get install -y fastfetch nodejs npm tmux clangd golang
 # Install Jellyfin
 curl https://repo.jellyfin.org/install-debuntu.sh | sudo bash
 
-# Install Neovim
-wget https://github.com/neovim/neovim/releases/download/v0.11.4/nvim-linux-arm64.tar.gz
-tar xzf nvim-linux-arm64.tar.gz
-sudo mv nvim-linux-arm64 /opt/nvim
+# Install Neovim (x64 version for Ubuntu Server)
+wget https://github.com/neovim/neovim/releases/download/v0.11.4/nvim-linux64.tar.gz
+tar xzf nvim-linux64.tar.gz
+sudo mv nvim-linux64 /opt/nvim
 sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
-rm nvim-linux-arm64.tar.gz
+rm nvim-linux64.tar.gz
 
 # Install Oh My Zsh (will prompt for shell change)
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
