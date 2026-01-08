@@ -61,11 +61,10 @@ M.colors = {
 }
 
 -- Get theme based on system time (daytime = latte, nighttime = mocha)
--- Daytime is considered 6 AM to 6 PM
 function M.get_system_theme()
 	local hour = tonumber(os.date("%H"))
-	-- Between 6 AM (06:00) and 6 PM (18:00) use light theme
-	if hour >= 6 and hour < 18 then
+	local minute = tonumber(os.date("%M"))
+	if hour >= 7 and (hour < 17 or (hour == 17 and minute < 30)) then
 		return "latte"
 	else
 		return "mocha"
