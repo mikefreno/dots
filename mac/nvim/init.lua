@@ -275,7 +275,10 @@ require("lazy").setup({
 		end,
 	},
 	-- language specific plugins
-	"keith/swift.vim",
+	{
+		"keith/swift.vim",
+		ft = "swift", -- filetype
+	},
 	"rhysd/vim-clang-format",
 	"evanleck/vim-svelte",
 	"OmniSharp/omnisharp-vim",
@@ -989,6 +992,7 @@ require("lazy").setup({
 				"go",
 				"python",
 				"rust",
+				-- "swift", -- Disabled until nvim-treesitter supports tree-sitter CLI 0.26
 				"tsx",
 				"javascript",
 				"typescript",
@@ -1002,13 +1006,16 @@ require("lazy").setup({
 				"vim",
 				"vimdoc",
 			},
+			-- Ignore Swift to prevent auto-install attempts
+			ignore_install = { "swift" },
 			-- Autoinstall languages that are not installed
-			auto_install = true,
+			auto_install = false, -- Disabled due to tree-sitter CLI 0.26 compatibility issues with Swift
 			highlight = {
 				enable = true,
-				additional_vim_regex_highlighting = { "ruby" },
+				disable = { "swift" }, -- Disable tree-sitter for Swift until tree-sitter CLI 0.26 compatibility is fixed
+				additional_vim_regex_highlighting = { "ruby", "swift" }, -- Use regex highlighting for Swift
 			},
-			indent = { enable = true, disable = { "ruby" } },
+			indent = { enable = true, disable = { "ruby", "swift" } },
 			incremental_selection = {
 				enable = true,
 				keymaps = {
@@ -1748,12 +1755,23 @@ vim.keymap.set("n", "<leader>ct", function()
 end, { silent = true, desc = "Toggle Treesitter Context" })
 
 -- Additional lsp servers --
---require("lspconfig").sourcekit.setup({
---cmd = {
---"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
---},
---filetypes = { "swift" },
---})
+-- Swift LSP configuration using new Neovim 0.11 API
+vim.lsp.config.sourcekit = {
+	cmd = {
+		"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
+	},
+	filetypes = { "swift", "c", "cpp", "objective-c", "objective-cpp" },
+	root_markers = { "Package.swift", ".git", "compile_commands.json" },
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+}
+
+-- Enable sourcekit LSP for Swift files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "swift" },
+	callback = function()
+		vim.lsp.enable("sourcekit")
+	end,
+})
 --require("lspconfig").ocamllsp.setup({
 --cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
 --filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
