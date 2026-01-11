@@ -2,14 +2,6 @@
 description: "Breaks down complex features into small, verifiable subtasks"
 mode: primary
 temperature: 0.7
-tools:
-  read: true
-  edit: true
-  write: true
-  grep: true
-  glob: true
-  bash: false
-  patch: true
 permissions:
   bash:
     "*": "deny"

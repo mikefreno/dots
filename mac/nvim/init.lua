@@ -1761,8 +1761,21 @@ vim.lsp.config.sourcekit = {
 		"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
 	},
 	filetypes = { "swift", "c", "cpp", "objective-c", "objective-cpp" },
-	root_markers = { "Package.swift", ".git", "compile_commands.json" },
+	root_markers = { 
+		"Package.swift", 
+		".git", 
+		"compile_commands.json",
+		"buildServer.json",
+		"*.xcodeproj",
+		"*.xcworkspace"
+	},
 	capabilities = require("blink.cmp").get_lsp_capabilities(),
+	-- Additional settings for better module resolution
+	settings = {},
+	on_init = function(client)
+		-- Log when LSP starts for debugging
+		vim.notify("SourceKit-LSP initialized for " .. vim.fn.getcwd(), vim.log.levels.INFO)
+	end,
 }
 
 -- Enable sourcekit LSP for Swift files
@@ -1776,6 +1789,12 @@ vim.api.nvim_create_autocmd("FileType", {
 --cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
 --filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
 --})
+
+-- Swift: Restart LSP after building
+vim.keymap.set("n", "<leader>lr", function()
+	vim.cmd("LspRestart")
+	vim.notify("LSP Restarted", vim.log.levels.INFO)
+end, { desc = "[L]SP [R]estart" })
 
 vim.cmd([[runtime macros/matchit.vim]])
 -- ocaml fix, so i can still use nvimtree

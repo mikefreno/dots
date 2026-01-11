@@ -30,24 +30,8 @@
         "apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
-        "unsloth/qwen3-coder-175k": {"limit":{
-        "context": 175000,
-        "output": 100000
-      }},
-        "unsloth/qwen3-coder-150k": {"limit":{
-        "context": 150000,
-        "output": 100000
-      }},
-        "unsloth/qwen3-coder-125k": {"limit":{
-        "context": 125000,
-        "output": 100000
-      }},
-        "unsloth/qwen3-coder-100k": {"limit":{
+        "unsloth/qwen3-coder": {"limit":{
         "context": 100000,
-        "output": 100000
-      }},
-        "unsloth/qwen3-coder-70k": {"limit":{
-        "context": 70000,
         "output": 100000
       }},
       "unsloth/gpt-oss-20b": {"limit":{
@@ -76,8 +60,15 @@
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app"
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{file:~/.config/opencode/c7.key}"
+      }
     }
-  },
+  }
   "formatter": {
     "stylua": {
       "command": [
