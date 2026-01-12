@@ -726,6 +726,14 @@ require("lazy").setup({
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+				{ "<leader>v", group = "LÖ[V]E" },
+				{ "<leader>e", group = "[E]rror/Diagnostic" },
+				{ "<leader>n", group = "[N]eogit" },
+				{ "<leader>o", group = "[O]pencode" },
+				{ "<leader>oa", group = "[O]pencode [A]sk" },
+				{ "<leader>rb", group = "[R]ust [B]uild" },
+				{ "gc", group = "Comment" },
+				{ "gr", group = "LSP: Goto/Rename" },
 			},
 		},
 	},
@@ -1302,6 +1310,14 @@ require("lazy").setup({
 				require("opencode").select()
 			end, { desc = "[O]pencode [s]elect prompt" })
 		end,
+	},
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		opts = {
+			input = { enabled = true },
+		},
 	},
 }, {
 	ui = {

@@ -68,7 +68,7 @@
         "CONTEXT7_API_KEY": "{file:~/.config/opencode/c7.key}"
       }
     }
-  }
+  },
   "formatter": {
     "stylua": {
       "command": [

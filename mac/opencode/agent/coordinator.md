@@ -1,7 +1,6 @@
 ---
 description: Core agent for the project, handles coordination
 mode: primary
-model: unsloth/qwen3-coder-30b-a3b-instruct
 temperature: 0.55
 permissions:
   bash:
