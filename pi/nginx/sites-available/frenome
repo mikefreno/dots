@@ -11,9 +11,8 @@ server {
 # SERVICE 1: Jellyfin Media Server
 # ===================================================================
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    http2 on;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name jellyfin.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/jellyfin.freno.me/fullchain.pem;
@@ -42,9 +41,8 @@ server {
 # SERVICE 2: Vaultwarden
 # ===================================================================
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    http2 on;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name vw.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/vw.freno.me/fullchain.pem;
@@ -70,9 +68,8 @@ server {
 # SERVICE 3: OpenWebUI
 # ===================================================================
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    http2 on;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name ai.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem;
@@ -105,9 +102,8 @@ server {
 # SERVICE 4: LM Studio
 # ===================================================================
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    http2 on;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name lm.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/lm.freno.me/fullchain.pem;
@@ -153,9 +149,8 @@ server {
 # SERVICE 5: File Browser
 # ===================================================================
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    http2 on;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name files.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/files.freno.me/fullchain.pem;
@@ -174,9 +169,8 @@ server {
 # SERVICE 6: LlamaCPP Infill
 # ===================================================================
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    http2 on;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name infill.freno.me;
     ssl_certificate /etc/letsencrypt/live/infill.freno.me/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/infill.freno.me/privkey.pem;
@@ -231,9 +225,8 @@ server {
 # SERVICE 7: Gitea
 # ===================================================================
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    http2 on;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name git.freno.me;
 
     location / {
