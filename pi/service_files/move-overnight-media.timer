@@ -1,0 +1,10 @@
+[Unit]
+Description=Run overnight media mover daily at 3 AM
+Requires=move-overnight-media.service
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

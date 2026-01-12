@@ -9,7 +9,7 @@ services:
       - /var/lib/jellyfin/:/config
       - /var/lib/jellyfin/cache:/cache
       - type: bind
-        source: /ServerStore/
+        source: /ServerStore/Media/
         target: /media
       #- type: bind
         #source: /path/to/media2
