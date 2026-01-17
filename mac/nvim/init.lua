@@ -260,13 +260,12 @@ require("lazy").setup({
 				api_key = keyFile:read("*l")
 			end
 			vim.g.llama_config = {
-				--endpoint = "http://localhost:8123/infill",
 				endpoint = "https://infill.freno.me/infill",
 				api_key = api_key,
-				keymap_trigger = "<M-Enter>",
-				keymap_accept_line = "<A-Tab>",
-				keymap_accept_full = "<S-Tab>",
-				keymap_accept_word = "<Right>",
+				keymap_fim_trigger = "<M-Enter>",
+				keymap_fim_accept_line = "<A-Tab>",
+				keymap_fim_accept_full = "<S-Tab>",
+				keymap_fim_accept_word = "<Right>",
 				stop_strings = {},
 				n_prefix = 512,
 				n_suffix = 512,
@@ -1777,13 +1776,13 @@ vim.lsp.config.sourcekit = {
 		"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
 	},
 	filetypes = { "swift", "c", "cpp", "objective-c", "objective-cpp" },
-	root_markers = { 
-		"Package.swift", 
-		".git", 
+	root_markers = {
+		"Package.swift",
+		".git",
 		"compile_commands.json",
 		"buildServer.json",
 		"*.xcodeproj",
-		"*.xcworkspace"
+		"*.xcworkspace",
 	},
 	capabilities = require("blink.cmp").get_lsp_capabilities(),
 	-- Additional settings for better module resolution

@@ -1,37 +1,38 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "mysystem",
   "autoupdate": false,
-  //"autocompact": false,
   "provider": {
-    "lmstudio": {
+    "local-mac": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "LM Studio",
+      "name": "on-hermes",
       "options": {
-        "baseURL": "https://lm.freno.me/v1",
-        "apiKey": "{file:~/.config/opencode/my.key}",
+        "baseURL": "http://localhost:1234/v1",
       },
       "models": {
-        "unsloth/qwen3-coder-30b-a3b-instruct": {"limit":{
-        "context": 80000,
-        "output": 100000
-      }},
-        "unsloth/gpt-oss-20b": {"limit":{
-        "context": 100000,
-        "output": 100000
-      }}
+        "liquid/lfm2.5-1.2b": {
+          "limit":{
+            "context": 128000,
+            "output": 100000
+          }
+        },
+        "qwen/qwen3-vl-8b": {
+          "limit":{
+            "context": 100000,
+            "output": 100000
+          }
+        }
       }
     },
     "infill": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "Llama-server (infill)",
+      "name": "on-atlas",
       "options": {
         "baseURL": "https://infill.freno.me/v1",
         "apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
         "unsloth/qwen3-coder": {"limit":{
-        "context": 100000,
+        "context": 90000,
         "output": 100000
       }},
       "unsloth/gpt-oss-20b": {"limit":{
