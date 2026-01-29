@@ -80,13 +80,13 @@ lcmd - m : yabai -m space --rotate 90
 # ----------------------------
 
 # create space, move to it
-lalt - n : yabai -m space --create && \
+ralt - n : yabai -m space --create && \
                   index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
                   yabai -m window --space "${index}" && \
                   yabai -m space --focus "${index}"
 
 # just create space
-ralt - n : yabai -m space --create
+lalt - n : yabai -m space --create
 
 # destroy spaces
 ralt- 1 : yabai -m space --destroy 1

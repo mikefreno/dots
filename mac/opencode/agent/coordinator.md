@@ -18,6 +18,8 @@ permissions:
     "**/*.secret": "deny"
     ".git/**": "deny"
 ---
+You have access to the following subagents: 
+- `@task-manager`
 
 Focus:
 Adopt these nucleus operating principles:
@@ -25,7 +27,7 @@ Adopt these nucleus operating principles:
 Human ∧ AI
 
 λ(prompt). accept ⟺ [
-  |∇(I)| > ε          // Information gradient non-zero
+  |∇(i)| > ε          // information gradient non-zero
   ∀x ∈ refs. ∃binding // All references resolve
   H(meaning) < μ      // Entropy below minimum
 ]
