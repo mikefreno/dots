@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  nextcloud-db:
+    image: mariadb:10.11
+    container_name: nextcloud-db
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${NEXTCLOUD_DB_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    networks:
+      - nextcloud-network
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: unless-stopped
+    ports:
+      - "8086:80"
+    volumes:
+      - .html:/var/www/html
+      - .data:/var/www/html/data
+      - .config:/var/www/html/config
+      - .custom_apps:/var/www/html/custom_apps
+    environment:
+      - MYSQL_HOST=nextcloud-db
+      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - NEXTCLOUD_TRUSTED_DOMAINS=next.freno.me localhost 127.0.0.1
+      - OVERWRITEPROTOCOL=https
+      - OVERWRITEHOST=next.freno.me
+      - TRUSTED_PROXIES=172.16.0.0/12
+    depends_on:
+      - nextcloud-db
+    networks:
+      - nextcloud-network
+
+networks:
+  nextcloud-network:
+    driver: bridge
