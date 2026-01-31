@@ -68,6 +68,10 @@
       "headers": {
         "CONTEXT7_API_KEY": "{file:~/.config/opencode/c7.key}"
       }
+    },
+    "alpha-vantage":{
+      "type": "remote",
+      "url": "https://mcp.alphavantage.co/mcp?apikey={file:~/.config/opencode/av.key}"
     }
   },
   "formatter": {
