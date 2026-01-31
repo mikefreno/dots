@@ -4,23 +4,17 @@ services:
     container_name: jellyfin
     ports:
       - 8096:8096/tcp
-    #user: 1000:1000 #need root access in /var/lib
     volumes:
       - /var/lib/jellyfin/:/config
       - /var/lib/jellyfin/cache:/cache
       - type: bind
         source: /ServerStore/Media/
         target: /media
-      #- type: bind
-        #source: /path/to/media2
-        #target: /media2
-        #read_only: true
-      # Optional - extra fonts to be used during transcoding with subtitle burn-in
-      #- type: bind
-        #source: /path/to/fonts
-        #target: /usr/local/share/fonts/custom
-        #read_only: true
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
     restart: 'unless-stopped'
+    group_add:
+      - 993
     environment:
       - JELLYFIN_PublishedServerUrl=https://jellyfin.freno.me
     extra_hosts:
