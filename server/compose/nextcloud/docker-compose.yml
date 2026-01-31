@@ -27,6 +27,7 @@ services:
       - .data:/var/www/html/data
       - .config:/var/www/html/config
       - .custom_apps:/var/www/html/custom_apps
+      - /ServerStore/next_data:/mnt/next_data
     environment:
       - MYSQL_HOST=nextcloud-db
       - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
