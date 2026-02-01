@@ -28,13 +28,22 @@ int main(int argc, char **argv) {
       exit(1);
     }
 
-    char output[MAX_OUTPUT_LENGTH];
+    FILE *nc_fp = popen("scutil --nc list", "r");
+    char nc_output[MAX_OUTPUT_LENGTH];
     int vpn_connected = 0;
-    while (fgets(output, sizeof(output), fp) != NULL) {
-      if (strstr(output, "ipsec0") != NULL || strstr(output, "utun") != NULL) {
-        vpn_connected = 1;
-        break;
+
+    if (nc_fp != NULL) {
+      char *line = NULL;
+      size_t len = 0;
+      ssize_t read;
+      while ((read = getline(&line, &len, nc_fp)) != -1) {
+        if ((strstr(line, "ProtonVPN") != NULL) && (strstr(line, "Tailscale") == NULL) && (strstr(line, "Connected") != NULL)) {
+          vpn_connected = 1;
+          break;
+        }
       }
+      free(line);
+      pclose(nc_fp);
     }
 
     // Prepare the event message
