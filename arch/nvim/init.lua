@@ -1,6 +1,3 @@
--- setup color scheme --
---require("colors").setup()
---require("colors").setup_highlights()
 -- spellcheck --
 vim.cmd("set spell spelllang=en_us")
 -- basic options --
@@ -345,6 +342,7 @@ require("lazy").setup({
 				lua_ls = {
 					Lua = {
 						workspace = { checkThirdParty = false },
+						diagnostics = { globals = { "vim" } },
 						telemetry = { enable = false },
 						hint = { enable = true },
 					},
@@ -696,7 +694,6 @@ require("lazy").setup({
 		opts = {
 			options = {
 				icons_enabled = false,
-				theme = "catppuccin",
 				component_separators = "|",
 				section_separators = "",
 			},
@@ -977,8 +974,6 @@ require("lazy").setup({
 	{
 		"folke/zen-mode.nvim",
 		config = function()
-			--local colors = require("colors")
-
 			local function run_applescript(script)
 				-- Escape the script so osascript sees it correctly
 				local escaped = vim.fn.shellescape(script)
@@ -1138,7 +1133,6 @@ require("lazy").setup({
 		},
 	},
 })
-
 --- package keymaps (don't support `keys`)
 local harpoon = require("harpoon")
 harpoon:setup()
