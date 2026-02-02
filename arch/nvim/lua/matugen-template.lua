@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-		require("base16-colorscheme").setup({
+	require("base16-colorscheme").setup({
 		-- Background tones
 		base00 = "{{colors.surface.default.hex}}", -- Default Background
 		base01 = "{{colors.surface_container.default.hex}}", -- Lighter Background (status bars)
@@ -20,9 +20,9 @@ function M.setup()
 		base0C = "{{colors.tertiary_fixed_dim.default.hex}}", -- Regex, Escape Chars
 		base0D = "{{colors.primary_fixed_dim.default.hex}}", -- Functions, Methods
 		base0E = "{{colors.secondary_fixed_dim.default.hex}}", -- Keywords, Storage
-			base0F = "{{colors.error_container.default.hex}}", -- Deprecated, Embedded Tags
-		})
-		vim.o.background = "dark"
+		base0F = "{{colors.error_container.default.hex}}", -- Deprecated, Embedded Tags
+	})
+	vim.o.background = "dark"
 end
 
 -- Register a signal handler for SIGUSR1 (matugen updates)
