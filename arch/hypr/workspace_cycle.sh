@@ -1,6 +1,7 @@
 #!/bin/bash
 declare -a BLOCKED_TITLES=(
     "Path of Exile 2"
+    "Witchfire"
 )
 
 # Get current window title safely

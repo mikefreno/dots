@@ -1,6 +1,6 @@
 -- setup color scheme --
-require("colors").setup()
-require("colors").setup_highlights()
+--require("colors").setup()
+--require("colors").setup_highlights()
 -- spellcheck --
 vim.cmd("set spell spelllang=en_us")
 -- basic options --
@@ -686,27 +686,9 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
+		"RRethy/base16-nvim",
 		config = function()
-			local current_theme = vim.g.current_theme or "latte"
-			local transparency = vim.g.transparency or false
-
-			require("catppuccin").setup({
-				lazy = false,
-				flavour = current_theme,
-				background = {
-					light = "latte",
-					dark = "mocha",
-				},
-				color_overrides = require("colors").colors,
-				transparent_background = transparency,
-				show_end_of_buffer = false,
-				custom_highlights = {},
-			})
-
-			vim.cmd.colorscheme("catppuccin")
+			require("matugen").setup()
 		end,
 	},
 	{
@@ -995,7 +977,7 @@ require("lazy").setup({
 	{
 		"folke/zen-mode.nvim",
 		config = function()
-			local colors = require("colors")
+			--local colors = require("colors")
 
 			local function run_applescript(script)
 				-- Escape the script so osascript sees it correctly

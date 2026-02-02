@@ -95,7 +95,7 @@ function M.setup()
 	local current_theme = M.get_system_theme()
 	vim.g.current_theme = current_theme
 	vim.g.current_colors = M.colors[current_theme]
-	vim.g.transparency = current_theme == "mocha"
+	--vim.g.transparency = current_theme == "mocha"
 
 	-- Set up theme change detection
 	vim.api.nvim_create_autocmd({ "FocusGained" }, {
@@ -119,14 +119,14 @@ function M.change_theme(new_theme, is_zen_mode)
 
 	vim.g.current_theme = new_theme
 	vim.g.current_colors = M.colors[new_theme]
-	vim.g.transparency = new_theme == "mocha"
+	--vim.g.transparency = new_theme == "mocha"
 
 	local ok, catppuccin = pcall(require, "catppuccin")
 	if ok then
 		catppuccin.setup({
 			flavour = new_theme,
 			color_overrides = M.colors,
-			transparent_background = vim.g.transparency,
+			--transparent_background = vim.g.transparency,
 		})
 		vim.cmd.colorscheme("catppuccin")
 	end
