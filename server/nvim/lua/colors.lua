@@ -26,7 +26,7 @@ M.colors = {
 		surface2 = "#505469",
 		surface1 = "#3e4255",
 		surface0 = "#2c2f40",
-		base = "#1E1E2E",
+		base = "#1a1c2a",
 		mantle = "#141620",
 		crust = "#0e0f16",
 	},
@@ -60,15 +60,15 @@ M.colors = {
 	},
 }
 
+-- Get theme based on system time (daytime = latte, nighttime = mocha)
 function M.get_system_theme()
-	local handle =
-		io.popen("osascript -e 'tell application \"System Events\" to tell appearance preferences to return dark mode'")
-	if handle then
-		local result = handle:read("*a")
-		handle:close()
-		return (result:find("true") ~= nil) and "mocha" or "latte"
+	local hour = tonumber(os.date("%H"))
+	local minute = tonumber(os.date("%M"))
+	if hour >= 7 and (hour < 17 or (hour == 17 and minute < 30)) then
+		return "latte"
+	else
+		return "mocha"
 	end
-	return "latte"
 end
 
 M.setup_highlights = function()
@@ -87,11 +87,6 @@ M.setup_highlights = function()
 		vim.api.nvim_set_hl(0, "RainbowGreen", { fg = colors.green })
 		vim.api.nvim_set_hl(0, "RainbowViolet", { fg = colors.mauve })
 		vim.api.nvim_set_hl(0, "RainbowCyan", { fg = colors.teal })
-
-		-- Treesitter Context highlights
-		vim.api.nvim_set_hl(0, "TreesitterContext", { bg = colors.surface0 })
-		vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = colors.surface2 })
-		vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = true, sp = colors.surface2 })
 	end
 end
 
@@ -102,18 +97,16 @@ function M.setup()
 	-- Add zen mode state tracking
 	vim.g.zen_mode_active = false
 
+	-- Detect SSH session
+	local is_ssh = os.getenv("SSH_CONNECTION") ~= nil or os.getenv("SSH_CLIENT") ~= nil or os.getenv("SSH_TTY") ~= nil
+	vim.g.is_ssh = is_ssh
+
 	-- Set current theme based on system
 	local current_theme = M.get_system_theme()
 	vim.g.current_theme = current_theme
 	vim.g.current_colors = M.colors[current_theme]
-	vim.g.transparency = current_theme == "mocha"
-
-	-- Ensure highlights are re-applied on theme change
-	vim.api.nvim_create_autocmd("ColorScheme", {
-		callback = function()
-			M.setup_highlights()
-		end,
-	})
+	-- Disable transparency over SSH for better visibility
+	vim.g.transparency = current_theme == "mocha" and not is_ssh
 
 	-- Set up theme change detection
 	vim.api.nvim_create_autocmd({ "FocusGained" }, {
@@ -137,7 +130,9 @@ function M.change_theme(new_theme, is_zen_mode)
 
 	vim.g.current_theme = new_theme
 	vim.g.current_colors = M.colors[new_theme]
-	vim.g.transparency = new_theme == "mocha"
+	-- Disable transparency over SSH for better visibility
+	local is_ssh = vim.g.is_ssh or false
+	vim.g.transparency = new_theme == "mocha" and not is_ssh
 
 	local ok, catppuccin = pcall(require, "catppuccin")
 	if ok then
@@ -147,7 +142,25 @@ function M.change_theme(new_theme, is_zen_mode)
 			transparent_background = vim.g.transparency,
 		})
 		vim.cmd.colorscheme("catppuccin")
+		M.setup_highlights()
+		print("Theme changed to: " .. new_theme)
 	end
+end
+
+-- Toggle between mocha and latte
+function M.toggle_theme()
+	local new_theme = vim.g.current_theme == "mocha" and "latte" or "mocha"
+	M.change_theme(new_theme)
+end
+
+-- Manually set to dark theme
+function M.set_dark()
+	M.change_theme("mocha")
+end
+
+-- Manually set to light theme
+function M.set_light()
+	M.change_theme("latte")
 end
 
 return M

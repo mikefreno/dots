@@ -18,7 +18,7 @@ static inline void brew_update(struct brew_info *brew) {
   FILE *fp;
   char buffer[128];
 
-  fp = popen("brew outdated --quiet 2>/dev/null | wc -l | tr -d ' '", "r");
+  fp = popen("brew outdated -q>/dev/null | wc -l | tr -d ' \n'", "r");
   if (fp == NULL) {
     brew->last_check_status = -1;
     return;

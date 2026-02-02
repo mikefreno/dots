@@ -1,0 +1,11 @@
+[Unit]
+Description=Gitea Backup Service
+
+[Service]
+Type=oneshot
+ExecStart=/home/mike/dots/pi/scripts/backup_gitea.sh
+User=mike
+Group=mike
+
+[Install]
+WantedBy=multi-user.target

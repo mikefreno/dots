@@ -1,0 +1,14 @@
+[Unit]
+Description=Move overnight media files to ServerStore
+After=network.target
+
+[Service]
+Type=oneshot
+User=mike
+Group=mike
+ExecStart=/home/mike/dots/pi/scripts/move_overnight_media.sh
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

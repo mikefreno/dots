@@ -136,8 +136,8 @@ setup_rules() {
 
     yabai -m rule --add app="^(Alacritty|kitty|Ghostty)$" space="$main_space"
     yabai -m rule --add app="^Xcode(-beta)?$" space="$main_space"
-    yabai -m rule --add app="^(Orion|Safari|Brave|SigmaOS|Zen Browser|Zen)$" space="$web_space"
-    yabai -m rule --add app="^(Mail|Messages|Things|Obsidian)$" space="$comms_space"
+    yabai -m rule --add app="^(Orion|Safari|Brave Browser|SigmaOS|Zen Browser|Zen)$" space="$web_space"
+    yabai -m rule --add app="^(Mail|Messages|Things|Obsidian|Telegram)$" space="$comms_space"
     yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex|Jellyfin Media Player|Discord)$" space="$audio_space"
     
     if is_blender_running || is_bambu_running; then
@@ -155,8 +155,10 @@ setup_rules() {
     
     yabai -m rule --add title="^Ubuntu$" space="$main_space" manage=off
     
-    yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam)$" manage=off
-    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden|App Store)$" manage=off
+    yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam|Gaze)$" manage=off
+    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive
+    Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio
+    Silence|TextEdit|love|Bitwarden|App Store|Gaze)$" manage=off
 }
 
 # Function to handle display changes
@@ -173,8 +175,6 @@ handle_display_change() {
 # Add signal handlers
 yabai -m signal --add event=display_added action="$0"
 yabai -m signal --add event=display_removed action="$0"
-yabai -m signal --add event=application_launched app="^LM Studio$" action="$0"
-yabai -m signal --add event=application_terminated app="^LM Studio$" action="$0"
 
 # Set up spaces
 setup_spaces
@@ -204,4 +204,3 @@ if ! pgrep -x "borders" >/dev/null; then
 fi
 
 echo "yabai configuration loaded successfully"
-

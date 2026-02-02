@@ -35,7 +35,7 @@ sbar.add("item", "widgets.brew.padding", {
 
 -- Subscribe to brew updates
 brew:subscribe("brew_check", function(env)
-	local count = tonumber(env.outdated_count) - 1
+	local count = tonumber(env.outdated_count)
 	local status = tonumber(env.status)
 
 	if status ~= 0 then

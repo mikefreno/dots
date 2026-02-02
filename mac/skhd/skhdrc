@@ -7,131 +7,102 @@
     "Parallels Desktop"
 ]
 
-# Navigation
-alt + cmd - d : yabai -m window --focus east
-alt + cmd - a : yabai -m window --focus west
-alt + cmd - s : yabai -m window --focus south
-alt + cmd - w : yabai -m window --focus north
+# -----------------------------
+# Space/Focus Management
+# -----------------------------
 
-# Moving windows
-alt + shift - a : yabai -m window --warp west
-alt + shift - d : yabai -m window --warp east
-alt + shift - s : yabai -m window --warp south
-alt + shift - w : yabai -m window --warp north
-
-#swap windows
-alt - h : yabai -m window --swap west
-alt - j : yabai -m window --swap south
-alt - k : yabai -m window --swap north
-alt - l : yabai -m window --swap east
-
-
-# Move focus container to display (use "space" instead of display to move to just per space instead)
-alt + shift - x : yabai -m window --display 1 --focus #laptop
-alt + shift - z : yabai -m window --display 2 --focus #desktop monitor
-
-cmd - 1 : yabai -m space --focus 1
-cmd - 2 : yabai -m space --focus 2
-cmd - 3 : yabai -m space --focus 3
-cmd - 4 : yabai -m space --focus 4
-cmd - 5 : yabai -m space --focus 5
-cmd - 6 : yabai -m space --focus 6
-cmd - 7 : yabai -m space --focus 7
-cmd - 8 : yabai -m space --focus 8
-cmd - 9 : yabai -m space --focus 9
+# Move focus to space
+lcmd - 1 : yabai -m space --focus 1
+lcmd - 2 : yabai -m space --focus 2
+lcmd - 3 : yabai -m space --focus 3
+lcmd - 4 : yabai -m space --focus 4
+lcmd - 5 : yabai -m space --focus 5
+lcmd - 6 : yabai -m space --focus 6
+lcmd - 7 : yabai -m space --focus 7
+lcmd - 8 : yabai -m space --focus 8
+lcmd - 9 : yabai -m space --focus 9
 
 # Move focus container to space - don't follow
-ctrl + cmd - 1 : yabai -m window --space 1 
-ctrl + cmd - 2 : yabai -m window --space 2
-ctrl + cmd - 3 : yabai -m window --space 3
-ctrl + cmd - 4 : yabai -m window --space 4
-ctrl + cmd - 5 : yabai -m window --space 5
-ctrl + cmd - 6 : yabai -m window --space 6
-ctrl + cmd - 7 : yabai -m window --space 7
-ctrl + cmd - 8 : yabai -m window --space 8
-ctrl + cmd - 9 : yabai -m window --space 9
+lalt - 1 : yabai -m window --space 1 
+lalt - 2 : yabai -m window --space 2
+lalt - 3 : yabai -m window --space 3
+lalt - 4 : yabai -m window --space 4
+lalt - 5 : yabai -m window --space 5
+lalt - 6 : yabai -m window --space 6
+lalt - 7 : yabai -m window --space 7
+lalt - 8 : yabai -m window --space 8
+lalt - 9 : yabai -m window --space 9
 
 # Move focus container to space
-alt + cmd - 1 : yabai -m window --space 1 --focus 
-alt + cmd - 2 : yabai -m window --space 2 --focus
-alt + cmd - 3 : yabai -m window --space 3 --focus
-alt + cmd - 4 : yabai -m window --space 4 --focus
-alt + cmd - 5 : yabai -m window --space 5 --focus
-alt + cmd - 6 : yabai -m window --space 6 --focus 
-alt + cmd - 7 : yabai -m window --space 7 --focus
-alt + cmd - 8 : yabai -m window --space 8 --focus
-alt + cmd - 9 : yabai -m window --space 9 --focus
+rcmd - 1 : yabai -m window --space 1 --focus 
+rcmd - 2 : yabai -m window --space 2 --focus
+rcmd - 3 : yabai -m window --space 3 --focus
+rcmd - 4 : yabai -m window --space 4 --focus
+rcmd - 5 : yabai -m window --space 5 --focus
+rcmd - 6 : yabai -m window --space 6 --focus 
+rcmd - 7 : yabai -m window --space 7 --focus
+rcmd - 8 : yabai -m window --space 8 --focus
+rcmd - 9 : yabai -m window --space 9 --focus
 
-# Resize windows
-alt - a : yabai -m window --resize left:-50:0 ;
-alt - s : yabai -m window --resize bottom:0:50 ;
-alt - w : yabai -m window --resize top:0:-50 ;
-alt - d : yabai -m window --resize right:50:0 ;
+# ------------------------------
+# Window Management
+# ------------------------------
+
+# balance window sizes
 alt - e : yabai -m space --balance
 
+# Moving windows
+lcmd - h : yabai -m window --warp west
+lcmd - l : yabai -m window --warp east
+lcmd - j : yabai -m window --warp south
+lcmd - k : yabai -m window --warp north
+
+#swap windows
+lalt - h : yabai -m window --swap west
+lalt - j : yabai -m window --swap south
+lalt - k : yabai -m window --swap north
+lalt - l : yabai -m window --swap east
 
 # Float and center / Unfloat window
 alt - space : yabai -m window --toggle float \
           yabai -m window --grid 4:4:1:1:2:2
-
 # Make fullscreen
-alt - f         : yabai -m window --toggle zoom-fullscreen
-shift + alt - f : yabai -m window --toggle native-fullscreen
-# Toggle padding on/off
-alt - g         : yabai -m space --toggle padding --toggle gap
-# Disable padding overall
-alt - y         : yabai -m config top_padding 0 \ yabai -m config bottom_padding 0 \ yabai -m config left_padding 0 \ yabai -m config right_padding 0 \ yabai -m config window_gap 0
-alt - u         : yabai -m config window_gap 12
-# Toggle floating/bsp
-#alt - h         : yabai -m space --layout $(yabai -m query --spaces --space | jq -r 'if .type == "bsp" then "float" else "bsp" end')
+lalt - f : yabai -m window --toggle windowed-fullscreen
+ralt - f : yabai -m window --toggle native-fullscreen
+# Mouse focus
 alt - o         : yabai -m config focus_follows_mouse autoraise
 alt - p         : yabai -m config focus_follows_mouse off
-# toggle window split type
-alt - e : yabai -m window --toggle split
-
 # Rotate layout
-alt - m : yabai -m space --rotate 90
-# Balance the layout
-alt - n : yabai -m space --create
+lcmd - m : yabai -m space --rotate 90
 
-alt + shift - 1 : yabai -m space --destroy 1
-alt + shift - 2 : yabai -m space --destroy 2
-alt + shift - 3 : yabai -m space --destroy 3
-alt + shift - 4 : yabai -m space --destroy 4
-alt + shift - 5 : yabai -m space --destroy 5
+# ----------------------------
+# Space Management
+# ----------------------------
 
-
-
-# create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
-shift + cmd - n : yabai -m space --create && \
-                  index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
+# create space, move to it
+ralt - n : yabai -m space --create && \
+                  index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
                   yabai -m window --space "${index}" && \
                   yabai -m space --focus "${index}"
 
-# create desktop and follow focus - uses jq for parsing json (brew install jq)
-cmd + alt - n : yabai -m space --create && \
-                index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
-                yabai -m space --focus "${index}"
+# just create space
+lalt - n : yabai -m space --create
 
-# destroy desktop
-cmd + alt - w : yabai -m space --destroy
+# destroy spaces
+ralt- 1 : yabai -m space --destroy 1
+ralt- 2 : yabai -m space --destroy 2
+ralt- 3 : yabai -m space --destroy 3
+ralt- 4 : yabai -m space --destroy 4
+ralt- 5 : yabai -m space --destroy 5
 
+# ----------------------------
+# Other
+# ----------------------------
 
-cmd + shift - y : yabai --restart-service
+# Restart desktop management
 cmd + shift - r : yabai --restart-service && \
                   brew services restart sketchybar && \
                   brew services restart borders    && \
                   ~/.config/btop/btop_colorswap.sh
 
-# Change desktop
-#cmd + alt - 1 : yabai -m space --focus  1 || skhd -k "alt + alt + cmd - 1"
-#cmd + alt - 2 : yabai -m space --focus  2 || skhd -k "alt + alt + cmd - 2"
-#cmd + alt - 3 : yabai -m space --focus  3 || skhd -k "alt + alt + cmd - 3"
-#cmd + alt - 4 : yabai -m space --focus  4 || skhd -k "alt + alt + cmd - 4"
-#cmd + alt - 5 : yabai -m space --focus  5 || skhd -k "alt + alt + cmd - 5"
-#cmd + alt - 6 : yabai -m space --focus  6 || skhd -k "alt + alt + cmd - 6"
-#cmd + alt - 7 : yabai -m space --focus  7 || skhd -k "alt + alt + cmd - 7"
-#cmd + alt - 8 : yabai -m space --focus  8 || skhd -k "alt + alt + cmd - 8"
-#cmd + alt - 9 : yabai -m space --focus  9 || skhd -k "alt + alt + cmd - 9"
-#cmd + alt - 0 : yabai -m space --focus 10 || skhd -k "alt + alt + cmd - 0"
-
+lalt + shift - o : restart_obsidian_connection

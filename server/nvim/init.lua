@@ -1,6 +1,32 @@
 -- setup color scheme --
 require("colors").setup()
 require("colors").setup_highlights()
+
+-- Theme switching keybindings and commands
+vim.keymap.set("n", "<leader>tt", function()
+	require("colors").toggle_theme()
+end, { desc = "[T]oggle [T]heme (light/dark)" })
+
+vim.keymap.set("n", "<leader>td", function()
+	require("colors").set_dark()
+end, { desc = "[T]heme [D]ark" })
+
+vim.keymap.set("n", "<leader>tl", function()
+	require("colors").set_light()
+end, { desc = "[T]heme [L]ight" })
+
+-- Create user commands for theme switching
+vim.api.nvim_create_user_command("ThemeToggle", function()
+	require("colors").toggle_theme()
+end, { desc = "Toggle between light and dark theme" })
+
+vim.api.nvim_create_user_command("ThemeDark", function()
+	require("colors").set_dark()
+end, { desc = "Switch to dark theme (mocha)" })
+
+vim.api.nvim_create_user_command("ThemeLight", function()
+	require("colors").set_light()
+end, { desc = "Switch to light theme (latte)" })
 -- spellcheck --
 vim.cmd("set spell spelllang=en_us")
 -- basic options --
@@ -18,12 +44,6 @@ vim.o.showmode = false
 vim.o.redrawtime = 100
 vim.o.hlsearch = false
 
-vim.o.textwidth = 0
-vim.o.wrapmargin = 10
-vim.o.wrap = true
-
-vim.o.linebreak = true
-
 vim.o.mouse = "a"
 vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
@@ -31,16 +51,6 @@ end)
 
 vim.o.breakindent = true
 vim.o.undofile = true
-
--- Indentation settings
-vim.o.tabstop = 4 -- Number of spaces a tab counts for
-vim.o.shiftwidth = 4 -- Number of spaces for each step of autoindent
-vim.o.softtabstop = 4 -- Number of spaces a tab counts for while editing
-vim.o.expandtab = true -- Use spaces instead of tabs
-vim.o.autoindent = true -- Copy indent from current line when starting new line
-vim.o.smartindent = true -- Smart autoindenting when starting new line
-vim.o.cindent = true -- Stricter rules for C programs (also works well for other languages)
-vim.o.shiftround = true -- Round indent to multiple of shiftwidth
 
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -66,7 +76,16 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 
 vim.o.completeopt = "menuone,noselect"
-vim.o.termguicolors = true
+
+-- Detect SSH session and adjust terminal colors accordingly
+local is_ssh = os.getenv("SSH_CONNECTION") ~= nil or os.getenv("SSH_CLIENT") ~= nil or os.getenv("SSH_TTY") ~= nil
+if is_ssh then
+	-- Over SSH, disable true colors if terminal doesn't support it well
+	-- You can comment out the next line if your SSH terminal does support true colors
+	vim.o.termguicolors = false
+else
+	vim.o.termguicolors = true
+end
 
 --make save case insensitive
 vim.cmd("command! W w")
@@ -78,46 +97,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
 		vim.hl.on_yank()
-	end,
-})
-
---vim.api.nvim_create_autocmd("BufEnter", {
---pattern = "*",
---command = "GuessIndent",
---})
-
-vim.api.nvim_create_autocmd("VimResized", {
-	group = vim.api.nvim_create_augroup("autoresize_windows", { clear = true }),
-	command = "wincmd =",
-})
-
--- Filetype-specific indentation
-vim.api.nvim_create_autocmd("FileType", {
-	desc = "Set indentation for specific file types",
-	group = vim.api.nvim_create_augroup("indentation-settings", { clear = true }),
-	callback = function()
-		local ft = vim.bo.filetype
-		local indent_settings = {
-			lua = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
-			javascript = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
-			typescript = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
-			html = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
-			css = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
-			json = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
-			yaml = { tabstop = 2, shiftwidth = 2, softtabstop = 2, expandtab = true },
-			go = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = false }, -- Go uses tabs
-			python = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
-			c = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
-			cpp = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
-			rust = { tabstop = 4, shiftwidth = 4, softtabstop = 4, expandtab = true },
-		}
-
-		local settings = indent_settings[ft]
-		if settings then
-			for option, value in pairs(settings) do
-				vim.bo[option] = value
-			end
-		end
 	end,
 })
 
@@ -139,7 +118,6 @@ vim.api.nvim_set_keymap("n", "<leader>[", ":bp<CR>", { noremap = true, silent = 
 vim.api.nvim_set_keymap("n", "<leader>]", ":bn<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>} <Esc>Oreturn err<Esc>")
---vim.keymap.set("n", "<leader>gi", ":GuessIndent<CR>", { desc = "[G]uess [I]ndent" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
@@ -163,236 +141,18 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- NOTE: First, some plugins that don't require any configuration
 	{ "tpope/vim-repeat", lazy = false },
-	{
-		"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
-		config = function()
-			require("guess-indent").setup({
-				auto_cmd = true, -- Set to false to disable automatic execution
-				override_editorconfig = false, -- Set to true to override settings set by .editorconfig
-				filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
-					"netrw",
-					"tutor",
-				},
-				buftype_exclude = { -- A list of buffer types for which the auto command gets disabled
-					"help",
-					"nofile",
-					"terminal",
-					"prompt",
-				},
-			})
-		end,
-	},
+	"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
 	"wakatime/vim-wakatime",
 	"mattn/emmet-vim",
 	"preservim/nerdcommenter",
-	"mbbill/undotree",
-	{
-		"patrickreid-li/tailwind-tools.nvim",
-		name = "tailwind-tools",
-		build = ":UpdateRemotePlugins",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-telescope/telescope.nvim", -- optional
-			"neovim/nvim-lspconfig", -- optional
-		},
-		opts = {}, -- your configuration
-	},
-	"mfussenegger/nvim-dap",
-	{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
-	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		config = true,
-		-- use opts = {} for passing setup options
-		-- this is equivalent to setup({}) function
-	},
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		dependencies = { "nvim-lua/plenary.nvim" },
-	},
-	{
-		"ThePrimeagen/refactoring.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		lazy = false,
-		opts = {},
-	},
-	{
-		"ThePrimeagen/99",
-		config = function()
-			local _99 = require("99")
-
-			-- For logging that is to a file if you wish to trace through requests
-			-- for reporting bugs, i would not rely on this, but instead the provided
-			-- logging mechanisms within 99.  This is for more debugging purposes
-			local cwd = vim.uv.cwd()
-			local basename = vim.fs.basename(cwd)
-			_99.setup({
-				logger = {
-					level = _99.DEBUG,
-					path = "/tmp/" .. basename .. ".99.debug",
-					print_on_error = true,
-				},
-
-				--- A new feature that is centered around tags
-				completion = {
-					--- Defaults to .cursor/rules
-					-- I am going to disable these until i understand the
-					-- problem better.  Inside of cursor rules there is also
-					-- application rules, which means i need to apply these
-					-- differently
-					-- cursor_rules = "<custom path to cursor rules>"
-
-					--- A list of folders where you have your own SKILL.md
-					--- Expected format:
-					--- /path/to/dir/<skill_name>/SKILL.md
-					---
-					--- Example:
-					--- Input Path:
-					--- "scratch/custom_rules/"
-					---
-					--- Output Rules:
-					--- {path = "scratch/custom_rules/vim/SKILL.md", name = "vim"},
-					--- ... the other rules in that dir ...
-					---
-					custom_rules = {
-						"scratch/custom_rules/",
-					},
-
-					--- What autocomplete do you use.  We currently only
-					--- support cmp right now
-					source = "cmp",
-				},
-
-				--- WARNING: if you change cwd then this is likely broken
-				--- ill likely fix this in a later change
-				---
-				--- md_files is a list of files to look for and auto add based on the location
-				--- of the originating request.  That means if you are at /foo/bar/baz.lua
-				--- the system will automagically look for:
-				--- /foo/bar/AGENT.md
-				--- /foo/AGENT.md
-				--- assuming that /foo is project root (based on cwd)
-				md_files = {
-					"AGENTS.md",
-				},
-			})
-
-			-- Create your own short cuts for the different types of actions
-			vim.keymap.set("n", "<leader>9f", function()
-				_99.fill_in_function()
-			end)
-			-- take extra note that i have visual selection only in v mode
-			-- technically whatever your last visual selection is, will be used
-			-- so i have this set to visual mode so i dont screw up and use an
-			-- old visual selection
-			--
-			-- likely ill add a mode check and assert on required visual mode
-			-- so just prepare for it now
-			vim.keymap.set("v", "<leader>9v", function()
-				_99.visual()
-			end)
-
-			--- if you have a request you dont want to make any changes, just cancel it
-			vim.keymap.set("v", "<leader>9s", function()
-				_99.stop_all_requests()
-			end)
-
-			--- Example: Using rules + actions for custom behaviors
-			--- Create a rule file like ~/.rules/debug.md that defines custom behavior.
-			--- For instance, a "debug" rule could automatically add printf statements
-			--- throughout a function to help debug its execution flow.
-			--vim.keymap.set("n", "<leader>9fd", function()
-			--_99.fill_in_function()
-			--end)
-		end,
-	},
-
-	{
-		"nvim-treesitter/nvim-treesitter-context",
-		event = "BufReadPre", -- Load when you start reading a file
-		opts = {
-			enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-			max_lines = 10, -- How many lines the window should span. Values <= 0 mean no limit.
-			min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-			line_numbers = true,
-			multiline_threshold = 20, -- Maximum number of lines to show for a single context
-			trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-			mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
-			-- Separator between context and content. Should be a single character string, like '-'.
-			-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-			separator = nil, -- I prefer a border via highlights (see below) instead of a character separator
-			zindex = 20, -- The Z-index of the context window
-			on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-		},
-	},
-	{
-		"akinsho/toggleterm.nvim",
-		version = "*",
-		opts = { direction = "float", float_opts = { width = 100, height = 30 } },
-		keys = {
-			{
-				"<leader>F",
-				":ToggleTerm<CR>",
-				mode = { "n" },
-				desc = "Toggle [F]loating terminal",
-			},
-		},
-	},
-	{
-		"ggml-org/llama.vim",
-		init = function()
-			local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
-			local api_key = "_"
-			if keyFile then
-				api_key = keyFile:read("*l")
-			end
-			vim.g.llama_config = {
-				endpoint_fim = "https://infill.freno.me/infill",
-				api_key = api_key,
-				keymap_fim_trigger = "<M-Enter>",
-				keymap_fim_accept_line = "<A-Tab>",
-				keymap_fim_accept_full = "<S-Tab>",
-				keymap_fim_accept_word = "<Right>",
-				stop_strings = {},
-				n_prefix = 512,
-				n_suffix = 512,
-				show_info = 2,
-			}
-		end,
-	},
+	"luckasRanarison/tailwind-tools.nvim",
 	-- language specific plugins
-	{
-		"keith/swift.vim",
-		ft = "swift", -- filetype
-	},
+	"keith/swift.vim",
 	"rhysd/vim-clang-format",
 	"evanleck/vim-svelte",
 	"OmniSharp/omnisharp-vim",
 	"ionide/Ionide-vim",
 	"tikhomirov/vim-glsl",
-	{
-		"MeanderingProgrammer/render-markdown.nvim",
-		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
-		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
-		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-		---@module 'render-markdown'
-		---@type render.md.UserConfig
-		opts = {},
-		keys = {
-			{
-				"<leader>rm",
-				function()
-					require("render-markdown").toggle()
-				end,
-				mode = { "n" },
-				desc = "[R]ender [M]arkdown",
-			},
-		},
-	},
 	{
 		"lervag/vimtex",
 		lazy = false, -- we don't want to lazy load VimTeX
@@ -402,6 +162,17 @@ require("lazy").setup({
 			vim.g.vimtex_view_method = "zathura"
 			vim.g.vimtex_compiler_method = "latexmk"
 		end,
+	},
+	--{
+	--"lukas-reineke/indent-blankline.nvim",
+	--main = "ibl",
+	--opts = {},
+	--config = function()
+	--require("ibl").setup()
+	--end,
+	--},
+	{
+		"mbbill/undotree",
 	},
 	{
 		"S1M0N38/love2d.nvim",
@@ -413,7 +184,11 @@ require("lazy").setup({
 			{ "<leader>vs", "<cmd>LoveStop<cr>", ft = "lua", desc = "Stop LÖVE" },
 		},
 	},
-	-- more complex, non specifics
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
 	{
 		"chrisgrieser/nvim-spider",
 		opts = {
@@ -482,23 +257,27 @@ require("lazy").setup({
 						mode = mode or "n"
 						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
-					map("gn", vim.lsp.buf.rename, "Re[n]ame")
-					map("ga", vim.lsp.buf.code_action, "[G]oto Code [a]ction", { "n", "x" })
-					map("gr", require("telescope.builtin").lsp_references, "[G]oto [r]eferences")
-					map("gi", require("telescope.builtin").lsp_implementations, "[G]oto [i]mplementation")
-					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [d]efinition")
-					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-					map("gO", require("telescope.builtin").lsp_document_symbols, "[O]pen Document Symbols")
-					map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open [W]orkspace Symbols")
+					map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
+					map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+					map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+					map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+					map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+					map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+					map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
+					map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
 
-					map("gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [t]ype Definition")
+					map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 					-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
 					---@param client vim.lsp.Client
 					---@param method vim.lsp.protocol.Method
 					---@param bufnr? integer some lsp support methods only in specific files
 					---@return boolean
 					local function client_supports_method(client, method, bufnr)
-						return client:supports_method(method, bufnr)
+						if vim.fn.has("nvim-0.11") == 1 then
+							return client:supports_method(method, bufnr)
+						else
+							return client.supports_method(method, { bufnr = bufnr })
+						end
 					end
 
 					-- The following two autocommands are used to highlight references of the
@@ -546,9 +325,9 @@ require("lazy").setup({
 						client
 						and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
 					then
-						map("<leader>ih", function()
+						map("<leader>th", function()
 							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-						end, "Toggle [I]nlay [H]ints")
+						end, "[T]oggle Inlay [H]ints")
 					end
 				end,
 			})
@@ -589,17 +368,10 @@ require("lazy").setup({
 				rust_analyzer = { hint = { enable = true } },
 				ts_ls = { hint = { enable = true } },
 				lua_ls = {
-					settings = {
-						Lua = {
-							workspace = { checkThirdParty = false },
-							telemetry = { enable = false },
-							hint = {
-								enable = true,
-							},
-							runtime = {
-								version = "LuaJIT",
-							},
-						},
+					Lua = {
+						workspace = { checkThirdParty = false },
+						telemetry = { enable = false },
+						hint = { enable = true },
 					},
 				},
 			}
@@ -618,6 +390,9 @@ require("lazy").setup({
 			-- You can add other tools here that you want Mason to install
 			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
+			vim.list_extend(ensure_installed, {
+				"stylua", -- Used to format Lua code
+			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
@@ -740,9 +515,6 @@ require("lazy").setup({
 
 			completion = {
 				documentation = { auto_show = true, auto_show_delay_ms = 500 },
-				keyword = {
-					range = "full",
-				},
 			},
 
 			sources = {
@@ -816,14 +588,6 @@ require("lazy").setup({
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
-				{ "<leader>v", group = "LÖ[V]E" },
-				{ "<leader>e", group = "[E]rror/Diagnostic" },
-				{ "<leader>n", group = "[N]eogit" },
-				{ "<leader>o", group = "[O]pencode" },
-				{ "<leader>oa", group = "[O]pencode [A]sk" },
-				{ "<leader>rb", group = "[R]ust [B]uild" },
-				{ "gc", group = "Comment" },
-				{ "gr", group = "LSP: Goto/Rename" },
 			},
 		},
 	},
@@ -832,7 +596,6 @@ require("lazy").setup({
 		ft = "lua",
 		opts = {
 			library = {
-				"nvim-dap-ui",
 				-- Load luvit types when the `vim.uv` word is found
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 			},
@@ -1090,7 +853,6 @@ require("lazy").setup({
 				"go",
 				"python",
 				"rust",
-				-- "swift", -- Disabled until nvim-treesitter supports tree-sitter CLI 0.26
 				"tsx",
 				"javascript",
 				"typescript",
@@ -1104,16 +866,13 @@ require("lazy").setup({
 				"vim",
 				"vimdoc",
 			},
-			-- Ignore Swift to prevent auto-install attempts
-			ignore_install = { "swift" },
 			-- Autoinstall languages that are not installed
-			auto_install = false, -- Disabled due to tree-sitter CLI 0.26 compatibility issues with Swift
+			auto_install = true,
 			highlight = {
 				enable = true,
-				disable = { "swift" }, -- Disable tree-sitter for Swift until tree-sitter CLI 0.26 compatibility is fixed
-				additional_vim_regex_highlighting = { "ruby", "swift" }, -- Use regex highlighting for Swift
+				additional_vim_regex_highlighting = { "ruby" },
 			},
-			indent = { enable = true, disable = { "ruby", "swift" } },
+			indent = { enable = true, disable = { "ruby" } },
 			incremental_selection = {
 				enable = true,
 				keymaps = {
@@ -1168,64 +927,9 @@ require("lazy").setup({
 				--},
 			},
 		},
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    event = "VimEnter",
-    version = "4.*",
-    config = function()
-      local cmp = require("cmp")
-
-      local enabled_filetypes = { "lua", "markdown", "telescope", "qf", "dapui" }
-
-      cmp.setup({
-        sources = {
-          { name = "nvim_lsp", priority = 1000 },
-          { name = "nvim_lsp_document_symbol", priority = 900 },
-          { name = "nvim_lsp_signature_help", priority = 800 },
-          { name = "path", priority = 700 },
-          { name = "buffer", priority = 600 },
-        },
-        completion = {
-          completeopt = "menu,menuone,noselect",
-        },
-      })
-
-      local autocmd_id = vim.api.nvim_create_autocmd("FileType", {
-        pattern = enabled_filetypes,
-        callback = function()
-          cmp.setup.buffer({
-            sources = {
-              { name = "nvim_lsp", priority = 1000 },
-              { name = "nvim_lsp_document_symbol", priority = 900 },
-              { name = "nvim_lsp_signature_help", priority = 800 },
-              { name = "path", priority = 700 },
-              { name = "buffer", priority = 600 },
-            },
-          })
-        end,
-      })
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "*",
-        callback = function()
-          if vim.tbl_contains(enabled_filetypes, vim.bo.filetype) then
-            cmp.setup.buffer({
-              sources = {
-                { name = "nvim_lsp", priority = 1000 },
-                { name = "nvim_lsp_document_symbol", priority = 900 },
-                { name = "nvim_lsp_signature_help", priority = 800 },
-                { name = "path", priority = 700 },
-                { name = "buffer", priority = 600 },
-              },
-            })
-          end
-        end,
-      })
-    end,
-  },
-  {
-    "jake-stewart/multicursor.nvim",
+	},
+	{
+		"jake-stewart/multicursor.nvim",
 		branch = "1.0",
 		config = function()
 			local mc = require("multicursor-nvim")
@@ -1456,14 +1160,6 @@ require("lazy").setup({
 			end, { desc = "[O]pencode [s]elect prompt" })
 		end,
 	},
-	{
-		"folke/snacks.nvim",
-		priority = 1000,
-		lazy = false,
-		opts = {
-			input = { enabled = true },
-		},
-	},
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1510,447 +1206,23 @@ vim.keymap.set("n", "<leader>4", function()
 	harpoon:list():select(4)
 end)
 
-vim.keymap.set("x", "<leader>re", ":Refactor extract ")
-vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
-
-vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
-
-vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
-
-vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
-
-vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
-vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
---- DAP(debugger) keybinds
-vim.keymap.set(
-	"n",
-	"<leader>db",
-	":DapToggleBreakpoint<CR>",
-	{ noremap = true, desc = "[d]ebugger toggle [b]reakpoint", silent = true }
-)
-vim.keymap.set("n", "<leader>dn", ":DapNew<CR>", { noremap = true, desc = "[d]ebugger [n]ew session", silent = true })
-vim.keymap.set(
-	"n",
-	"<leader>dd",
-	":DapDisconnect<CR>",
-	{ noremap = true, desc = "[d]ebugger [d]isconnect", silent = true }
-)
-vim.keymap.set(
-	"n",
-	"<leader>dc",
-	":DapContinue<CR>",
-	{ noremap = true, desc = "[d]ebugger [c]ontinue execution", silent = true }
-)
-vim.keymap.set(
-	"n",
-	"<leader>dsi",
-	":DapStepInto<CR>",
-	{ noremap = true, desc = "[d]ebugger [s]tep [i]nto", silent = true }
-)
-vim.keymap.set(
-	"n",
-	"<leader>dso",
-	":DapStepOver<CR>",
-	{ noremap = true, desc = "[d]ebugger [s]tep [o]ver", silent = true }
-)
----DAP configuration
----
----Currently configured: C/C++/Rust/Go/Lua/Python
-local dap = require("dap")
-dap.adapters.lldb = {
-	type = "executable",
-	command = "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-dap", -- adjust as needed, must be absolute path
-	name = "lldb",
-}
-
-dap.adapters.codelldb = {
-	type = "server",
-	port = "${port}",
-	executable = {
-		command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
-		args = { "--port", "${port}" },
-	},
-}
-dap.configurations.cpp = {
-	{
-		name = "Launch",
-		type = "lldb",
-		request = "launch",
-		program = function()
-			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-		end,
-		cwd = "${workspaceFolder}",
-		stopOnEntry = false,
-		args = {},
-
-		-- 💀
-		-- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
-		--
-		--    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
-		--
-		-- Otherwise you might get the following error:
-		--
-		--    Error on launch: Failed to attach to the target process
-		--
-		-- But you should be aware of the implications:
-		-- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
-		-- runInTerminal = false,
-	},
-}
-dap.configurations.rust = {
-	{
-		name = "Launch",
-		type = "codelldb",
-		request = "launch",
-		program = function()
-			local cwd = vim.fn.getcwd()
-			local project_name = vim.fn.fnamemodify(cwd, ":t")
-			local exe_name = project_name:gsub("-", "_")
-			local exe_path = cwd .. "/target/debug/" .. exe_name
-
-			if vim.fn.executable(exe_path) == 1 then
-				return exe_path
-			else
-				local build_result = vim.fn.system("cargo build --quiet")
-
-				if vim.v.shell_error == 0 and vim.fn.executable(exe_path) == 1 then
-					return exe_path
-				else
-					return vim.fn.input("Path to executable: ", cwd .. "/target/debug/", "file")
-				end
-			end
-		end,
-		cwd = "${workspaceFolder}",
-		stopOnEntry = false,
-		args = {},
-	},
-}
-
-dap.adapters["local-lua"] = {
-	type = "executable",
-	command = "node",
-	args = {
-		"/absolute/path/to/local-lua-debugger-vscode/extension/debugAdapter.js",
-	},
-	enrich_config = function(config, on_config)
-		if not config["extensionPath"] then
-			local c = vim.deepcopy(config)
-			-- 💀 If this is missing or wrong you'll see
-			-- "module 'lldebugger' not found" errors in the dap-repl when trying to launch a debug session
-			c.extensionPath = "/absolute/path/to/local-lua-debugger-vscode/"
-			on_config(c)
-		else
-			on_config(config)
-		end
-	end,
-}
-dap.adapters.go = {
-	type = "executable",
-	command = "node",
-	args = { os.getenv("HOME") .. "/dev/golang/vscode-go/extension/dist/debugAdapter.js" },
-}
-dap.configurations.go = {
-	{
-		type = "go",
-		name = "Debug",
-		request = "launch",
-		showLog = false,
-		program = "${file}",
-		dlvToolPath = vim.fn.exepath("dlv"), -- Adjust to where delve is installed
-	},
-}
-dap.adapters.python = function(cb, config)
-	if config.request == "attach" then
-		---@diagnostic disable-next-line: undefined-field
-		local port = (config.connect or config).port
-		---@diagnostic disable-next-line: undefined-field
-		local host = (config.connect or config).host or "127.0.0.1"
-		cb({
-			type = "server",
-			port = assert(port, "`connect.port` is required for a python `attach` configuration"),
-			host = host,
-			options = {
-				source_filetype = "python",
-			},
-		})
-	else
-		cb({
-			type = "executable",
-			command = os.getenv("HOME") .. "/dev/python.venvs/debugpy/bin/python",
-			args = { "-m", "debugpy.adapter" },
-			options = {
-				source_filetype = "python",
-			},
-		})
-	end
-end
-
-dap.configurations.python = {
-	{
-		-- The first three options are required by nvim-dap
-		type = "python", -- the type here established the link to the adapter definition: `dap.adapters.python`
-		request = "launch",
-		name = "Launch file",
-
-		-- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
-
-		program = "${file}", -- This configuration will launch the current file if used.
-		pythonPath = function()
-			-- debugpy supports launching an application with a different interpreter then the one used to launch debugpy itself.
-			-- The code below looks for a `venv` or `.venv` folder in the current directly and uses the python within.
-			-- You could adapt this - to for example use the `VIRTUAL_ENV` environment variable.
-			local cwd = vim.fn.getcwd()
-			if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
-				return cwd .. "/venv/bin/python"
-			elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
-				return cwd .. "/.venv/bin/python"
-			else
-				return "/usr/bin/python"
-			end
-		end,
-	},
-}
-
-dap.adapters["pwa-node"] = {
-	type = "server",
-	host = "localhost",
-	port = "${port}",
-	executable = {
-		command = "node",
-		-- 💀 Make sure to update this path to point to your installation
-		args = { os.getenv("HOME") .. "/dev/js/js-debug/src/dapDebugServer.js", "${port}" },
-	},
-}
-
-dap.configurations.typescript = {
-	{
-		type = "pwa-node",
-		request = "launch",
-		name = "Launch file",
-		runtimeExecutable = "deno",
-		runtimeArgs = {
-			"run",
-			"--inspect-wait",
-			"--allow-all",
-		},
-		program = "${file}",
-		cwd = "${workspaceFolder}",
-		attachSimplePort = 9229,
-	},
-}
---- Dap UI Configuration
-local dapui = require("dapui")
-dapui.setup({
-	-- ICONS: Configure icons used in the UI
-	icons = {
-		expanded = "▾", -- Icon when a section is expanded
-		collapsed = "▸", -- Icon when a section is collapsed
-		current_frame = "▸", -- Icon for the current stack frame
-	},
-
-	-- MAPPINGS: Keybindings within dapui windows
-	mappings = {
-		expand = { "<CR>", "<2-LeftMouse>" }, -- Expand/collapse variables
-		open = "o", -- Open value in new window
-		remove = "d", -- Remove watch/breakpoint
-		edit = "e", -- Edit variable value
-		repl = "r", -- Open REPL with expression
-		toggle = "t", -- Toggle breakpoint on current line
-	},
-
-	-- ELEMENT_MAPPINGS: Specific mappings for certain elements
-	element_mappings = {
-		-- Custom mappings for the stacks element
-		stacks = {
-			open = "<CR>", -- Jump to stack frame
-			expand = "o", -- Expand stack trace
-		},
-	},
-
-	-- EXPAND_LINES: Use full width when expanding variable values
-	expand_lines = true,
-
-	-- LAYOUTS: Define how windows are arranged
-	layouts = {
-		-- LEFT SIDEBAR: Shows scopes, breakpoints, stacks, and watches
-		{
-			elements = {
-				-- SCOPES: Local and global variables in current context
-				{ id = "scopes", size = 0.40 }, -- 40% of sidebar height
-				-- STACKS: Call stack / stack frames
-				{ id = "stacks", size = 0.40 }, -- 20% of sidebar height
-				-- WATCHES: Custom watch expressions
-				{ id = "watches", size = 0.20 }, -- 20% of sidebar height
-			},
-			size = 50, -- Width in columns
-			position = "left", -- Position on screen
-		},
-
-		-- BOTTOM PANEL: Shows REPL and console output
-		{
-			elements = {
-				-- REPL: Interactive debugger console
-				{ id = "repl", size = 0.4 }, -- 50% of panel height
-				-- -- BREAKPOINTS: All breakpoints in project
-				{ id = "breakpoints", size = 0.20 }, -- 20% of sidebar height
-				-- CONSOLE: Program output/stderr
-				{ id = "console", size = 0.4 }, -- 50% of panel height
-			},
-			size = 50, -- Height in rows
-			position = "right", -- Position on screen
-		},
-	},
-
-	-- CONTROLS: Show control buttons at top of sidebar
-	controls = {
-		enabled = true, -- Enable control buttons
-		-- ELEMENT: Which sidebar element to show controls in
-		element = "repl",
-
-		-- ICONS: Control button icons and their actions
-		icons = {
-			pause = "⏸", -- Pause execution
-			play = "▶", -- Continue execution
-			step_into = "⏎", -- Step into function
-			step_out = "⏩", -- Step out of function
-			step_over = "⏭", -- Step over line
-			step_back = "⏮", -- Step backwards (if supported)
-			run_last = "↻", -- Restart last debug session
-			terminate = "⏹", -- Stop debugging
-			disconnect = "⏚", -- Disconnect from debuggee
-		},
-	},
-
-	-- FLOATING: Configuration for floating windows
-	floating = {
-		max_height = 0.8, -- Max height as percentage of editor
-		max_width = 0.8, -- Max width as percentage of editor
-		border = "rounded", -- Border style: "single", "double", "rounded", "solid", "shadow"
-		mappings = {
-			close = { "q", "<Esc>" }, -- Close floating window
-		},
-	},
-
-	-- WINDOWS: Default window settings
-	windows = {
-		indent = 1, -- Indentation size for nested items
-	},
-
-	-- RENDER: How to render values
-	render = {
-		max_type_length = nil, -- Max length for type names (nil = no limit)
-		max_value_lines = 100, -- Max lines for multi-line values
-		indent = 1, -- Indentation size
-	},
-})
-
--- KEYMAPS: Global keymaps for dapui
-vim.keymap.set("n", "<leader>du", function()
-	dapui.toggle()
-end, { noremap = true, desc = "toggle [d]ebugger [u]i", silent = true })
-
-vim.keymap.set("n", "<leader>de", function()
-	dapui.eval()
-end, { noremap = true, desc = "[d]ebugger [e]val expression under cursor", silent = true })
-
-vim.keymap.set("v", "<leader>de", function()
-	dapui.eval()
-end, { noremap = true, desc = "[d]ebugger [e]val selected expression", silent = true })
-
-vim.keymap.set("n", "<leader>df", function()
-	dapui.float_element()
-end, { noremap = true, desc = "[d]ebugger open element in [f]loating window", silent = true })
-
-vim.keymap.set("n", "<leader>dh", function()
-	require("dap.ui.widgets").hover()
-end, { noremap = true, desc = "[d]ebugger [h]over information", silent = true })
-
--- AUTO-OPEN/CLOSE: Automatically open/close dapui when debugging starts/stops
-dap.listeners.before.attach.dapui_config = function()
-	dapui.open()
-end
-dap.listeners.before.launch.dapui_config = function()
-	dapui.open()
-end
-dap.listeners.before.event_terminated.dapui_config = function()
-	dapui.close()
-end
-dap.listeners.before.event_exited.dapui_config = function()
-	dapui.close()
-end
-
---- Additional infill config
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>it",
-	":LlamaToggle<CR>",
-	{ noremap = true, desc = "[i]nfill [t]oggle", silent = true }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ie",
-	":LlamaEnable<CR>",
-	{ noremap = true, desc = "[i]nfill [e]nable", silent = true }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>id",
-	":LlamaDisable<CR>",
-	{ noremap = true, desc = "[i]nfill [d]isable", silent = true }
-)
-vim.api.nvim_set_hl(0, "llama_hl_fim_hint", { fg = vim.g.current_colors.flamingo, ctermfg = 209 })
-vim.api.nvim_set_hl(0, "llama_hl_fim_info", { fg = vim.g.current_colors.lavender, ctermfg = 119 })
-
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ut",
-	":UndotreeToggle<CR>",
-	{ noremap = true, silent = true, desc = "Toggle Undotree" }
-)
-vim.keymap.set("n", "[c", function()
-	require("treesitter-context").go_to_context(vim.v.count1)
-end, { silent = true, desc = "Jump to upper context" })
-vim.keymap.set("n", "<leader>ct", function()
-	require("treesitter-context").toggle()
-end, { silent = true, desc = "Toggle Treesitter Context" })
+vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = true, silent = true })
 
 -- Additional lsp servers --
-vim.lsp.config.sourcekit = {
+require("lspconfig").sourcekit.setup({
 	cmd = {
 		"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
 	},
-	filetypes = { "swift", "c", "cpp", "objective-c", "objective-cpp" },
-	root_markers = {
-		"Package.swift",
-		".git",
-		"compile_commands.json",
-		"buildServer.json",
-		"*.xcodeproj",
-		"*.xcworkspace",
-	},
-	capabilities = require("blink.cmp").get_lsp_capabilities(),
-	settings = {},
-}
-
--- Enable sourcekit LSP for Swift files
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "swift" },
-	callback = function()
-		vim.lsp.enable("sourcekit")
-	end,
+	filetypes = { "swift" },
 })
---require("lspconfig").ocamllsp.setup({
---cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
---filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
---})
+require("lspconfig").ocamllsp.setup({
+	cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
+	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
+})
 
--- Swift: Restart LSP after building
-vim.keymap.set("n", "<leader>lr", function()
-	vim.cmd("LspRestart")
-	vim.notify("LSP Restarted", vim.log.levels.INFO)
-end, { desc = "[L]SP [R]estart" })
-
+--tailwind sort
+vim.api.nvim_set_keymap("n", "<leader>st", ":TailwindSort<CR>", { noremap = true, silent = true })
 vim.cmd([[runtime macros/matchit.vim]])
 -- ocaml fix, so i can still use nvimtree
 vim.cmd("autocmd FileType ocaml nnoremap <leader>t :NvimTreeToggle<CR>")
