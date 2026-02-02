@@ -72,6 +72,10 @@
     "alpha-vantage":{
       "type": "remote",
       "url": "https://mcp.alphavantage.co/mcp?apikey={file:~/.config/opencode/av.key}"
+    },
+    "clerk": {
+      "type": "remote",
+      "url": "https://cursor.com/en-US/install-mcp?name=clerk&config=eyJ1cmwiOiJodHRwczovL21jcC5jbGVyay5jb20vbWNwIn0%3D",
     }
   },
   "formatter": {
