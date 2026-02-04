@@ -13,7 +13,6 @@ server {
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    http2 on;
     server_name jellyfin.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/jellyfin.freno.me/fullchain.pem;
@@ -44,7 +43,6 @@ server {
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    http2 on;
     server_name vw.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/vw.freno.me/fullchain.pem;
@@ -72,7 +70,6 @@ server {
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    http2 on;
     server_name ai.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/ai.freno.me/fullchain.pem;
@@ -107,7 +104,6 @@ server {
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    http2 on;
     server_name infill.freno.me;
 
     ssl_certificate /etc/letsencrypt/live/infill.freno.me/fullchain.pem;
@@ -174,7 +170,6 @@ server {
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    http2 on;
     server_name git.freno.me;
 
     location / {
