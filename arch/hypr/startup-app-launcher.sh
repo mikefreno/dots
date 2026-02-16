@@ -1,27 +1,25 @@
 #!/bin/bash
+sleep 5 # give time for dark/light to adapt to system time
 
-# Define the array of applications
 apps=(
+    "ghostty"
+    "protonmail-bridge"
     "zen-browser"
     "obsidian"
     "gnome-podcasts"
     "thunderbird"
     "steam -pipewire"
+    "heroic"
     "bitwarden-desktop"
-    "discord"
-    "Telegram"
+    "vesktop"
+    #"Telegram"
     "protonvpn-app"
     "librepods"
+    "docker desktop start"
 )
 
 LOG_FILE="/tmp/startup_apps.log"
 
-# Loop through the array
 for app in "${apps[@]}"; do
-    # Run command in background, redirect output to log
-    # Note: 'eval' is used to handle arguments (like -pipewire) inside the string
     eval "$app > \"$LOG_FILE\" 2>&1 &"
 done
-
-echo "Startup script finished. All apps are running in the background."
-echo "Check $LOG_FILE for output."

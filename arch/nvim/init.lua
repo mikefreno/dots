@@ -126,6 +126,13 @@ require("lazy").setup({
 	"ionide/Ionide-vim",
 	"tikhomirov/vim-glsl",
 	{
+		"RRethy/base16-nvim",
+		lazy = false,
+		config = function()
+			require("matugen").setup()
+		end,
+	},
+	{
 		"lervag/vimtex",
 		lazy = false, -- we don't want to lazy load VimTeX
 		-- tag = "v2.15", -- uncomment to pin to a specific release
@@ -154,6 +161,19 @@ require("lazy").setup({
 			{ "<leader>v", ft = "lua", desc = "LÖVE" },
 			{ "<leader>vv", "<cmd>LoveRun<cr>", ft = "lua", desc = "Run LÖVE" },
 			{ "<leader>vs", "<cmd>LoveStop<cr>", ft = "lua", desc = "Stop LÖVE" },
+		},
+	},
+	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		opts = { direction = "float", float_opts = { width = 100, height = 30 } },
+		keys = {
+			{
+				"<leader>F",
+				":ToggleTerm<CR>",
+				mode = { "n" },
+				desc = "Toggle [F]loating terminal",
+			},
 		},
 	},
 	{
@@ -681,12 +701,6 @@ require("lazy").setup({
 
 			-- ... and there is more!
 			--  Check out: https://github.com/echasnovski/mini.nvim
-		end,
-	},
-	{
-		"RRethy/base16-nvim",
-		config = function()
-			require("matugen").setup()
 		end,
 	},
 	{
