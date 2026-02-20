@@ -1605,18 +1605,6 @@ end)
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>ut", ":UndotreeToggle<CR>", { noremap = true, silent = true })
 
--- Additional lsp servers --
-require("lspconfig").sourcekit.setup({
-	cmd = {
-		"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp",
-	},
-	filetypes = { "swift" },
-})
-require("lspconfig").ocamllsp.setup({
-	cmd = { "/Users/mike/.opam/default/bin/ocamllsp" },
-	filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
-})
-
 --tailwind sort
 vim.api.nvim_set_keymap("n", "<leader>st", ":TailwindSort<CR>", { noremap = true, silent = true })
 vim.cmd([[runtime macros/matchit.vim]])
