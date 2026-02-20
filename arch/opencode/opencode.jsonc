@@ -6,8 +6,8 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "on-atlas",
       "options": {
-        "baseURL": "https://infill.freno.me/v1",
-        "apiKey": "{file:~/.config/opencode/my.key}",
+        "baseURL": "http://0.0.0.0:8123/v1",
+        //"apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
         "unsloth/glm-4.7-flash": {"limit":{

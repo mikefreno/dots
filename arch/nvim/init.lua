@@ -113,7 +113,25 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- NOTE: First, some plugins that don't require any configuration
 	{ "tpope/vim-repeat", lazy = false },
-	"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
+	{
+		"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
+		config = function()
+			require("guess-indent").setup({
+				auto_cmd = true, -- Set to false to disable automatic execution
+				override_editorconfig = false, -- Set to true to override settings set by .editorconfig
+				filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
+					"netrw",
+					"tutor",
+				},
+				buftype_exclude = { -- A list of buffer types for which the auto command gets disabled
+					"help",
+					"nofile",
+					"terminal",
+					"prompt",
+				},
+			})
+		end,
+	},
 	"wakatime/vim-wakatime",
 	"mattn/emmet-vim",
 	"preservim/nerdcommenter",
@@ -125,6 +143,13 @@ require("lazy").setup({
 	"OmniSharp/omnisharp-vim",
 	"ionide/Ionide-vim",
 	"tikhomirov/vim-glsl",
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
+	},
 	{
 		"RRethy/base16-nvim",
 		lazy = false,
@@ -175,6 +200,28 @@ require("lazy").setup({
 				desc = "Toggle [F]loating terminal",
 			},
 		},
+	},
+	{
+		"ggml-org/llama.vim",
+		init = function()
+			--local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
+			--local api_key = "_"
+			--if keyFile then
+			--api_key = keyFile:read("*l")
+			--end
+			vim.g.llama_config = {
+				endpoint_fim = "http://0.0.0.0:8123/infill",
+				--api_key = api_key,
+				keymap_fim_trigger = "<M-Enter>",
+				keymap_fim_accept_line = "<A-Tab>",
+				keymap_fim_accept_full = "<S-Tab>",
+				keymap_fim_accept_word = "<Right>",
+				stop_strings = {},
+				n_prefix = 512,
+				n_suffix = 512,
+				show_info = 2,
+			}
+		end,
 	},
 	{
 		"ThePrimeagen/harpoon",
@@ -404,6 +451,8 @@ require("lazy").setup({
 			})
 		end,
 	},
+	"mfussenegger/nvim-dap",
+	{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 	{ -- Autoformat
 		"stevearc/conform.nvim",
 		event = { "BufWritePre" },
@@ -1147,6 +1196,388 @@ require("lazy").setup({
 		},
 	},
 })
+
+--- DAP(debugger) keybinds
+vim.keymap.set(
+	"n",
+	"<leader>db",
+	":DapToggleBreakpoint<CR>",
+	{ noremap = true, desc = "[d]ebugger toggle [b]reakpoint", silent = true }
+)
+vim.keymap.set("n", "<leader>dn", ":DapNew<CR>", { noremap = true, desc = "[d]ebugger [n]ew session", silent = true })
+vim.keymap.set(
+	"n",
+	"<leader>dd",
+	":DapDisconnect<CR>",
+	{ noremap = true, desc = "[d]ebugger [d]isconnect", silent = true }
+)
+vim.keymap.set(
+	"n",
+	"<leader>dc",
+	":DapContinue<CR>",
+	{ noremap = true, desc = "[d]ebugger [c]ontinue execution", silent = true }
+)
+vim.keymap.set(
+	"n",
+	"<leader>dsi",
+	":DapStepInto<CR>",
+	{ noremap = true, desc = "[d]ebugger [s]tep [i]nto", silent = true }
+)
+vim.keymap.set(
+	"n",
+	"<leader>dso",
+	":DapStepOver<CR>",
+	{ noremap = true, desc = "[d]ebugger [s]tep [o]ver", silent = true }
+)
+---DAP configuration
+---
+---Currently configured: C/C++/Rust/Go/Lua/Python
+local dap = require("dap")
+dap.adapters.lldb = {
+	type = "executable",
+	command = "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-dap", -- adjust as needed, must be absolute path
+	name = "lldb",
+}
+
+dap.adapters.codelldb = {
+	type = "server",
+	port = "${port}",
+	executable = {
+		command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+		args = { "--port", "${port}" },
+	},
+}
+dap.configurations.cpp = {
+	{
+		name = "Launch",
+		type = "lldb",
+		request = "launch",
+		program = function()
+			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+		end,
+		cwd = "${workspaceFolder}",
+		stopOnEntry = false,
+		args = {},
+
+		-- 💀
+		-- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+		--
+		--    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+		--
+		-- Otherwise you might get the following error:
+		--
+		--    Error on launch: Failed to attach to the target process
+		--
+		-- But you should be aware of the implications:
+		-- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+		-- runInTerminal = false,
+	},
+}
+dap.configurations.rust = {
+	{
+		name = "Launch",
+		type = "codelldb",
+		request = "launch",
+		program = function()
+			local cwd = vim.fn.getcwd()
+			local project_name = vim.fn.fnamemodify(cwd, ":t")
+			local exe_name = project_name:gsub("-", "_")
+			local exe_path = cwd .. "/target/debug/" .. exe_name
+
+			if vim.fn.executable(exe_path) == 1 then
+				return exe_path
+			else
+				local build_result = vim.fn.system("cargo build --quiet")
+
+				if vim.v.shell_error == 0 and vim.fn.executable(exe_path) == 1 then
+					return exe_path
+				else
+					return vim.fn.input("Path to executable: ", cwd .. "/target/debug/", "file")
+				end
+			end
+		end,
+		cwd = "${workspaceFolder}",
+		stopOnEntry = false,
+		args = {},
+	},
+}
+
+dap.adapters["local-lua"] = {
+	type = "executable",
+	command = "node",
+	args = {
+		"/absolute/path/to/local-lua-debugger-vscode/extension/debugAdapter.js",
+	},
+	enrich_config = function(config, on_config)
+		if not config["extensionPath"] then
+			local c = vim.deepcopy(config)
+			-- 💀 If this is missing or wrong you'll see
+			-- "module 'lldebugger' not found" errors in the dap-repl when trying to launch a debug session
+			c.extensionPath = "/absolute/path/to/local-lua-debugger-vscode/"
+			on_config(c)
+		else
+			on_config(config)
+		end
+	end,
+}
+dap.adapters.go = {
+	type = "executable",
+	command = "node",
+	args = { os.getenv("HOME") .. "/dev/golang/vscode-go/extension/dist/debugAdapter.js" },
+}
+dap.configurations.go = {
+	{
+		type = "go",
+		name = "Debug",
+		request = "launch",
+		showLog = false,
+		program = "${file}",
+		dlvToolPath = vim.fn.exepath("dlv"), -- Adjust to where delve is installed
+	},
+}
+dap.adapters.python = function(cb, config)
+	if config.request == "attach" then
+		---@diagnostic disable-next-line: undefined-field
+		local port = (config.connect or config).port
+		---@diagnostic disable-next-line: undefined-field
+		local host = (config.connect or config).host or "127.0.0.1"
+		cb({
+			type = "server",
+			port = assert(port, "`connect.port` is required for a python `attach` configuration"),
+			host = host,
+			options = {
+				source_filetype = "python",
+			},
+		})
+	else
+		cb({
+			type = "executable",
+			command = os.getenv("HOME") .. "/dev/python.venvs/debugpy/bin/python",
+			args = { "-m", "debugpy.adapter" },
+			options = {
+				source_filetype = "python",
+			},
+		})
+	end
+end
+
+dap.configurations.python = {
+	{
+		-- The first three options are required by nvim-dap
+		type = "python", -- the type here established the link to the adapter definition: `dap.adapters.python`
+		request = "launch",
+		name = "Launch file",
+
+		-- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
+
+		program = "${file}", -- This configuration will launch the current file if used.
+		pythonPath = function()
+			-- debugpy supports launching an application with a different interpreter then the one used to launch debugpy itself.
+			-- The code below looks for a `venv` or `.venv` folder in the current directly and uses the python within.
+			-- You could adapt this - to for example use the `VIRTUAL_ENV` environment variable.
+			local cwd = vim.fn.getcwd()
+			if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+				return cwd .. "/venv/bin/python"
+			elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+				return cwd .. "/.venv/bin/python"
+			else
+				return "/usr/bin/python"
+			end
+		end,
+	},
+}
+
+dap.adapters["pwa-node"] = {
+	type = "server",
+	host = "localhost",
+	port = "${port}",
+	executable = {
+		command = "node",
+		-- 💀 Make sure to update this path to point to your installation
+		args = { os.getenv("HOME") .. "/dev/js/js-debug/src/dapDebugServer.js", "${port}" },
+	},
+}
+
+dap.configurations.typescript = {
+	{
+		type = "pwa-node",
+		request = "launch",
+		name = "Launch file",
+		runtimeExecutable = "deno",
+		runtimeArgs = {
+			"run",
+			"--inspect-wait",
+			"--allow-all",
+		},
+		program = "${file}",
+		cwd = "${workspaceFolder}",
+		attachSimplePort = 9229,
+	},
+}
+--- Dap UI Configuration
+local dapui = require("dapui")
+dapui.setup({
+	-- ICONS: Configure icons used in the UI
+	icons = {
+		expanded = "▾", -- Icon when a section is expanded
+		collapsed = "▸", -- Icon when a section is collapsed
+		current_frame = "▸", -- Icon for the current stack frame
+	},
+
+	-- MAPPINGS: Keybindings within dapui windows
+	mappings = {
+		expand = { "<CR>", "<2-LeftMouse>" }, -- Expand/collapse variables
+		open = "o", -- Open value in new window
+		remove = "d", -- Remove watch/breakpoint
+		edit = "e", -- Edit variable value
+		repl = "r", -- Open REPL with expression
+		toggle = "t", -- Toggle breakpoint on current line
+	},
+
+	-- ELEMENT_MAPPINGS: Specific mappings for certain elements
+	element_mappings = {
+		-- Custom mappings for the stacks element
+		stacks = {
+			open = "<CR>", -- Jump to stack frame
+			expand = "o", -- Expand stack trace
+		},
+	},
+
+	-- EXPAND_LINES: Use full width when expanding variable values
+	expand_lines = true,
+
+	-- LAYOUTS: Define how windows are arranged
+	layouts = {
+		-- LEFT SIDEBAR: Shows scopes, breakpoints, stacks, and watches
+		{
+			elements = {
+				-- SCOPES: Local and global variables in current context
+				{ id = "scopes", size = 0.40 }, -- 40% of sidebar height
+				-- STACKS: Call stack / stack frames
+				{ id = "stacks", size = 0.40 }, -- 20% of sidebar height
+				-- WATCHES: Custom watch expressions
+				{ id = "watches", size = 0.20 }, -- 20% of sidebar height
+			},
+			size = 50, -- Width in columns
+			position = "left", -- Position on screen
+		},
+
+		-- BOTTOM PANEL: Shows REPL and console output
+		{
+			elements = {
+				-- REPL: Interactive debugger console
+				{ id = "repl", size = 0.4 }, -- 50% of panel height
+				-- -- BREAKPOINTS: All breakpoints in project
+				{ id = "breakpoints", size = 0.20 }, -- 20% of sidebar height
+				-- CONSOLE: Program output/stderr
+				{ id = "console", size = 0.4 }, -- 50% of panel height
+			},
+			size = 50, -- Height in rows
+			position = "right", -- Position on screen
+		},
+	},
+
+	-- CONTROLS: Show control buttons at top of sidebar
+	controls = {
+		enabled = true, -- Enable control buttons
+		-- ELEMENT: Which sidebar element to show controls in
+		element = "repl",
+
+		-- ICONS: Control button icons and their actions
+		icons = {
+			pause = "⏸", -- Pause execution
+			play = "▶", -- Continue execution
+			step_into = "⏎", -- Step into function
+			step_out = "⏩", -- Step out of function
+			step_over = "⏭", -- Step over line
+			step_back = "⏮", -- Step backwards (if supported)
+			run_last = "↻", -- Restart last debug session
+			terminate = "⏹", -- Stop debugging
+			disconnect = "⏚", -- Disconnect from debuggee
+		},
+	},
+
+	-- FLOATING: Configuration for floating windows
+	floating = {
+		max_height = 0.8, -- Max height as percentage of editor
+		max_width = 0.8, -- Max width as percentage of editor
+		border = "rounded", -- Border style: "single", "double", "rounded", "solid", "shadow"
+		mappings = {
+			close = { "q", "<Esc>" }, -- Close floating window
+		},
+	},
+
+	-- WINDOWS: Default window settings
+	windows = {
+		indent = 1, -- Indentation size for nested items
+	},
+
+	-- RENDER: How to render values
+	render = {
+		max_type_length = nil, -- Max length for type names (nil = no limit)
+		max_value_lines = 100, -- Max lines for multi-line values
+		indent = 1, -- Indentation size
+	},
+})
+
+-- KEYMAPS: Global keymaps for dapui
+vim.keymap.set("n", "<leader>du", function()
+	dapui.toggle()
+end, { noremap = true, desc = "toggle [d]ebugger [u]i", silent = true })
+
+vim.keymap.set("n", "<leader>de", function()
+	dapui.eval()
+end, { noremap = true, desc = "[d]ebugger [e]val expression under cursor", silent = true })
+
+vim.keymap.set("v", "<leader>de", function()
+	dapui.eval()
+end, { noremap = true, desc = "[d]ebugger [e]val selected expression", silent = true })
+
+vim.keymap.set("n", "<leader>df", function()
+	dapui.float_element()
+end, { noremap = true, desc = "[d]ebugger open element in [f]loating window", silent = true })
+
+vim.keymap.set("n", "<leader>dh", function()
+	require("dap.ui.widgets").hover()
+end, { noremap = true, desc = "[d]ebugger [h]over information", silent = true })
+
+-- AUTO-OPEN/CLOSE: Automatically open/close dapui when debugging starts/stops
+dap.listeners.before.attach.dapui_config = function()
+	dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+	dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+	dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+	dapui.close()
+end
+
+--- Additional infill config
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>it",
+	":LlamaToggle<CR>",
+	{ noremap = true, desc = "[i]nfill [t]oggle", silent = true }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>ie",
+	":LlamaEnable<CR>",
+	{ noremap = true, desc = "[i]nfill [e]nable", silent = true }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>id",
+	":LlamaDisable<CR>",
+	{ noremap = true, desc = "[i]nfill [d]isable", silent = true }
+)
+
+vim.api.nvim_set_hl(0, "llama_hl_fim_hint", { fg = require("base16-colorscheme").colors.base0C, ctermfg = 209 })
+vim.api.nvim_set_hl(0, "llama_hl_fim_info", { fg = require("base16-colorscheme").colors.base0E, ctermfg = 119 })
+
 --- package keymaps (don't support `keys`)
 local harpoon = require("harpoon")
 harpoon:setup()
