@@ -10,14 +10,23 @@
         "apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
-        "unsloth/glm-4.7-flash": {"limit":{
-          "context": 125000,
-          "output": 100000
-        }},
-        "unsloth/qwen3-coder": {"limit":{
-        "context": 70000,
-        "output": 100000
-      }}
+        "unsloth/glm-4.7-flash": {
+          "limit":{
+            "context": 125000,
+            "output": 100000
+          }
+        },
+        "unsloth/qwen3.5":{
+          "limit":{
+            "context": 125000,
+            "output": 100000
+          },
+          "modalities":{
+            "input":  ["text", "image"],
+            "output": ["text"]
+          }
+        },
+
       }
     },
     "local-mac": {
@@ -73,10 +82,10 @@
       "type": "remote",
       "url": "https://mcp.alphavantage.co/mcp?apikey={file:~/.config/opencode/av.key}"
     },
-    "clerk": {
-      "type": "remote",
-      "url": "https://cursor.com/en-US/install-mcp?name=clerk&config=eyJ1cmwiOiJodHRwczovL21jcC5jbGVyay5jb20vbWNwIn0%3D",
-    }
+    //"clerk": {
+      //"type": "remote",
+      //"url": "https://cursor.com/en-US/install-mcp?name=clerk&config=eyJ1cmwiOiJodHRwczovL21jcC5jbGVyay5jb20vbWNwIn0%3D",
+    //}
   },
   "formatter": {
     "stylua": {
