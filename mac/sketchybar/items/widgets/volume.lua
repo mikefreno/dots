@@ -2,19 +2,8 @@ local colors = require("colors")
 local icons = require("icons")
 local settings = require("settings")
 
-local volume_percent = sbar.add("item", "widgets.volume1", {
-	position = "right",
-	icon = { drawing = false },
-	label = {
-		string = "??%",
-		padding_left = -1,
-		font = { family = settings.font.numbers },
-	},
-	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 'Control Center,Sound'",
-})
-
 local volume_icon = sbar.add("item", "widgets.volume2", {
-	position = "right",
+	position = "left",
 	padding_right = -1,
 	icon = {
 		string = icons.volume._100,
@@ -37,6 +26,17 @@ local volume_icon = sbar.add("item", "widgets.volume2", {
 	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 'Control Center,Sound'",
 })
 
+local volume_percent = sbar.add("item", "widgets.volume1", {
+	position = "left",
+	icon = { drawing = false },
+	label = {
+		string = "??%",
+		padding_left = -1,
+		font = { family = settings.font.numbers },
+	},
+	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 'Control Center,Sound'",
+})
+
 local volume_bracket = sbar.add("bracket", "widgets.volume.bracket", {
 	volume_icon.name,
 	volume_percent.name,
@@ -48,7 +48,7 @@ local volume_bracket = sbar.add("bracket", "widgets.volume.bracket", {
 })
 
 sbar.add("item", "widgets.volume.padding", {
-	position = "right",
+	position = "left",
 	width = settings.group_paddings,
 })
 
