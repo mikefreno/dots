@@ -10,6 +10,8 @@ local PLAY_ICON = "􀊄"
 local PAUSE_ICON = "􀊆"
 local BAR_WIDTH = 220
 local CTRL_WIDTH = 40
+local INLINE_COVER_SIZE = 12
+local INLINE_COVER_SCALE = 0.1
 
 local cache = {
 	track = "",
@@ -38,7 +40,7 @@ local media_toggle = sbar.add("item", "widgets.media.toggle", {
 		color = colors.white,
 		font = { size = 12 },
 		padding_left = 4,
-		padding_right = 4,
+		padding_right = 0,
 	},
 	label = { drawing = false },
 	click_script = "media-control toggle-play-pause",
@@ -46,27 +48,67 @@ local media_toggle = sbar.add("item", "widgets.media.toggle", {
 
 local media_title = sbar.add("item", "widgets.media.title", {
 	position = "left",
-	width = 148,
+	width = 120,
 	background = { drawing = false },
 	icon = { drawing = false },
+	padding_right = 28,
+	scroll_texts = false,
 	label = {
 		drawing = false,
-		max_chars = 28,
+		max_chars = 22,
 		color = colors.white,
-		padding_right = 4,
+		padding_right = 2,
 	},
 	popup = {
 		align = "center",
 	},
 })
 
+local ctrl_popup_host = sbar.add("item", "widgets.media.ctrl.host", {
+	position = "left",
+	width = 1,
+	drawing = true,
+	icon = { drawing = false },
+	label = { drawing = false },
+	background = { drawing = false },
+	popup = {
+		horizontal = true,
+		topmost = true,
+		align = "right",
+		blur_radius = 0,
+		background = {
+			color = colors.bg2,
+			border_width = 0,
+		},
+	},
+})
+
+local inline_cover = sbar.add("item", "widgets.media.inline_cover", {
+	position = "left",
+	width = INLINE_COVER_SIZE,
+	drawing = false,
+	align = "right",
+	icon = { drawing = false },
+	label = { drawing = false },
+	padding_left = 28,
+	background = {
+		drawing = true,
+		color = colors.bg2,
+		height = INLINE_COVER_SIZE * 0.75,
+		corner_radius = 3,
+		image = { scale = INLINE_COVER_SCALE, corner_radius = 3 },
+	},
+})
+
 sbar.add("bracket", "widgets.media.bracket", {
 	media_toggle.name,
 	media_title.name,
+	inline_cover.name,
+	ctrl_popup_host.name,
 }, {
 	background = {
 		color = colors.bg1,
-		border_width = 0,
+		height = 30,
 	},
 })
 
@@ -75,6 +117,7 @@ local cover = sbar.add("item", {
 	drawing = false,
 	width = 64,
 	icon = { drawing = false },
+	align = "center",
 	label = { drawing = false },
 	background = {
 		drawing = true,
@@ -126,7 +169,7 @@ local progress_slider = sbar.add("slider", BAR_WIDTH, {
 			font = { size = 10.0 },
 		},
 	},
-	background = { color = colors.transparent, height = 2, y_offset = -20 },
+	background = { color = colors.transparent, height = 2 },
 	icon = { drawing = false },
 	label = { drawing = false },
 })
@@ -143,50 +186,50 @@ local time_display = sbar.add("item", {
 	},
 })
 
---local ctrl_prev = sbar.add("item", {
---position = "popup." .. media_title.name,
---drawing = false,
---width = CTRL_WIDTH,
---icon = {
---string = icons.media.back,
---color = colors.white,
---font = { size = 12.0 },
---align = "center",
---padding_left = 0,
---padding_right = 0,
---},
---label = { drawing = false },
---})
+local ctrl_prev = sbar.add("item", {
+	position = "popup." .. ctrl_popup_host.name,
+	drawing = false,
+	width = CTRL_WIDTH,
+	icon = {
+		string = icons.media.back,
+		color = colors.white,
+		font = { size = 12.0 },
+		align = "center",
+		padding_left = 12,
+		padding_right = 0,
+	},
+	label = { drawing = false },
+})
 
---local ctrl_play = sbar.add("item", {
---position = "popup." .. media_title.name,
---drawing = false,
---width = CTRL_WIDTH,
---icon = {
---string = PLAY_ICON,
---color = colors.white,
---font = { size = 12.0 },
---align = "center",
---padding_left = 0,
---padding_right = 0,
---},
---label = { drawing = false },
---})
+local ctrl_play = sbar.add("item", {
+	position = "popup." .. ctrl_popup_host.name,
+	drawing = false,
+	width = CTRL_WIDTH,
+	icon = {
+		string = PLAY_ICON,
+		color = colors.white,
+		font = { size = 12.0 },
+		align = "center",
+		padding_left = 16,
+		padding_right = 0,
+	},
+	label = { drawing = false },
+})
 
---local ctrl_next = sbar.add("item", {
---position = "popup." .. media_title.name,
---drawing = false,
---width = CTRL_WIDTH,
---icon = {
---string = icons.media.forward,
---color = colors.white,
---font = { size = 12.0 },
---align = "center",
---padding_left = 0,
---padding_right = 0,
---},
---label = { drawing = false },
---})
+local ctrl_next = sbar.add("item", {
+	position = "popup." .. ctrl_popup_host.name,
+	drawing = false,
+	width = CTRL_WIDTH,
+	icon = {
+		string = icons.media.forward,
+		color = colors.white,
+		font = { size = 12.0 },
+		align = "center",
+		padding_left = 12,
+		padding_right = 0,
+	},
+	label = { drawing = false },
+})
 
 local popup_items = { cover, title, artist, progress_slider, time_display }
 
@@ -221,13 +264,14 @@ end
 
 local function set_popup(show)
 	popup_open = show
+	ctrl_popup_host:set({ popup = { drawing = show } })
+	ctrl_prev:set({ drawing = show })
+	ctrl_play:set({ drawing = show })
+	ctrl_next:set({ drawing = show })
 	media_title:set({ popup = { drawing = show } })
 	for _, item in ipairs(popup_items) do
 		item:set({ drawing = show })
 	end
-	--ctrl_prev:set({ drawing = show })
-	--ctrl_play:set({ drawing = show })
-	--ctrl_next:set({ drawing = show })
 	if show and cache.playing then
 		start_progress_clock()
 	else
@@ -279,7 +323,6 @@ local function update_from_event(env)
 	local shown_track = track ~= "" and track or cache.track
 	local shown_artist = performer ~= "" and performer or cache.artist
 	local shown_cover = artwork_path ~= "" and artwork_path or cache.cover
-	local shown_duration = duration > 1 and duration or cache.duration
 
 	local icon = is_playing and PAUSE_ICON or PLAY_ICON
 	media_toggle:set({ icon = { string = icon } })
@@ -287,19 +330,31 @@ local function update_from_event(env)
 
 	title:set({ label = { string = shown_track ~= "" and shown_track or "Nothing played yet" } })
 	artist:set({ label = { string = shown_artist } })
-	--ctrl_play:set({ icon = { string = icon } })
+	ctrl_play:set({ icon = { string = icon } })
 
 	render_progress()
 
 	if shown_cover ~= "" then
 		cover:set({
 			drawing = popup_open,
+			width = 64,
+			align = "center",
 			background = {
+				height = 64,
 				image = { string = shown_cover, scale = 0.66, corner_radius = 6 },
+			},
+		})
+		inline_cover:set({
+			drawing = true,
+			width = INLINE_COVER_SIZE,
+			background = {
+				height = INLINE_COVER_SIZE * 0.75,
+				image = { string = shown_cover, scale = INLINE_COVER_SCALE, corner_radius = 3 },
 			},
 		})
 	else
 		cover:set({ drawing = false })
+		inline_cover:set({ drawing = false })
 	end
 
 	if popup_open and cache.playing then
@@ -311,6 +366,12 @@ end
 
 media_title:subscribe("media_tick_update", function(env)
 	update_from_event(env)
+end)
+media_title:subscribe("mouse.entered", function()
+	media_title:set({ scroll_texts = true })
+	sbar.delay(0.2, function()
+		media_title:set({ scroll_texts = false })
+	end)
 end)
 
 media_toggle:subscribe("mouse.clicked", function()
@@ -327,14 +388,14 @@ progress_slider:subscribe("mouse.clicked", function(env)
 	apply_seek_from_percentage(env.PERCENTAGE)
 end)
 
---ctrl_prev:subscribe("mouse.clicked", function()
---sbar.exec("media-control previous-track")
---end)
+ctrl_prev:subscribe("mouse.clicked", function()
+	sbar.exec("media-control previous-track")
+end)
 
---ctrl_play:subscribe("mouse.clicked", function()
---sbar.exec("media-control toggle-play-pause")
---end)
+ctrl_play:subscribe("mouse.clicked", function()
+	sbar.exec("media-control toggle-play-pause")
+end)
 
---ctrl_next:subscribe("mouse.clicked", function()
---sbar.exec("media-control next-track")
---end)
+ctrl_next:subscribe("mouse.clicked", function()
+	sbar.exec("media-control next-track")
+end)
