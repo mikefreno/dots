@@ -1,302 +1,223 @@
 local icons = require("icons")
 local colors = require("colors")
 
-sbar.exec("killall media >/dev/null; $CONFIG_DIR/helpers/event_providers/media_provider/bin/media media_provider &")
+local state_script = [[
+json="$(media-control get --micros 2>/dev/null)"
+if [ -z "$json" ]; then
+  printf 'playing=false\nelapsed=0\nduration=1\ntitle=\nartist=\ncover=\n'
+  exit 0
+fi
 
-local media_item = sbar.add("item", {
-	position = "right",
-	background = {
-		color = colors.bg2,
-		height = 28,
-		corner_radius = 6,
-		border_width = 1,
-		border_color = colors.grey,
-	},
-	icon = {
-		string = icons.media.play_pause,
-		color = colors.white,
-		font = { size = 10 },
-		padding_left = 8,
-		padding_right = 8,
-	},
-	label = {
-		drawing = false,
-		font = { size = 11 },
-		color = colors.white,
-		padding_left = 6,
-		padding_right = 6,
-		max_chars = 15,
-		scrolling = true,
-	},
-	click_script = "media-control toggle-play-pause",
-})
+playing="$(printf '%s' "$json" | jq -r '.playing // false')"
+elapsed="$(printf '%s' "$json" | jq -r '.elapsedTimeMicros // 0')"
+duration="$(printf '%s' "$json" | jq -r '.durationMicros // 1')"
+title="$(printf '%s' "$json" | jq -r '.title // ""' | tr '\t\n' '  ')"
+artist="$(printf '%s' "$json" | jq -r '.artist // ""' | tr '\t\n' '  ')"
+artwork_data="$(printf '%s' "$json" | jq -r '.artworkData // ""')"
+artwork_mime="$(printf '%s' "$json" | jq -r '.artworkMimeType // ""')"
 
-local media_popup = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	align = "center",
-	horizontal = true,
-	drawing = false,
-	background = {
-		color = colors.popup.bg,
-		border_width = 2,
-		corner_radius = 10,
-		border_color = colors.popup.border,
-		shadow = { drawing = true },
-	},
-	blur_radius = 40,
-})
+cover=""
+if [ -n "$artwork_data" ]; then
+  ext="jpg"
+  case "$artwork_mime" in
+    image/png) ext="png" ;;
+    image/jpeg) ext="jpg" ;;
+  esac
+  cover="/tmp/sketchybar-media-cover.$ext"
+  printf '%s' "$artwork_data" | base64 -d > "$cover" 2>/dev/null || cover=""
+fi
 
-local media_popup_artwork = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	drawing = false,
-	background = {
-		drawing = false,
-		color = colors.black,
-		image = {
-			scale = 0.9,
-			corner_radius = 6,
-		},
-		height = 120,
-		width = 120,
-		margin_left = 8,
-		padding = 4,
-	},
-})
+printf 'playing=%s\nelapsed=%s\nduration=%s\ntitle=%s\nartist=%s\ncover=%s\n' "$playing" "$elapsed" "$duration" "$title" "$artist" "$cover"
+]]
 
-local media_popup_info = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	drawing = false,
-	background = { drawing = false },
-	icon = { drawing = false },
-	label = {
-		drawing = false,
-		font = { size = 10 },
-		color = colors.with_alpha(colors.white, 0.7),
-		padding_left = 8,
-		padding_right = 8,
-		vertical_align = "middle",
-		width = 200,
-		max_width = 200,
-	},
-})
-
-local media_popup_title = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	drawing = false,
-	background = { drawing = false },
-	icon = { drawing = false },
-	label = {
-		drawing = false,
-		font = { size = 13, style = "Semibold" },
-		color = colors.white,
-		padding_left = 8,
-		padding_right = 8,
-		max_chars = 30,
-		y_offset = -8,
-		width = 200,
-		max_width = 200,
-	},
-})
-
-local media_popup_artist = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	drawing = false,
-	background = { drawing = false },
-	icon = { drawing = false },
-	label = {
-		drawing = false,
-		font = { size = 11 },
-		color = colors.white,
-		padding_left = 8,
-		padding_right = 8,
-		max_chars = 30,
-		y_offset = -20,
-		width = 200,
-		max_width = 200,
-	},
-})
-
-local media_popup_progress_bg = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	drawing = false,
-	background = {
-		drawing = true,
-		color = colors.bg1,
-		height = 4,
-		corner_radius = 2,
-	},
-	label = { drawing = false },
-	icon = { drawing = false },
-	padding_left = 8,
-	padding_right = 8,
-	y_offset = -36,
-	width = 200,
-})
-
-local media_popup_progress_fg = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	drawing = false,
-	background = {
-		drawing = true,
-		color = colors.blue,
-		height = 4,
-		corner_radius = 2,
-	},
-	label = { drawing = false },
-	icon = { drawing = false },
-	padding_left = 8,
-	padding_right = 8,
-	y_offset = -36,
-	width = 0,
-	max_width = 200,
-})
-
-	local media_popup_prev = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	background = {
-		drawing = true,
-		color = colors.bg1,
-		height = 32,
-		width = 32,
-		corner_radius = 6,
-	},
-	icon = {
-		string = icons.media.back,
-		color = colors.white,
-		font = { size = 12 },
-		padding_left = 0,
-		padding_right = 0,
-	},
-	label = { drawing = false },
-	click_script = "media-control previous-track",
-})
-
-local media_popup_play_pause = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	background = {
-		drawing = true,
-		color = colors.blue,
-		height = 40,
-		width = 40,
-		corner_radius = 8,
-	},
-	icon = {
-		string = icons.media.play_pause,
-		color = colors.white,
-		font = { size = 16 },
-		padding_left = 0,
-		padding_right = 0,
-	},
-	label = { drawing = false },
-	click_script = "media-control toggle-play-pause",
-})
-
-local media_popup_next = sbar.add("item", {
-	position = "popup." .. media_item.name,
-	background = {
-		drawing = true,
-		color = colors.bg1,
-		height = 32,
-		width = 32,
-		corner_radius = 6,
-	},
-	icon = {
-		string = icons.media.forward,
-		color = colors.white,
-		font = { size = 12 },
-		padding_left = 0,
-		padding_right = 0,
-	},
-	label = { drawing = false },
-	click_script = "media-control next-track",
-})
-
-local interrupt = 0
-
-local function format_time(micros)
-	local total_seconds = math.floor(micros / 1000000)
-	local minutes = math.floor(total_seconds / 60)
-	local seconds = total_seconds % 60
-	return string.format("%d:%02d", minutes, seconds)
+local function parse_kv(s)
+  local out = {}
+  for line in string.gmatch(s or "", "[^\n]+") do
+    local key, value = string.match(line, "^([a-z]+)=(.*)$")
+    if key then
+      out[key] = value
+    end
+  end
+  return out
 end
 
-	local function animate_popup(show)
-		if show then
-			interrupt = interrupt + 1
-		else
-			interrupt = interrupt - 1
-		end
-		
-		sbar.animate("tanh", 200, function()
-			media_item:set({ label = { drawing = show } })
-			media_popup:set({ drawing = show })
-			media_popup_artwork:set({ drawing = show })
-			media_popup_info:set({ drawing = show })
-			media_popup_title:set({ drawing = show })
-			media_popup_artist:set({ drawing = show })
-			media_popup_progress_bg:set({ drawing = show })
-			media_popup_progress_fg:set({ drawing = show })
-			media_popup_prev:set({ drawing = show })
-			media_popup_play_pause:set({ drawing = show })
-			media_popup_next:set({ drawing = show })
-		end)
-	end
+local function format_time(micros)
+  local total_seconds = math.floor((tonumber(micros) or 0) / 1000000)
+  local minutes = math.floor(total_seconds / 60)
+  local seconds = total_seconds % 60
+  return string.format("%d:%02d", minutes, seconds)
+end
 
-	media_item:subscribe("media_change", function(env)
-	local state = env.INFO.state or (env.INFO.playing and "playing") or "stopped"
-	
-	if state == "paused" or state == "stopped" or state == false then
-		media_item:set({
-			icon = { string = "􀊈" },
-			label = { drawing = false },
-		})
-		media_popup:set({ drawing = false })
-		return
-	end
-	
-	local title = env.INFO.title or "?"
-	local artist = env.INFO.artist or "?"
-	local elapsed = tonumber(env.INFO.elapsedTimeMicros) or 0
-	local duration = tonumber(env.INFO.durationMicros) or 1
-	
-	media_item:set({
-		icon = { string = icons.media.play_pause },
-		label = { drawing = true, string = title },
-	})
-	
-	media_popup_info:set({ label = { string = format_time(elapsed) .. " / " .. format_time(duration) } })
-	media_popup_title:set({ label = { string = title } })
-	media_popup_artist:set({ label = { string = artist } })
-	
-	if duration > 0 then
-		local percentage = math.min(100, (elapsed / duration) * 100)
-		media_popup_progress_fg:set({ background = { width = (percentage / 100) * 200 } })
-	end
-	
-	local artwork = env.INFO.artworkData or ""
-	if artwork and #artwork > 0 then
-		media_popup_artwork:set({
-			drawing = true,
-			background = { drawing = true, image = { string = artwork } },
-		})
-	else
-		media_popup_artwork:set({ drawing = false })
-	end
-	
-	animate_popup(true)
-	interrupt = interrupt + 1
-	sbar.delay(5, function() animate_popup(false) end)
+local media = sbar.add("item", {
+  position = "right",
+  icon = {
+    string = icons.media.play_pause,
+    color = colors.white,
+    padding_left = 8,
+    padding_right = 6,
+  },
+  label = {
+    drawing = false,
+    width = 140,
+    max_chars = 26,
+    color = colors.white,
+    padding_left = 0,
+    padding_right = 8,
+  },
+  background = {
+    color = colors.bg2,
+    border_width = 1,
+    border_color = colors.grey,
+  },
+  click_script = "media-control toggle-play-pause",
+})
+
+local cover = sbar.add("item", {
+  position = "popup." .. media.name,
+  drawing = false,
+  icon = { drawing = false },
+  label = { drawing = false },
+  background = {
+    drawing = true,
+    color = colors.bg1,
+    height = 64,
+    image = { scale = 0.35, corner_radius = 6 },
+  },
+  width = 64,
+})
+
+local title = sbar.add("item", {
+  position = "popup." .. media.name,
+  drawing = false,
+  icon = { drawing = false },
+  label = {
+    drawing = true,
+    max_chars = 36,
+    color = colors.white,
+    y_offset = -8,
+  },
+  width = 200,
+})
+
+local artist = sbar.add("item", {
+  position = "popup." .. media.name,
+  drawing = false,
+  icon = { drawing = false },
+  label = {
+    drawing = true,
+    max_chars = 36,
+    color = colors.with_alpha(colors.white, 0.7),
+    y_offset = 8,
+  },
+  width = 200,
+})
+
+local progress_bg = sbar.add("item", {
+  position = "popup." .. media.name,
+  drawing = false,
+  icon = { drawing = false },
+  label = { drawing = false },
+  background = { drawing = true, color = colors.bg1, height = 4, corner_radius = 2 },
+  width = 200,
+})
+
+local progress_fg = sbar.add("item", {
+  position = "popup." .. media.name,
+  drawing = false,
+  icon = { drawing = false },
+  label = { drawing = false },
+  background = { drawing = true, color = colors.blue, height = 4, corner_radius = 2 },
+  width = 0,
+})
+
+local time = sbar.add("item", {
+  position = "popup." .. media.name,
+  drawing = false,
+  icon = { drawing = false },
+  label = {
+    drawing = true,
+    color = colors.with_alpha(colors.white, 0.7),
+  },
+  width = 200,
+})
+
+sbar.add("item", {
+  position = "popup." .. media.name,
+  icon = { string = icons.media.back },
+  label = { drawing = false },
+  click_script = "media-control previous-track",
+})
+
+sbar.add("item", {
+  position = "popup." .. media.name,
+  icon = { string = icons.media.play_pause },
+  label = { drawing = false },
+  click_script = "media-control toggle-play-pause",
+})
+
+sbar.add("item", {
+  position = "popup." .. media.name,
+  icon = { string = icons.media.forward },
+  label = { drawing = false },
+  click_script = "media-control next-track",
+})
+
+local function refresh()
+  sbar.exec(state_script, function(raw)
+    local fields = parse_kv(raw or "")
+    local is_playing = fields.playing == "true"
+    local elapsed = tonumber(fields.elapsed or "0") or 0
+    local duration = tonumber(fields.duration or "1") or 1
+    local track = fields.title or ""
+    local performer = fields.artist or ""
+    local artwork_path = fields.cover or ""
+
+    media:set({
+      label = { drawing = is_playing and track ~= "", string = track },
+    })
+
+    title:set({ label = { string = track ~= "" and track or "Nothing playing" } })
+    artist:set({ label = { string = performer } })
+    time:set({ label = { string = format_time(elapsed) .. " / " .. format_time(duration) } })
+
+    local pct = 0
+    if duration > 0 then
+      pct = math.floor(math.max(0, math.min(1, elapsed / duration)) * 200)
+    end
+    progress_fg:set({ width = pct })
+
+    if artwork_path ~= "" then
+      cover:set({
+        drawing = true,
+        background = { image = { string = artwork_path } },
+      })
+    else
+      cover:set({ drawing = false })
+    end
+  end)
+end
+
+local function popup(show)
+  media:set({ popup = { drawing = show } })
+  cover:set({ drawing = show })
+  title:set({ drawing = show })
+  artist:set({ drawing = show })
+  progress_bg:set({ drawing = show })
+  progress_fg:set({ drawing = show })
+  time:set({ drawing = show })
+end
+
+refresh()
+
+media:subscribe("mouse.entered", function()
+  refresh()
+  popup(true)
 end)
 
-media_item:subscribe("mouse.entered", function(env)
-	interrupt = interrupt + 1
-	animate_popup(true)
+media:subscribe("mouse.exited", function()
+  popup(false)
 end)
 
-media_item:subscribe("mouse.exited", function(env)
-	animate_popup(false)
-end)
-
-media_item:subscribe("mouse.clicked", function(env)
-	animate_popup("toggle")
+media:subscribe("mouse.clicked", function()
+  sbar.delay(0.2, refresh)
 end)
