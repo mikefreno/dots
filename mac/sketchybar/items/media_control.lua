@@ -133,7 +133,8 @@ local title = sbar.add("item", {
 	width = BAR_WIDTH,
 	icon = { drawing = false },
 	label = {
-		max_chars = 44,
+		max_chars = 34,
+		scroll_texts = true,
 		color = colors.white,
 		y_offset = -8,
 	},
@@ -144,8 +145,9 @@ local artist = sbar.add("item", {
 	drawing = false,
 	width = BAR_WIDTH,
 	icon = { drawing = false },
+	scroll_texts = true,
 	label = {
-		max_chars = 44,
+		max_chars = 34,
 		color = colors.with_alpha(colors.white, 0.7),
 		y_offset = 8,
 	},
