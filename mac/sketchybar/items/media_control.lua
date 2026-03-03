@@ -1,12 +1,10 @@
 local icons = require("icons")
 local colors = require("colors")
 
-local config_dir = "/Users/mike/.config/sketchybar"
-sbar.exec(
-	"killall media_provider >/dev/null; "
-		.. config_dir
-		.. "/helpers/event_providers/media_provider/bin/media media_change &"
-)
+local config_dir = os.getenv("HOME") .. "/.config/sketchybar"
+local tick_script = config_dir .. "/helpers/event_providers/media_provider/bin/media_tick.sh"
+sbar.exec("sketchybar --add event media_tick_update")
+sbar.exec("pkill -f media_tick.sh >/dev/null 2>&1; " .. tick_script .. " >/dev/null 2>&1 &")
 
 local PLAY_ICON = "􀊄"
 local PAUSE_ICON = "􀊆"
@@ -23,6 +21,14 @@ local cache = {
 }
 
 local popup_open = false
+local progress_clock_active = false
+
+local function format_time(micros)
+	local total_seconds = math.floor((tonumber(micros) or 0) / 1000000)
+	local minutes = math.floor(total_seconds / 60)
+	local seconds = total_seconds % 60
+	return string.format("%d:%02d", minutes, seconds)
+end
 
 local media_toggle = sbar.add("item", "widgets.media.toggle", {
 	position = "left",
@@ -52,7 +58,6 @@ local media_title = sbar.add("item", "widgets.media.title", {
 	popup = {
 		align = "center",
 	},
-	updates = true,
 })
 
 sbar.add("bracket", "widgets.media.bracket", {
@@ -138,62 +143,81 @@ local time_display = sbar.add("item", {
 	},
 })
 
-local ctrl_prev = sbar.add("item", {
-	position = "popup." .. media_title.name,
-	drawing = false,
-	width = CTRL_WIDTH,
-	icon = {
-		string = icons.media.back,
-		color = colors.white,
-		font = { size = 12.0 },
-		align = "center",
-		padding_left = 0,
-		padding_right = 0,
-	},
-	label = { drawing = false },
-})
+--local ctrl_prev = sbar.add("item", {
+--position = "popup." .. media_title.name,
+--drawing = false,
+--width = CTRL_WIDTH,
+--icon = {
+--string = icons.media.back,
+--color = colors.white,
+--font = { size = 12.0 },
+--align = "center",
+--padding_left = 0,
+--padding_right = 0,
+--},
+--label = { drawing = false },
+--})
 
-local ctrl_play = sbar.add("item", {
-	position = "popup." .. media_title.name,
-	drawing = false,
-	width = CTRL_WIDTH,
-	icon = {
-		string = PLAY_ICON,
-		color = colors.white,
-		font = { size = 12.0 },
-		align = "center",
-		padding_left = 0,
-		padding_right = 0,
-	},
-	label = { drawing = false },
-})
+--local ctrl_play = sbar.add("item", {
+--position = "popup." .. media_title.name,
+--drawing = false,
+--width = CTRL_WIDTH,
+--icon = {
+--string = PLAY_ICON,
+--color = colors.white,
+--font = { size = 12.0 },
+--align = "center",
+--padding_left = 0,
+--padding_right = 0,
+--},
+--label = { drawing = false },
+--})
 
-local ctrl_next = sbar.add("item", {
-	position = "popup." .. media_title.name,
-	drawing = false,
-	width = CTRL_WIDTH,
-	icon = {
-		string = icons.media.forward,
-		color = colors.white,
-		font = { size = 12.0 },
-		align = "center",
-		padding_left = 0,
-		padding_right = 0,
-	},
-	label = { drawing = false },
-})
+--local ctrl_next = sbar.add("item", {
+--position = "popup." .. media_title.name,
+--drawing = false,
+--width = CTRL_WIDTH,
+--icon = {
+--string = icons.media.forward,
+--color = colors.white,
+--font = { size = 12.0 },
+--align = "center",
+--padding_left = 0,
+--padding_right = 0,
+--},
+--label = { drawing = false },
+--})
 
-local ctrl_buttons = sbar.add("bracket", "widgets.media.ctrl.bracket", {
-	ctrl_prev.name,
-	ctrl_play.name,
-	ctrl_next.name,
-}, {
-	position = "popup." .. media_title.name,
-	drawing = false,
-	background = { drawing = false },
-})
+local popup_items = { cover, title, artist, progress_slider, time_display }
 
-local popup_items = { cover, title, artist, progress_slider, time_display, ctrl_buttons }
+local function render_progress()
+	local shown_duration = cache.duration > 1 and cache.duration or 1
+	local shown_elapsed = math.max(0, math.min(cache.elapsed, shown_duration))
+	local pct = math.floor(math.max(0, math.min(1, shown_elapsed / shown_duration)) * 100)
+	progress_slider:set({ slider = { percentage = pct } })
+	time_display:set({ label = { string = format_time(shown_elapsed) .. " / " .. format_time(shown_duration) } })
+end
+
+local function stop_progress_clock()
+	progress_clock_active = false
+end
+
+local function start_progress_clock()
+	if progress_clock_active then
+		return
+	end
+	progress_clock_active = true
+	local function tick()
+		if not progress_clock_active or not popup_open or not cache.playing then
+			progress_clock_active = false
+			return
+		end
+		cache.elapsed = math.min(cache.elapsed + 1000000, cache.duration)
+		render_progress()
+		sbar.delay(1, tick)
+	end
+	sbar.delay(1, tick)
+end
 
 local function set_popup(show)
 	popup_open = show
@@ -201,13 +225,14 @@ local function set_popup(show)
 	for _, item in ipairs(popup_items) do
 		item:set({ drawing = show })
 	end
-end
-
-local function format_time(micros)
-	local total_seconds = math.floor((tonumber(micros) or 0) / 1000000)
-	local minutes = math.floor(total_seconds / 60)
-	local seconds = total_seconds % 60
-	return string.format("%d:%02d", minutes, seconds)
+	--ctrl_prev:set({ drawing = show })
+	--ctrl_play:set({ drawing = show })
+	--ctrl_next:set({ drawing = show })
+	if show and cache.playing then
+		start_progress_clock()
+	else
+		stop_progress_clock()
+	end
 end
 
 local function apply_seek_from_percentage(percentage)
@@ -219,48 +244,21 @@ local function apply_seek_from_percentage(percentage)
 	local target_seconds = target_micros / 1000000
 	sbar.exec("media-control seek " .. string.format("%.3f", target_seconds))
 	cache.elapsed = target_micros
-end
-
-local function parse_env_info(env)
-	local fields = {}
-	if env.INFO then
-		for line in string.gmatch(env.INFO, "[^\n]+") do
-			local key, value = string.match(line, "^([a-zA-Z_]+)=(.*)$")
-			if key then
-				fields[key] = value
-			end
-		end
-	end
-	return fields
+	render_progress()
 end
 
 local function update_from_event(env)
-	local fields = parse_env_info(env.INFO)
+	local is_playing = env.playing == "true"
+	local elapsed = tonumber(env.elapsed or "0") or 0
+	local duration = tonumber(env.duration or "1") or 1
+	local track = env.title or ""
+	local performer = env.artist or ""
+	local artwork_path = env.cover or ""
 
-	local is_playing = fields.state == "playing"
-	local elapsed = tonumber(fields.elapsedTimeMicros or "0") or 0
-	local duration = tonumber(fields.durationMicros or "1") or 1
-	local track = fields.title or ""
-	local performer = fields.artist or ""
-	local artwork_data = fields.artworkData or ""
-	local artwork_path = ""
-
-	if artwork_data and #artwork_data > 0 then
-		local ext = "jpg"
-		if string.find(artwork_data, "^iVBOR") then
-			ext = "png"
-		end
-		artwork_path = "/tmp/sketchybar-media-cover." .. ext
-		local handle = io.popen("echo '" .. artwork_data .. "' | base64 -d > '" .. artwork_path .. "' 2>/dev/null")
-		if handle then
-			handle:close()
-		end
-	end
-
-	if track ~= "" and track ~= "?" then
+	if track ~= "" then
 		cache.track = track
 	end
-	if performer ~= "" and performer ~= "?" then
+	if performer ~= "" then
 		cache.artist = performer
 	end
 	if artwork_path ~= "" then
@@ -270,28 +268,28 @@ local function update_from_event(env)
 		cache.duration = duration
 	end
 	if is_playing then
-		cache.elapsed = elapsed
+		if math.abs(elapsed - cache.elapsed) > 1500000 or not cache.playing then
+			cache.elapsed = elapsed
+		end
+	else
+		elapsed = cache.elapsed
 	end
 	cache.playing = is_playing
 
-	local shown_track = track ~= "" and track ~= "?" and track or cache.track
-	local shown_artist = performer ~= "" and performer ~= "?" and performer or cache.artist
+	local shown_track = track ~= "" and track or cache.track
+	local shown_artist = performer ~= "" and performer or cache.artist
 	local shown_cover = artwork_path ~= "" and artwork_path or cache.cover
 	local shown_duration = duration > 1 and duration or cache.duration
 
-	media_toggle:set({ icon = { string = is_playing and PAUSE_ICON or PLAY_ICON } })
+	local icon = is_playing and PAUSE_ICON or PLAY_ICON
+	media_toggle:set({ icon = { string = icon } })
 	media_title:set({ label = { drawing = shown_track ~= "", string = shown_track } })
 
 	title:set({ label = { string = shown_track ~= "" and shown_track or "Nothing played yet" } })
 	artist:set({ label = { string = shown_artist } })
-	ctrl_play:set({ icon = { string = is_playing and PAUSE_ICON or PLAY_ICON } })
+	--ctrl_play:set({ icon = { string = icon } })
 
-	local pct = 0
-	if shown_duration > 0 then
-		pct = math.floor(math.max(0, math.min(1, elapsed / shown_duration)) * 100)
-	end
-	progress_slider:set({ slider = { percentage = pct } })
-	time_display:set({ label = { string = format_time(elapsed) .. " / " .. format_time(shown_duration) } })
+	render_progress()
 
 	if shown_cover ~= "" then
 		cover:set({
@@ -303,60 +301,40 @@ local function update_from_event(env)
 	else
 		cover:set({ drawing = false })
 	end
+
+	if popup_open and cache.playing then
+		start_progress_clock()
+	else
+		stop_progress_clock()
+	end
 end
+
+media_title:subscribe("media_tick_update", function(env)
+	update_from_event(env)
+end)
 
 media_toggle:subscribe("mouse.clicked", function()
 	sbar.delay(0.2, function()
-		sbar.trigger("media_refresh")
+		sbar.exec("sketchybar --trigger media_tick_update")
 	end)
 end)
 
 media_title:subscribe("mouse.clicked", function()
-	local opening = not popup_open
-	set_popup(opening)
-	if opening then
-		sbar.delay(0.1, function()
-			sbar.trigger("media_refresh")
-		end)
-	else
-		for _, item in ipairs(popup_items) do
-			item:set({ drawing = false })
-		end
-	end
+	set_popup(not popup_open)
 end)
 
 progress_slider:subscribe("mouse.clicked", function(env)
 	apply_seek_from_percentage(env.PERCENTAGE)
-	sbar.delay(0.05, function()
-		sbar.trigger("media_refresh")
-	end)
 end)
 
-ctrl_prev:subscribe("mouse.clicked", function()
-	sbar.exec("media-control previous-track")
-	sbar.delay(0.2, function()
-		sbar.trigger("media_refresh")
-	end)
-end)
+--ctrl_prev:subscribe("mouse.clicked", function()
+--sbar.exec("media-control previous-track")
+--end)
 
-ctrl_play:subscribe("mouse.clicked", function()
-	sbar.exec("media-control toggle-play-pause")
-	sbar.delay(0.2, function()
-		sbar.trigger("media_refresh")
-	end)
-end)
+--ctrl_play:subscribe("mouse.clicked", function()
+--sbar.exec("media-control toggle-play-pause")
+--end)
 
-ctrl_next:subscribe("mouse.clicked", function()
-	sbar.exec("media-control next-track")
-	sbar.delay(0.2, function()
-		sbar.trigger("media_refresh")
-	end)
-end)
-
-media_title:subscribe("media_change", function(env)
-	update_from_event(env)
-	if popup_open then
-		cover:set({ drawing = true })
-	end
-end)
-
+--ctrl_next:subscribe("mouse.clicked", function()
+--sbar.exec("media-control next-track")
+--end)
