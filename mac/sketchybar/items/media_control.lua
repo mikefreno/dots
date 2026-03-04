@@ -12,6 +12,8 @@ local BAR_WIDTH = 220
 local CTRL_WIDTH = 40
 local INLINE_COVER_SIZE = 12
 local INLINE_COVER_SCALE = 0.1
+local POPUP_COVER_SIZE = 64
+local POPUP_COVER_SCALE = 0.6
 
 local cache = {
 	track = "",
@@ -40,7 +42,6 @@ local media_toggle = sbar.add("item", "widgets.media.toggle", {
 		color = colors.white,
 		font = { size = 12 },
 		padding_left = 4,
-		padding_right = 0,
 	},
 	label = { drawing = false },
 	click_script = "media-control toggle-play-pause",
@@ -52,12 +53,12 @@ local media_title = sbar.add("item", "widgets.media.title", {
 	background = { drawing = false },
 	icon = { drawing = false },
 	padding_right = 28,
+	padding_left = 0,
 	scroll_texts = false,
 	label = {
 		drawing = false,
 		max_chars = 22,
 		color = colors.white,
-		padding_right = 2,
 	},
 	popup = {
 		align = "center",
@@ -115,15 +116,15 @@ sbar.add("bracket", "widgets.media.bracket", {
 local cover = sbar.add("item", {
 	position = "popup." .. media_title.name,
 	drawing = false,
-	width = 64,
+	width = POPUP_COVER_SIZE,
 	icon = { drawing = false },
 	align = "center",
 	label = { drawing = false },
 	background = {
 		drawing = true,
 		color = colors.bg2,
-		height = 64,
-		image = { scale = 0.6, corner_radius = 6 },
+		height = POPUP_COVER_SIZE * 0.66,
+		image = { scale = POPUP_COVER_SCALE, corner_radius = 6 },
 	},
 })
 
@@ -132,9 +133,9 @@ local title = sbar.add("item", {
 	drawing = false,
 	width = BAR_WIDTH,
 	icon = { drawing = false },
+	scroll_texts = true,
 	label = {
 		max_chars = 34,
-		scroll_texts = true,
 		color = colors.white,
 		y_offset = -8,
 	},
@@ -330,7 +331,7 @@ local function update_from_event(env)
 	media_toggle:set({ icon = { string = icon } })
 	media_title:set({ label = { drawing = shown_track ~= "", string = shown_track } })
 
-	title:set({ label = { string = shown_track ~= "" and shown_track or "Nothing played yet" } })
+	title:set({ scroll_texts = true, label = { string = shown_track ~= "" and shown_track or "Nothing played yet" } })
 	artist:set({ label = { string = shown_artist } })
 	ctrl_play:set({ icon = { string = icon } })
 
@@ -339,11 +340,11 @@ local function update_from_event(env)
 	if shown_cover ~= "" then
 		cover:set({
 			drawing = popup_open,
-			width = 64,
+			width = POPUP_COVER_SIZE,
 			align = "center",
 			background = {
-				height = 64,
-				image = { string = shown_cover, scale = 0.66, corner_radius = 6 },
+				height = POPUP_COVER_SIZE * 0.66,
+				image = { string = shown_cover, scale = POPUP_COVER_SCALE, corner_radius = 6 },
 			},
 		})
 		inline_cover:set({
