@@ -16,9 +16,9 @@
             "output": 100000
           }
         },
-        "unsloth/qwen3.5":{
+        "unsloth/qwen3.5-fast":{
           "limit":{
-            "context": 125000,
+            "context": 115000,
             "output": 100000
           },
           "modalities":{
@@ -26,7 +26,16 @@
             "output": ["text"]
           }
         },
-
+        "unsloth/qwen3.5":{
+          "limit":{
+            "context": 115000,
+            "output": 100000
+          },
+          "modalities":{
+            "input":  ["text", "image"],
+            "output": ["text"]
+          }
+        },
       }
     },
     "local-mac": {

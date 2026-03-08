@@ -135,7 +135,7 @@ local title = sbar.add("item", {
 	icon = { drawing = false },
 	scroll_texts = true,
 	label = {
-		max_chars = 34,
+		max_chars = 30,
 		color = colors.white,
 		y_offset = -8,
 	},
