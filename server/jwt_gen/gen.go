@@ -43,7 +43,7 @@ func loadEd25519PrivateKey(path string) (ed25519.PrivateKey, error) {
 }
 
 func main() {
-	priv, err := loadEd25519PrivateKey("client_private.pem")
+	priv, err := loadEd25519PrivateKey("/etc/auth/client_public.pem")
 	if err != nil {
 		log.Fatalf("could not load private key: %v", err)
 	}

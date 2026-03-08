@@ -3,7 +3,7 @@
 # ===================================================================
 server {
     listen 80;
-    server_name jellyfin.freno.me mikefreno.tplinkdns.com vw.freno.me ai.freno.me infill.freno.me git.freno.me next.freno.me;
+    server_name jellyfin.freno.me michaelfreno.asuscomm.com vw.freno.me ai.freno.me infill.freno.me git.freno.me next.freno.me paper.freno.me;
     return 301 https://$host$request_uri;
 }
 
@@ -173,9 +173,6 @@ server {
     server_name git.freno.me;
 
     location / {
-        auth_request /auth;
-        auth_request_set $auth_status $upstream_status;
-
         proxy_pass http://127.0.0.1:8085;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -231,4 +228,24 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
+}
+
+# ===================================================================
+# SERVICE 6: Paperclip
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name paper.freno.me;
+
+    ssl_certificate /etc/letsencrypt/live/paper.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/paper.freno.me/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:8087;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
 }
