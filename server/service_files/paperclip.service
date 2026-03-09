@@ -1,0 +1,18 @@
+[Unit]
+Description=Auth Endpoint
+After=network.target
+
+[Service]
+Type=simple
+User=mike
+WorkingDirectory=/home/mike/code/paperclip
+Environment="PATH=/home/mike/.opencode/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="HOME=/home/mike"
+ExecStart=/home/mike/.local/share/pnpm/pnpm paperclipai run
+Restart=on-failure
+RestartSec=10s
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
