@@ -1,0 +1,64 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "agents": {
+    "sisyphus": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "hephaestus": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "oracle": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "prometheus": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "metis": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "momus": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "atlas": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "librarian": {
+      "model": "atlas/GLM-4.7-Flash"
+    },
+    "explore": {
+      "model": "hermes/Qwen3.5-9B"
+    },
+    "multimodal-looker": {
+      "model": "atlas/Qwen3.5-27B"
+    },
+    "sisyphus-junior": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "atlas/Qwen3.5-27B"
+    },
+    "ultrabrain": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "deep": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "artistry": {
+      "model": "atlas/Qwen3.5-27B"
+    },
+    "quick": {
+      "model": "hermes/Qwen3.5-9B"
+    },
+    "unspecified-low": {
+      "model": "hermes/Qwen3.5-9B"
+    },
+    "unspecified-high": {
+      "model": "strix/Qwen3.5-122B-A10B"
+    },
+    "writing": {
+      "model": "hermes/Qwen3.5-4B"
+    }
+  }
+}

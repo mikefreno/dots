@@ -1,4 +1,5 @@
 {
+  "plugin": ["oh-my-openagent@latest"],
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
   "provider": {
@@ -6,48 +7,60 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "on-atlas",
       "options": {
-        "baseURL": "https://infill.freno.me/v1",
-        "apiKey": "{file:~/.config/opencode/my.key}",
+        "baseURL": "atlas:8123/v1"
+        //"apiKey": "{file:~/.config/opencode/my.key}"
       },
+      // now based on dynamic server
       "models": {
-        "unsloth/glm-4.7-flash": {
+        "Qwen3.5-27B":{
           "limit":{
-            "context": 125000,
-            "output": 100000
-          }
-        },
-        "unsloth/qwen3.5-fast":{
-          "limit":{
-            "context": 115000,
+            "context": 130000,
             "output": 100000
           },
           "modalities":{
             "input":  ["text", "image"],
             "output": ["text"]
           }
-        },
-        "unsloth/qwen3.5":{
-          "limit":{
-            "context": 115000,
-            "output": 100000
-          },
-          "modalities":{
-            "input":  ["text", "image"],
-            "output": ["text"]
-          }
-        },
+        }
       }
     },
     "hermes": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "on-hermes",
       "options": {
-        "baseURL": "https://100.91.119.16:1234/v1",
+        "baseURL": "localhost:8123/v1"
       },
       "models": {
-        "unsloth/Qwen3.5-9B-GGUF": {
+        "Qwen3.5-9B": {
           "limit":{
-            "context": 30000,
+            "context": 100000,
+            "output": 100000
+          }
+        },
+        "Qwen3.5-4B": {
+          "limit":{
+            "context": 150000,
+            "output": 100000
+          }
+        }
+      }
+    },
+    "strix": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "on-strix",
+      "options": {
+        "baseURL": "strix:8123/v1"
+      },
+      "models": {
+        "Qwen3.5-122B-A10B": {
+          "limit":{
+            "context": 262144,
+            "output": 100000
+          }
+        },
+        "Qwen3-Coder-Next": {
+          "limit":{
+            "context": 262144,
             "output": 100000
           }
         }
@@ -57,14 +70,11 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "on-pan",
       "options": {
-        "baseURL": "https://100.68.170.49/v1",
+        "baseURL": "pan:8080/v1"
       },
       "models": {
-        "unsloth/Qwen3.5-4B-GGUF": {
-          "limit":{
-            "context": 262000,
-            "output": 100000
-          }
+        "model": {
+          "name": "model"
         }
       }
     }
@@ -84,6 +94,11 @@
       "type": "local",
       "command": ["npx", "@kimsungwhee/apple-docs-mcp", "--help"],
       "enabled": true,
+    },
+    "expo-docs": {
+      "type": "local",
+      "command": ["npx", "expo-docs-mcp"],
+      "enabled": true
     },
     "gh_grep": {
       "type": "remote",
