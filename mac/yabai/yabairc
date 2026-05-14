@@ -199,8 +199,15 @@ yabai -m config \
 # Apply rules
 yabai -m rule --apply
 
-if ! pgrep -x "borders" >/dev/null; then
-    borders &
-fi
+options=(
+	style=round
+	width=10.0
+	hidpi=on
+	active_color=0xffbdbfff
+	inactive_color=0xaabdbfff
+	blacklist="Simulator,qemu-system-aarch64,iPhone Mirroring,Steam,Notes,SoundSource"
+)
+
+borders "${options[@]}"
 
 echo "yabai configuration loaded successfully"

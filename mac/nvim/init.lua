@@ -356,10 +356,10 @@ require("lazy").setup({
 				endpoint_fim = "http://strix:8123/infill",
 				--model_fim = "Qwen3.5-35B-A3B",
 				model_fim = "Qwen3-Coder-Next",
-				--endpoint_inst = "http://atlas:8123/infill",
-				endpoint_inst = "http://strix:8123/v1/chat/completions",
-				--model_inst = "Qwen3.5-35B-A3B",
-				model_inst = "Qwen3-Coder-Next",
+				endpoint_inst = "http://atlas:8123/v1/chat/completions",
+				--endpoint_inst = "http://strix:8123/v1/chat/completions",
+				model_inst = "Qwen3.5-27B",
+				--model_inst = "Qwen3-Coder-Next",
 				--api_key = api_key,
 				keymap_fim_trigger = "<M-Enter>",
 				keymap_fim_accept_line = "<A-Tab>",
@@ -992,12 +992,8 @@ require("lazy").setup({
 		opts = {
 			options = {
 				icons_enabled = false,
-				theme = "catppuccin",
 				component_separators = "|",
 				section_separators = "",
-			},
-			sections = {
-				lualine_c = { "%f" },
 			},
 		},
 	},
@@ -1917,6 +1913,12 @@ vim.api.nvim_set_keymap(
 )
 vim.api.nvim_set_hl(0, "llama_hl_fim_hint", { fg = vim.g.current_colors.flamingo, ctermfg = 209 })
 vim.api.nvim_set_hl(0, "llama_hl_fim_info", { fg = vim.g.current_colors.lavender, ctermfg = 119 })
+--vim.api.nvim_set_keymap(
+--"v",
+--"<leader>lli",
+--":LlamaInstruct<CR>",
+--{ noremap = true, desc = "[ll]ama [i]nstruct", silent = true }
+--)
 
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap(
