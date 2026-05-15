@@ -10,12 +10,16 @@
         //"apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
-        "unsloth/glm-4.7-flash": {"limit":{
+        "GLM-4.7-Flash": {"limit":{
           "context": 125000,
           "output": 100000
         }},
-        "unsloth/qwen3-coder": {"limit":{
-        "context": 70000,
+        "Qwen3.5-27B": {"limit":{
+        "context": 120000,
+        "output": 100000
+      }},
+      "Qwen3.5-35B-A3B": {"limit":{
+        "context": 120000,
         "output": 100000
       }}
       }
@@ -76,6 +80,11 @@
     "clerk": {
       "type": "remote",
       "url": "https://cursor.com/en-US/install-mcp?name=clerk&config=eyJ1cmwiOiJodHRwczovL21jcC5jbGVyay5jb20vbWNwIn0%3D",
+    }
+  },
+  "permission": {
+    "external_directory":{
+      "/home/mike/code/*": "allow"
     }
   },
   "formatter": {

@@ -201,28 +201,28 @@ require("lazy").setup({
 			},
 		},
 	},
-	{
-		"ggml-org/llama.vim",
-		init = function()
-			--local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
-			--local api_key = "_"
-			--if keyFile then
-			--api_key = keyFile:read("*l")
-			--end
-			vim.g.llama_config = {
-				endpoint_fim = "http://0.0.0.0:8123/infill",
-				--api_key = api_key,
-				keymap_fim_trigger = "<M-Enter>",
-				keymap_fim_accept_line = "<A-Tab>",
-				keymap_fim_accept_full = "<S-Tab>",
-				keymap_fim_accept_word = "<Right>",
-				stop_strings = {},
-				n_prefix = 512,
-				n_suffix = 512,
-				show_info = 2,
-			}
-		end,
-	},
+	--{
+	--"ggml-org/llama.vim",
+	--init = function()
+	----local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
+	----local api_key = "_"
+	----if keyFile then
+	----api_key = keyFile:read("*l")
+	----end
+	--vim.g.llama_config = {
+	----endpoint_fim = "http://0.0.0.0:8123/infill",
+	----api_key = api_key,
+	--keymap_fim_trigger = "<M-Enter>",
+	--keymap_fim_accept_line = "<M-Tab>",
+	--keymap_fim_accept_full = "<S-Tab>",
+	--keymap_fim_accept_word = "<Right>",
+	--stop_strings = {},
+	--n_prefix = 512,
+	--n_suffix = 512,
+	--show_info = 2,
+	--}
+	--end,
+	--},
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
@@ -407,11 +407,13 @@ require("lazy").setup({
 				rust_analyzer = { hint = { enable = true } },
 				ts_ls = { hint = { enable = true } },
 				lua_ls = {
-					Lua = {
-						workspace = { checkThirdParty = false },
-						diagnostics = { globals = { "vim" } },
-						telemetry = { enable = false },
-						hint = { enable = true },
+					settings = {
+						Lua = {
+							workspace = { checkThirdParty = false },
+							telemetry = { enable = false },
+							hint = { enable = true },
+							runtime = { version = "LuaJIT" },
+						},
 					},
 				},
 			}
@@ -1556,27 +1558,27 @@ dap.listeners.before.event_exited.dapui_config = function()
 end
 
 --- Additional infill config
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>it",
-	":LlamaToggle<CR>",
-	{ noremap = true, desc = "[i]nfill [t]oggle", silent = true }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ie",
-	":LlamaEnable<CR>",
-	{ noremap = true, desc = "[i]nfill [e]nable", silent = true }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>id",
-	":LlamaDisable<CR>",
-	{ noremap = true, desc = "[i]nfill [d]isable", silent = true }
-)
+--vim.api.nvim_set_keymap(
+--"n",
+--"<leader>it",
+--":LlamaToggle<CR>",
+--{ noremap = true, desc = "[i]nfill [t]oggle", silent = true }
+--)
+--vim.api.nvim_set_keymap(
+--"n",
+--"<leader>ie",
+--":LlamaEnable<CR>",
+--{ noremap = true, desc = "[i]nfill [e]nable", silent = true }
+--)
+--vim.api.nvim_set_keymap(
+--"n",
+--"<leader>id",
+--":LlamaDisable<CR>",
+--{ noremap = true, desc = "[i]nfill [d]isable", silent = true }
+--)
 
-vim.api.nvim_set_hl(0, "llama_hl_fim_hint", { fg = require("base16-colorscheme").colors.base0C, ctermfg = 209 })
-vim.api.nvim_set_hl(0, "llama_hl_fim_info", { fg = require("base16-colorscheme").colors.base0E, ctermfg = 119 })
+--vim.api.nvim_set_hl(0, "llama_hl_fim_hint", { fg = require("base16-colorscheme").colors.base0C, ctermfg = 209 })
+--vim.api.nvim_set_hl(0, "llama_hl_fim_info", { fg = require("base16-colorscheme").colors.base0E, ctermfg = 119 })
 
 --- package keymaps (don't support `keys`)
 local harpoon = require("harpoon")
