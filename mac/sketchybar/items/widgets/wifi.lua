@@ -1,4 +1,3 @@
-
 local colors = require("colors")
 local settings = require("settings")
 local icons = require("icons")
@@ -11,25 +10,8 @@ sbar.exec(
 
 local popup_width = 250
 
-local vpn_icon = sbar.add("item", "widgets.vpn.icon", {
-	position = "left",
-	width = 6,
-	icon = {
-		font = {
-			style = settings.font.style_map["Bold"],
-			size = 16.0,
-		},
-		string = "􁣡",
-		color = colors.red,
-	},
-	padding_right = 0,
-	padding_left = 6,
-	y_offset = 0,
-})
-
 local wifi_up = sbar.add("item", "widgets.wifi1", {
-	position = "left",
-	padding_left = 28,
+	position = "right",
 	width = 0,
 	icon = {
 		padding_left = 0,
@@ -52,9 +34,7 @@ local wifi_up = sbar.add("item", "widgets.wifi1", {
 })
 
 local wifi_down = sbar.add("item", "widgets.wifi2", {
-	position = "left",
-	padding_left = 28,
-	padding_right = -8,
+	position = "right",
 	icon = {
 		padding_left = 0,
 		font = {
@@ -75,8 +55,24 @@ local wifi_down = sbar.add("item", "widgets.wifi2", {
 	y_offset = -4,
 })
 
+local vpn_icon = sbar.add("item", "widgets.vpn.icon", {
+	position = "right",
+	width = 6,
+	icon = {
+		font = {
+			style = settings.font.style_map["Bold"],
+			size = 16.0,
+		},
+		string = "􁣡",
+		color = colors.red,
+	},
+	padding_right = -6,
+	padding_left = 6,
+	y_offset = 0,
+})
+
 local vpn_padding = sbar.add("item", "widgets.vpn.padding", {
-	position = "left",
+	position = "right",
 	label = { drawing = false },
 })
 
@@ -91,7 +87,7 @@ local wifi_bracket = sbar.add("bracket", "widgets.wifi.bracket", {
 	popup = { align = "center", height = 30 },
 })
 
-sbar.add("item", { position = "left", width = settings.group_paddings })
+sbar.add("item", { position = "right", width = settings.group_paddings })
 
 -- Popup items
 local ssid = sbar.add("item", {
