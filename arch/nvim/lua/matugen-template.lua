@@ -22,19 +22,16 @@ function M.setup()
 		base0E = "{{colors.secondary_fixed_dim.default.hex}}", -- Keywords, Storage
 		base0F = "{{colors.error_container.default.hex}}", -- Deprecated, Embedded Tags
 	})
-	vim.o.background = "dark"
 end
 
 -- Register a signal handler for SIGUSR1 (matugen updates)
-if vim and vim.uv then
-	local signal = vim.uv.new_signal()
-	signal:start(
-		"sigusr1",
-		vim.schedule_wrap(function()
-			package.loaded["matugen"] = nil
-			require("matugen").setup()
-		end)
-	)
-end
+local signal = vim.uv.new_signal()
+signal:start(
+	"sigusr1",
+	vim.schedule_wrap(function()
+		package.loaded["matugen"] = nil
+		require("matugen").setup()
+	end)
+)
 
 return M

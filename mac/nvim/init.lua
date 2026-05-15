@@ -15,6 +15,7 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.updatetime = 50
 vim.o.showmode = false
+
 vim.o.redrawtime = 100
 vim.o.hlsearch = false
 
@@ -186,17 +187,17 @@ require("lazy").setup({
 	"mattn/emmet-vim",
 	"preservim/nerdcommenter",
 	"mbbill/undotree",
-	{
-		"patrickreid-li/tailwind-tools.nvim",
-		name = "tailwind-tools",
-		build = ":UpdateRemotePlugins",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-telescope/telescope.nvim", -- optional
-			"neovim/nvim-lspconfig", -- optional
-		},
-		opts = {}, -- your configuration
-	},
+	--{
+	--"patrickreid-li/tailwind-tools.nvim",
+	--name = "tailwind-tools",
+	--build = ":UpdateRemotePlugins",
+	--dependencies = {
+	--"nvim-treesitter/nvim-treesitter",
+	--"nvim-telescope/telescope.nvim", -- optional
+	--"neovim/nvim-lspconfig", -- optional
+	--},
+	--opts = {}, -- your configuration
+	--},
 	"mfussenegger/nvim-dap",
 	{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 	{
@@ -211,15 +212,15 @@ require("lazy").setup({
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
-	{
-		"ThePrimeagen/refactoring.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		lazy = false,
-		opts = {},
-	},
+	--{
+	--"ThePrimeagen/refactoring.nvim",
+	--dependencies = {
+	--"nvim-lua/plenary.nvim",
+	--"nvim-treesitter/nvim-treesitter",
+	--},
+	--lazy = false,
+	--opts = {},
+	--},
 	{
 		"ThePrimeagen/99",
 		config = function()
@@ -345,18 +346,33 @@ require("lazy").setup({
 	{
 		"ggml-org/llama.vim",
 		init = function()
-			local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
-			local api_key = "_"
-			if keyFile then
-				api_key = keyFile:read("*l")
-			end
+			--local keyFile = io.open("/Users/mike/.config/opencode/my.key", "r")
+			--local api_key = "_"
+			--if keyFile then
+			--api_key = keyFile:read("*l")
+			--end
 			vim.g.llama_config = {
-				endpoint_fim = "https://infill.freno.me/infill",
-				api_key = api_key,
+				--endpoint_fim = "http://atlas:8123/infill",
+				endpoint_fim = "http://strix:8123/infill",
+				--model_fim = "Qwen3.5-35B-A3B",
+				model_fim = "Qwen3-Coder-Next",
+				endpoint_inst = "http://atlas:8123/v1/chat/completions",
+				--endpoint_inst = "http://strix:8123/v1/chat/completions",
+				model_inst = "Qwen3.5-27B",
+				--model_inst = "Qwen3-Coder-Next",
+				--api_key = api_key,
 				keymap_fim_trigger = "<M-Enter>",
 				keymap_fim_accept_line = "<A-Tab>",
 				keymap_fim_accept_full = "<S-Tab>",
 				keymap_fim_accept_word = "<Right>",
+				keymap_inst_trigger = "<leader>lli",
+				keymap_inst_rerun = "<leader>llr",
+				keymap_inst_continue = "<leader>llc",
+				keymap_inst_accept = "<Tab>",
+				keymap_inst_cancel = "<Esc>",
+				ring_scope = 8096,
+				ring_n_chunks = 48,
+				max_cache_keys = 1000,
 				stop_strings = {},
 				n_prefix = 512,
 				n_suffix = 512,
@@ -976,12 +992,8 @@ require("lazy").setup({
 		opts = {
 			options = {
 				icons_enabled = false,
-				theme = "catppuccin",
 				component_separators = "|",
 				section_separators = "",
-			},
-			sections = {
-				lualine_c = { "%f" },
 			},
 		},
 	},
@@ -1077,155 +1089,156 @@ require("lazy").setup({
 		},
 		config = true,
 	},
-	{ -- Highlight, edit, and navigate code
-		"nvim-treesitter/nvim-treesitter",
-		build = ":TSUpdate",
-		main = "nvim-treesitter.configs", -- Sets main module to use for opts
-		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-		opts = {
-			ensure_installed = {
-				"bash",
-				"c",
-				"cpp",
-				"go",
-				"python",
-				"rust",
-				-- "swift", -- Disabled until nvim-treesitter supports tree-sitter CLI 0.26
-				"tsx",
-				"javascript",
-				"typescript",
-				"diff",
-				"html",
-				"lua",
-				"luadoc",
-				"markdown",
-				"markdown_inline",
-				"query",
-				"vim",
-				"vimdoc",
-			},
-			-- Ignore Swift to prevent auto-install attempts
-			ignore_install = { "swift" },
-			-- Autoinstall languages that are not installed
-			auto_install = false, -- Disabled due to tree-sitter CLI 0.26 compatibility issues with Swift
-			highlight = {
-				enable = true,
-				disable = { "swift" }, -- Disable tree-sitter for Swift until tree-sitter CLI 0.26 compatibility is fixed
-				additional_vim_regex_highlighting = { "ruby", "swift" }, -- Use regex highlighting for Swift
-			},
-			indent = { enable = true, disable = { "ruby", "swift" } },
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<c-space>",
-					node_incremental = "<c-space>",
-					scope_incremental = "<c-s>",
-					node_decremental = "<M-space>",
+
+	--{ -- Highlight, edit, and navigate code
+	--"nvim-treesitter/nvim-treesitter",
+	--build = ":TSUpdate",
+	--main = "nvim-treesitter.configs", -- Sets main module to use for opts
+	---- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+	--opts = {
+	--ensure_installed = {
+	--"bash",
+	--"c",
+	--"cpp",
+	--"go",
+	--"python",
+	--"rust",
+	---- "swift", -- Disabled until nvim-treesitter supports tree-sitter CLI 0.26
+	--"tsx",
+	--"javascript",
+	--"typescript",
+	--"diff",
+	--"html",
+	--"lua",
+	--"luadoc",
+	--"markdown",
+	--"markdown_inline",
+	--"query",
+	--"vim",
+	--"vimdoc",
+	--},
+	---- Ignore Swift to prevent auto-install attempts
+	--ignore_install = { "swift" },
+	---- Autoinstall languages that are not installed
+	--auto_install = false, -- Disabled due to tree-sitter CLI 0.26 compatibility issues with Swift
+	--highlight = {
+	--enable = true,
+	--disable = { "swift" }, -- Disable tree-sitter for Swift until tree-sitter CLI 0.26 compatibility is fixed
+	--additional_vim_regex_highlighting = { "ruby", "swift" }, -- Use regex highlighting for Swift
+	--},
+	--indent = { enable = true, disable = { "ruby", "swift" } },
+	--incremental_selection = {
+	--enable = true,
+	--keymaps = {
+	--init_selection = "<c-space>",
+	--node_incremental = "<c-space>",
+	--scope_incremental = "<c-s>",
+	--node_decremental = "<M-space>",
+	--},
+	--},
+	--textobjects = {
+	--select = {
+	--enable = true,
+	--lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+	--keymaps = {
+	---- You can use the capture groups defined in textobjects.scm
+	--["aa"] = "@parameter.outer",
+	--["ia"] = "@parameter.inner",
+	--["af"] = "@function.outer",
+	--["if"] = "@function.inner",
+	--["ac"] = "@class.outer",
+	--["ic"] = "@class.inner",
+	--},
+	--},
+	--move = {
+	--enable = true,
+	--set_jumps = true, -- whether to set jumps in the jumplist
+	--goto_next_start = {
+	--["]m"] = "@function.outer",
+	--["]]"] = "@class.outer",
+	--},
+	--goto_next_end = {
+	--["]M"] = "@function.outer",
+	--["]["] = "@class.outer",
+	--},
+	--goto_previous_start = {
+	--["[m"] = "@function.outer",
+	--["[["] = "@class.outer",
+	--},
+	--goto_previous_end = {
+	--["[M"] = "@function.outer",
+	--["[]"] = "@class.outer",
+	--},
+	--},
+	----swap = {
+	----enable = true,
+	----swap_next = {
+	----["<leader>a"] = "@parameter.inner",
+	----},
+	----swap_previous = {
+	----["<leader>A"] = "@parameter.inner",
+	----},
+	----},
+	--},
+	--},
+	--},
+	{
+		"hrsh7th/nvim-cmp",
+		event = "VimEnter",
+		version = "4.*",
+		config = function()
+			local cmp = require("cmp")
+
+			local enabled_filetypes = { "lua", "markdown", "telescope", "qf", "dapui" }
+
+			cmp.setup({
+				sources = {
+					{ name = "nvim_lsp", priority = 1000 },
+					{ name = "nvim_lsp_document_symbol", priority = 900 },
+					{ name = "nvim_lsp_signature_help", priority = 800 },
+					{ name = "path", priority = 700 },
+					{ name = "buffer", priority = 600 },
 				},
-			},
-			textobjects = {
-				select = {
-					enable = true,
-					lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-					keymaps = {
-						-- You can use the capture groups defined in textobjects.scm
-						["aa"] = "@parameter.outer",
-						["ia"] = "@parameter.inner",
-						["af"] = "@function.outer",
-						["if"] = "@function.inner",
-						["ac"] = "@class.outer",
-						["ic"] = "@class.inner",
-					},
+				completion = {
+					completeopt = "menu,menuone,noselect",
 				},
-				move = {
-					enable = true,
-					set_jumps = true, -- whether to set jumps in the jumplist
-					goto_next_start = {
-						["]m"] = "@function.outer",
-						["]]"] = "@class.outer",
-					},
-					goto_next_end = {
-						["]M"] = "@function.outer",
-						["]["] = "@class.outer",
-					},
-					goto_previous_start = {
-						["[m"] = "@function.outer",
-						["[["] = "@class.outer",
-					},
-					goto_previous_end = {
-						["[M"] = "@function.outer",
-						["[]"] = "@class.outer",
-					},
-				},
-				--swap = {
-				--enable = true,
-				--swap_next = {
-				--["<leader>a"] = "@parameter.inner",
-				--},
-				--swap_previous = {
-				--["<leader>A"] = "@parameter.inner",
-				--},
-				--},
-			},
-		},
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    event = "VimEnter",
-    version = "4.*",
-    config = function()
-      local cmp = require("cmp")
+			})
 
-      local enabled_filetypes = { "lua", "markdown", "telescope", "qf", "dapui" }
+			local autocmd_id = vim.api.nvim_create_autocmd("FileType", {
+				pattern = enabled_filetypes,
+				callback = function()
+					cmp.setup.buffer({
+						sources = {
+							{ name = "nvim_lsp", priority = 1000 },
+							{ name = "nvim_lsp_document_symbol", priority = 900 },
+							{ name = "nvim_lsp_signature_help", priority = 800 },
+							{ name = "path", priority = 700 },
+							{ name = "buffer", priority = 600 },
+						},
+					})
+				end,
+			})
 
-      cmp.setup({
-        sources = {
-          { name = "nvim_lsp", priority = 1000 },
-          { name = "nvim_lsp_document_symbol", priority = 900 },
-          { name = "nvim_lsp_signature_help", priority = 800 },
-          { name = "path", priority = 700 },
-          { name = "buffer", priority = 600 },
-        },
-        completion = {
-          completeopt = "menu,menuone,noselect",
-        },
-      })
-
-      local autocmd_id = vim.api.nvim_create_autocmd("FileType", {
-        pattern = enabled_filetypes,
-        callback = function()
-          cmp.setup.buffer({
-            sources = {
-              { name = "nvim_lsp", priority = 1000 },
-              { name = "nvim_lsp_document_symbol", priority = 900 },
-              { name = "nvim_lsp_signature_help", priority = 800 },
-              { name = "path", priority = 700 },
-              { name = "buffer", priority = 600 },
-            },
-          })
-        end,
-      })
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "*",
-        callback = function()
-          if vim.tbl_contains(enabled_filetypes, vim.bo.filetype) then
-            cmp.setup.buffer({
-              sources = {
-                { name = "nvim_lsp", priority = 1000 },
-                { name = "nvim_lsp_document_symbol", priority = 900 },
-                { name = "nvim_lsp_signature_help", priority = 800 },
-                { name = "path", priority = 700 },
-                { name = "buffer", priority = 600 },
-              },
-            })
-          end
-        end,
-      })
-    end,
-  },
-  {
-    "jake-stewart/multicursor.nvim",
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "*",
+				callback = function()
+					if vim.tbl_contains(enabled_filetypes, vim.bo.filetype) then
+						cmp.setup.buffer({
+							sources = {
+								{ name = "nvim_lsp", priority = 1000 },
+								{ name = "nvim_lsp_document_symbol", priority = 900 },
+								{ name = "nvim_lsp_signature_help", priority = 800 },
+								{ name = "path", priority = 700 },
+								{ name = "buffer", priority = 600 },
+							},
+						})
+					end
+				end,
+			})
+		end,
+	},
+	{
+		"jake-stewart/multicursor.nvim",
 		branch = "1.0",
 		config = function()
 			local mc = require("multicursor-nvim")
@@ -1900,6 +1913,12 @@ vim.api.nvim_set_keymap(
 )
 vim.api.nvim_set_hl(0, "llama_hl_fim_hint", { fg = vim.g.current_colors.flamingo, ctermfg = 209 })
 vim.api.nvim_set_hl(0, "llama_hl_fim_info", { fg = vim.g.current_colors.lavender, ctermfg = 119 })
+--vim.api.nvim_set_keymap(
+--"v",
+--"<leader>lli",
+--":LlamaInstruct<CR>",
+--{ noremap = true, desc = "[ll]ama [i]nstruct", silent = true }
+--)
 
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap(
