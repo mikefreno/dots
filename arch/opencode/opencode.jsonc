@@ -6,22 +6,36 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "on-atlas",
       "options": {
-        "baseURL": "http://0.0.0.0:8123/v1",
-        //"apiKey": "{file:~/.config/opencode/my.key}",
+        "baseURL": "https://infill.freno.me/v1",
+        "apiKey": "{file:~/.config/opencode/my.key}",
       },
       "models": {
-        "GLM-4.7-Flash": {"limit":{
-          "context": 125000,
-          "output": 100000
-        }},
-        "Qwen3.5-27B": {"limit":{
-        "context": 120000,
-        "output": 100000
-      }},
-      "Qwen3.5-35B-A3B": {"limit":{
-        "context": 120000,
-        "output": 100000
-      }}
+        "unsloth/glm-4.7-flash": {
+          "limit":{
+            "context": 125000,
+            "output": 100000
+          }
+        },
+        "unsloth/qwen3.5-fast":{
+          "limit":{
+            "context": 90000,
+            "output": 100000
+          },
+          "modalities":{
+            "input":  ["text", "image"],
+            "output": ["text"]
+          }
+        },
+        "unsloth/qwen3.5":{
+          "limit":{
+            "context": 100000,
+            "output": 100000
+          },
+          "modalities":{
+            "input":  ["text", "image"],
+            "output": ["text"]
+          }
+        },
       }
     },
     "local-mac": {
@@ -77,15 +91,10 @@
       "type": "remote",
       "url": "https://mcp.alphavantage.co/mcp?apikey={file:~/.config/opencode/av.key}"
     },
-    "clerk": {
-      "type": "remote",
-      "url": "https://cursor.com/en-US/install-mcp?name=clerk&config=eyJ1cmwiOiJodHRwczovL21jcC5jbGVyay5jb20vbWNwIn0%3D",
-    }
-  },
-  "permission": {
-    "external_directory":{
-      "/home/mike/code/*": "allow"
-    }
+    //"clerk": {
+      //"type": "remote",
+      //"url": "https://cursor.com/en-US/install-mcp?name=clerk&config=eyJ1cmwiOiJodHRwczovL21jcC5jbGVyay5jb20vbWNwIn0%3D",
+    //}
   },
   "formatter": {
     "stylua": {
