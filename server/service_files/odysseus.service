@@ -1,0 +1,16 @@
+[Unit]
+[Unit]
+Description=Odysseus
+After=network.target
+
+[Service]
+Type=simple
+User=mike
+WorkingDirectory=/home/mike/odysseus
+ExecStart=/home/mike/odysseus/start.sh
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
+

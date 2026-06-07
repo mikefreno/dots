@@ -1,0 +1,17 @@
+[Unit]
+Description=Protonmail bridge headless service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mike
+ExecStart=/home/mike/scripts/start-protonmail-bridge.sh
+Restart=on-failure
+RestartSec=15s
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
