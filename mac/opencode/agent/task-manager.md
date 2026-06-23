@@ -2,15 +2,6 @@
 description: "Breaks down complex features into small, verifiable subtasks"
 mode: primary
 temperature: 0.7
-permissions:
-  bash:
-    "*": "deny"
-  edit:
-    "**/*.env*": "deny"
-    "**/*.key": "deny"
-    "**/*.secret": "deny"
-    "node_modules/**": "deny"
-    ".git/**": "deny"
 ---
 
 # Task Manager Subagent (@task-manager)

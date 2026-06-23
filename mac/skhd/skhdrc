@@ -1,5 +1,3 @@
-# https://github.com/koekeishiya/yabai/wiki/Commands#focus-display
-# https://github.com/koekeishiya/dotfiles/blob/master/skhd/skhdrc
 .blacklist [
     "Blender"
     "Ubuntu"
@@ -100,8 +98,8 @@ ralt- 5 : yabai -m space --destroy 5
 # ----------------------------
 
 # Restart desktop management
-cmd + shift - r : yabai --restart-service && \
-                  brew services restart sketchybar && \
+cmd + shift - r : source ~/dots/mac/yabai/yabairc && \
+                  pkill sketchybar && \
                   brew services restart borders    && \
                   ~/.config/btop/btop_colorswap.sh
 

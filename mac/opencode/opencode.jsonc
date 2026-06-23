@@ -70,6 +70,12 @@
         "baseURL": "strix:8123/v1"
       },
       "models": {
+        "Qwen3.6-27B": {
+          "limit":{
+            "context": 262144,
+            "output": 100000
+          }
+        },
         "Qwen3.6-35B-A3B": {
           "limit":{
             "context": 262144,
@@ -83,12 +89,6 @@
           }
         },
         "Qwen3.5-122B-A10B": {
-          "limit":{
-            "context": 262144,
-            "output": 100000
-          }
-        },
-        "Qwen3-Coder-Next": {
           "limit":{
             "context": 262144,
             "output": 100000

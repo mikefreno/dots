@@ -1,188 +1,181 @@
+#!/bin/bash
+
+# ─── Bootstrap ──────────────────────────────────────────────────────────
+
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa &>/dev/null
 
 display_count=$(yabai -m query --displays | jq length)
 echo "Number of displays detected: $display_count"
 
-is_blender_running() {
-    pgrep -x "Blender" >/dev/null
-}
+# ─── Helpers ────────────────────────────────────────────────────────────
 
-is_emulator_running() {
-    pgrep -x "Simulator" >/dev/null || pgrep "qemu-system-aarch64" >/dev/null
-}
-is_bambu_running() {
-    pgrep -x "BambuStudio" >/dev/null
-}
+running()              { pgrep -x "$1" >/dev/null; }
+has_blender_or_bambu() { running "Blender" || running "BambuStudio"; }
+has_obsidian()         { running "Obsidian"; }
+has_slack()            { running "Slack"; }
+has_emulator()         { running "Simulator" || pgrep "qemu-system-aarch64" >/dev/null; }
+has_extra_apps()       { has_blender_or_bambu || has_obsidian || has_slack; }
 
-# Function to get current space count
-get_space_count() {
-    yabai -m query --spaces | jq length
-}
+get_space_count() { yabai -m query --spaces | jq length; }
 
-# Function to add or remove spaces as needed
 adjust_space_count() {
-    local needed_spaces=$1
-    local current_spaces=$(get_space_count)
-
-    while [ $current_spaces -lt $needed_spaces ]; do
+    local needed=$1 current
+    current=$(get_space_count)
+    while [ "$current" -lt "$needed" ]; do
         yabai -m space --create
-        current_spaces=$((current_spaces + 1))
+        current=$((current + 1))
     done
-
-    while [ $current_spaces -gt $needed_spaces ]; do
-        yabai -m space $current_spaces --destroy
-        current_spaces=$((current_spaces - 1))
+    while [ "$current" -gt "$needed" ]; do
+        yabai -m space "$current" --destroy
+        current=$((current - 1))
     done
 }
+
+# ─── BSP Insertion for "add" Space ──────────────────────────────────────
+# When a Blender/Bambu/Omni/Slack window opens in the add space, insert it
+# so Blender+Bambu share the west side and Obsidian+Slack share the east.
+
+yabai -m signal --add event=window_created action="
+    app=\$(/opt/homebrew/bin/yabai -m query --windows --window \$YABAI_WINDOW_ID 2>/dev/null | \
+          /opt/homebrew/bin/jq -r '.app // empty')
+    case \"\$app\" in
+        Blender|Bambu\ Studio)
+            space_idx=\$(/opt/homebrew/bin/yabai -m query --windows --window \$YABAI_WINDOW_ID 2>/dev/null | \
+                        /opt/homebrew/bin/jq -r '.space // empty')
+            if [ -n \"\$space_idx\" ]; then
+                label=\$(/opt/homebrew/bin/yabai -m query --spaces --space \"\$space_idx\" 2>/dev/null | \
+                        /opt/homebrew/bin/jq -r '.label // empty')
+                if [ \"\$label\" = \"add\" ]; then
+                    /opt/homebrew/bin/yabai -m window \$YABAI_WINDOW_ID --insert west 2>/dev/null
+                fi
+            fi
+            ;;
+        Obsidian|Slack)
+            space_idx=\$(/opt/homebrew/bin/yabai -m query --windows --window \$YABAI_WINDOW_ID 2>/dev/null | \
+                        /opt/homebrew/bin/jq -r '.space // empty')
+            if [ -n \"\$space_idx\" ]; then
+                label=\$(/opt/homebrew/bin/yabai -m query --spaces --space \"\$space_idx\" 2>/dev/null | \
+                        /opt/homebrew/bin/jq -r '.label // empty')
+                if [ \"\$label\" = \"add\" ]; then
+                    /opt/homebrew/bin/yabai -m window \$YABAI_WINDOW_ID --insert east 2>/dev/null
+                fi
+            fi
+            ;;
+    esac
+" 2>/dev/null
+
+# ─── Space Layout ───────────────────────────────────────────────────────
 
 setup_spaces() {
-    local needed_spaces
-    if [ "$display_count" -eq 1 ]; then
-        if is_blender_running || is_bambu_running; then
-            needed_spaces=5  # main, web, comms, misc, audio
-        else
-            needed_spaces=4  # main, web, comms, audio
-        fi
-    else
-        if (is_blender_running || is_bambu_running) && is_emulator_running; then
-            needed_spaces=6  # audio, misc, main, web, comms, emulators
-        elif is_blender_running || is_bambu_running || is_bambu_running; then
-            needed_spaces=5  # audio, misc, main, web, comms
-        else
-            needed_spaces=4  # audio, main, web, comms
-        fi
-    fi
-
-    # Adjust space count first
-    adjust_space_count $needed_spaces
+    local needed
 
     if [ "$display_count" -eq 1 ]; then
-        # Single display configuration
+        # Single display: main, web, comms, audio + optional add
+        needed=4
+        has_extra_apps && needed=5
+        adjust_space_count "$needed"
+
         yabai -m space 1 --label main
         yabai -m space 2 --label web
         yabai -m space 3 --label comms
-        if is_blender_running || is_bambu_running; then
-            yabai -m space 4 --label misc
+        if has_extra_apps; then
+            yabai -m space 4 --label add
             yabai -m space 5 --label audio
         else
             yabai -m space 4 --label audio
         fi
     else
-        # Multi-display configuration
-        # Label spaces
-        yabai -m space 1 --label audio
-        
-        if is_blender_running && is_emulator_running; then
-            yabai -m space 2 --label misc
-            yabai -m space 3 --label main
-            yabai -m space 4 --label web
-            yabai -m space 5 --label comms
-            yabai -m space 6 --label emulators
-        elif is_blender_running; then
-            yabai -m space 2 --label misc
-            yabai -m space 3 --label main
-            yabai -m space 4 --label web
-            yabai -m space 5 --label comms
-        elif is_emulator_running; then
-            yabai -m space 2 --label main
-            yabai -m space 3 --label web
-            yabai -m space 4 --label comms
-            yabai -m space 5 --label emulators
-        else
-            yabai -m space 2 --label main
-            yabai -m space 3 --label web
-            yabai -m space 4 --label comms
+        # Multi-display: audio, [add], main, web, comms, [emulators]
+        needed=4
+        has_extra_apps && needed=$((needed + 1))
+        has_emulator   && needed=$((needed + 1))
+        adjust_space_count "$needed"
+
+        # Label all spaces first
+        local idx=1
+        yabai -m space $idx --label audio
+        idx=$((idx + 1))
+        if has_extra_apps; then
+            yabai -m space $idx --label add
+            idx=$((idx + 1))
+        fi
+        yabai -m space $idx --label main
+        idx=$((idx + 1))
+        yabai -m space $idx --label web
+        idx=$((idx + 1))
+        yabai -m space $idx --label comms
+        idx=$((idx + 1))
+        if has_emulator; then
+            yabai -m space $idx --label emulators
         fi
 
-        # Get display indexes
-        local display1=$(yabai -m query --displays | jq '.[0].index')
-        local display2=$(yabai -m query --displays | jq '.[1].index')
+        # Assign to displays
+        local d1 d2
+        d1=$(yabai -m query --displays | jq '.[0].index')   # built-in
+        d2=$(yabai -m query --displays | jq '.[1].index')   # external
 
-        # Move spaces to correct displays
-        yabai -m space 1 --display $display1
-        yabai -m space 2 --display $display1
-        yabai -m space 3 --display $display2
-        yabai -m space 4 --display $display2
-        
-        if is_blender_running && is_emulator_running; then
-            yabai -m space 5 --display $display2
-            yabai -m space 6 --display $display2
-        elif is_blender_running || is_emulator_running; then
-            yabai -m space 5 --display $display2
+        idx=1
+        # Display 1 (built-in): audio, [add], main
+        yabai -m space $idx --display "$d1"
+        idx=$((idx + 1))
+        if has_extra_apps; then
+            yabai -m space $idx --display "$d1"
+            idx=$((idx + 1))
         fi
+        yabai -m space $idx --display "$d1"
+        idx=$((idx + 1))
+        # Display 2 (external): web, comms, [emulators]
+        while [ "$idx" -le "$needed" ]; do
+            yabai -m space $idx --display "$d2"
+            idx=$((idx + 1))
+        done
     fi
 }
+
+# ─── Window Rules ───────────────────────────────────────────────────────
 
 setup_rules() {
-    local main_space="main"
-    local web_space="web"
-    local comms_space="comms"
-    local audio_space="audio"
-    local misc_space="misc"
-    local emulators_space="emulators"
-
-    if [ "$display_count" -gt 1 ]; then
-        audio_space="audio"
-        main_space="main"
-        web_space="web"
-        comms_space="comms"
-        misc_space="misc"
-        emulators_space="emulators"
-    fi
-
-    # Clear existing rules first
     yabai -m rule --remove ".*" 2>/dev/null
 
-    yabai -m rule --add app="^(Alacritty|kitty|Ghostty)$" space="$main_space"
-    yabai -m rule --add app="^Xcode(-beta)?$" space="$main_space"
-    yabai -m rule --add app="^(Orion|Safari|Brave Browser|SigmaOS|Zen Browser|Zen)$" space="$web_space"
-    yabai -m rule --add app="^(Mail|Messages|Things|Obsidian|Telegram)$" space="$comms_space"
-    yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex|Jellyfin Media Player|Discord)$" space="$audio_space"
-    
-    if is_blender_running || is_bambu_running; then
-        yabai -m rule --add app="^(Blender|Bambu Studio)$" space="$misc_space"
-    fi
-    
-    # Handle emulators based on display count
-    if [ "$display_count" -eq 1 ] || ! is_emulator_running; then
-        # Single display: emulators go to main space
-        yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="$main_space" manage=on
+    # Core spaces (always present)
+    yabai -m rule --add app="^(Alacritty|kitty|Ghostty)$"                        space="main"
+    yabai -m rule --add app="^Xcode(-beta)?$"                                     space="main"
+    yabai -m rule --add app="^(Orion|Safari|Brave Browser|SigmaOS|Zen Browser|Zen)$" space="web"
+    yabai -m rule --add app="^(Mail|Messages|Things|Telegram)$"                   space="comms"
+    yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex|Jellyfin Media Player|Discord)$" space="audio"
+
+    # Extra apps → merged "add" space
+    # (Rules are always registered so they apply even if apps launch later)
+    yabai -m rule --add app="^(Blender|Bambu Studio|Obsidian|Slack)$"             space="add"
+
+    # Emulators
+    if [ "$display_count" -eq 1 ] || ! has_emulator; then
+        yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="main" manage=on
     else
-        # Multiple displays and emulator running: emulators get their own space
-        yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="$emulators_space" manage=on
+        yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="emulators" manage=on
     fi
-    
-    yabai -m rule --add title="^Ubuntu$" space="$main_space" manage=off
-    
-    yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam|Gaze)$" manage=off
-    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive
-    Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio
-    Silence|TextEdit|love|Bitwarden|App Store|Gaze)$" manage=off
+
+    # Floating / special windows
+    yabai -m rule --add title="^Ubuntu$"                                           space="main" manage=off
+    yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam|Gaze|Simulator)$" manage=off
+    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden|App Store|Gaze|Simulator)$" manage=off
+
+    # Apply all rules retroactively
+    yabai -m rule --apply
 }
 
-# Function to handle display changes
-handle_display_change() {
-    local new_display_count=$(yabai -m query --displays | jq length)
-    if [ "$display_count" -ne "$new_display_count" ]; then
-        display_count=$new_display_count
-        echo "Display count changed to: $display_count"
-        setup_spaces
-        setup_rules
-    fi
-}
+# ─── Display-Change Watcher ─────────────────────────────────────────────
 
-# Add signal handlers
 yabai -m signal --add event=display_added action="$0"
 yabai -m signal --add event=display_removed action="$0"
 
-# Set up spaces
-setup_spaces
+# ─── Main ───────────────────────────────────────────────────────────────
 
-# Set up window management rules
+setup_spaces
 setup_rules
 
-# General yabai configuration
+# General yabai config
 yabai -m config \
     layout                 bsp            \
     top_padding            10             \
@@ -194,20 +187,9 @@ yabai -m config \
     mouse_modifier         cmd            \
     mouse_action1          move           \
     mouse_action2          resize         \
-    external_bar           all:40:0       \
+    external_bar           all:40:0
 
-# Apply rules
-yabai -m rule --apply
-
-options=(
-	style=round
-	width=10.0
-	hidpi=on
-	active_color=0xffbdbfff
-	inactive_color=0xaabdbfff
-	blacklist="Simulator,qemu-system-aarch64,iPhone Mirroring,Steam,Notes,SoundSource"
-)
-
-borders "${options[@]}"
+# Window borders (JankyBorders)
+borders
 
 echo "yabai configuration loaded successfully"
