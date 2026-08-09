@@ -71,9 +71,9 @@ setup_spaces() {
     local needed
 
     if [ "$display_count" -eq 1 ]; then
-        # Single display: main, web, comms, audio + optional add
-        needed=4
-        has_extra_apps && needed=5
+        # Single display: main, web, comms + optional add
+        needed=3
+        has_extra_apps && needed=4
         adjust_space_count "$needed"
 
         yabai -m space 1 --label main
@@ -81,21 +81,16 @@ setup_spaces() {
         yabai -m space 3 --label comms
         if has_extra_apps; then
             yabai -m space 4 --label add
-            yabai -m space 5 --label audio
-        else
-            yabai -m space 4 --label audio
         fi
     else
-        # Multi-display: audio, [add], main, web, comms, [emulators]
-        needed=4
+        # Multi-display: [add], main, web, comms, [emulators]
+        needed=3
         has_extra_apps && needed=$((needed + 1))
         has_emulator   && needed=$((needed + 1))
         adjust_space_count "$needed"
 
         # Label all spaces first
         local idx=1
-        yabai -m space $idx --label audio
-        idx=$((idx + 1))
         if has_extra_apps; then
             yabai -m space $idx --label add
             idx=$((idx + 1))
@@ -116,9 +111,7 @@ setup_spaces() {
         d2=$(yabai -m query --displays | jq '.[1].index')   # external
 
         idx=1
-        # Display 1 (built-in): audio, [add], main
-        yabai -m space $idx --display "$d1"
-        idx=$((idx + 1))
+        # Display 1 (built-in): [add], main
         if has_extra_apps; then
             yabai -m space $idx --display "$d1"
             idx=$((idx + 1))
@@ -143,11 +136,10 @@ setup_rules() {
     yabai -m rule --add app="^Xcode(-beta)?$"                                     space="main"
     yabai -m rule --add app="^(Orion|Safari|Brave Browser|SigmaOS|Zen Browser|Zen)$" space="web"
     yabai -m rule --add app="^(Mail|Messages|Things|Telegram)$"                   space="comms"
-    yabai -m rule --add app="^(YouTube Music|Podcasts|Spotify|Music|Plex|Jellyfin Media Player|Discord)$" space="audio"
 
     # Extra apps → merged "add" space
     # (Rules are always registered so they apply even if apps launch later)
-    yabai -m rule --add app="^(Blender|Bambu Studio|Obsidian|Slack)$"             space="add"
+    yabai -m rule --add app="^(Blender|Bambu Studio|Obsidian|Slack|Epic Games Launcher|UnrealEditor)$"             space="add"
 
     # Emulators
     if [ "$display_count" -eq 1 ] || ! has_emulator; then

@@ -50,10 +50,10 @@ rcmd - 9 : yabai -m window --space 9 --focus
 alt - e : yabai -m space --balance
 
 # Moving windows
-lcmd - h : yabai -m window --warp west
-lcmd - l : yabai -m window --warp east
-lcmd - j : yabai -m window --warp south
-lcmd - k : yabai -m window --warp north
+rcmd - h : yabai -m window --warp west
+rcmd - l : yabai -m window --warp east
+rcmd - j : yabai -m window --warp south
+rcmd - k : yabai -m window --warp north
 
 #swap windows
 lalt - h : yabai -m window --swap west
