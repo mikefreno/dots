@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# ─── Shared Rules & Config ─────────────────────────────────────────────
+# Pulled in by both display-count configs (yabairc-single / yabairc-multi).
+# Window rules are identical across display counts.
+
+yabai -m rule --remove ".*" 2>/dev/null
+
+# Core spaces (always present)
+yabai -m rule --add app="^(Alacritty|kitty|Ghostty)$"                        space="main"
+yabai -m rule --add app="^Xcode(-beta)?$"                                     space="main"
+yabai -m rule --add app="^(Orion|Safari|Brave Browser|SigmaOS|Zen Browser|Zen)$" space="web"
+yabai -m rule --add app="^(Mail|Messages|Things|Telegram)$"                   space="comms"
+
+# Extra apps → merged "add" space
+# (Rules are always registered so they apply even if apps launch later)
+yabai -m rule --add app="^(Blender|Bambu Studio|Obsidian|Slack|Epic Games Launcher|UnrealEditor)$"             space="add"
+
+# Emulators: dedicated space when one exists, else the main space
+if yabai -m query --spaces | jq -e '.[] | select(.label == "emulators")' >/dev/null 2>&1; then
+    yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="emulators" manage=on
+else
+    yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="main" manage=on
+fi
+
+# Floating / special windows
+yabai -m rule --add title="^Ubuntu$"                                           space="main" manage=off
+yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam|Gaze|Simulator)$" manage=off
+yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden|App Store|Gaze|Simulator)$" manage=off
+
+# Apply all rules retroactively
+yabai -m rule --apply
+
+# ─── General yabai config ───────────────────────────────────────────────
+
+yabai -m config \
+    layout                 bsp            \
+    top_padding            10             \
+    bottom_padding         10             \
+    left_padding           10             \
+    right_padding          10             \
+    window_gap             16             \
+    window_shadow          float          \
+    mouse_modifier         cmd            \
+    mouse_action1          move           \
+    mouse_action2          resize         \
+    external_bar           all:40:0
+
+# Window borders (JankyBorders)
+borders
+
+echo "yabai configuration loaded successfully"

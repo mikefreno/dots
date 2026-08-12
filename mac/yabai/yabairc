@@ -32,6 +32,16 @@ adjust_space_count() {
     done
 }
 
+# Move the space carrying a label to a display, only if it is misplaced.
+# Re-queries the label's index every time (space indexes shift as moves happen).
+move_label_to_display() {
+    local label=$1 did=$2 sid cur
+    sid=$(yabai -m query --spaces | jq -r --arg l "$label" '.[] | select(.label == $l) | .index' | head -1)
+    [ -n "$sid" ] || return
+    cur=$(yabai -m query --spaces --space "$sid" | jq -r '.display')
+    [ "$cur" != "$did" ] && yabai -m space "$sid" --display "$did" 2>/dev/null
+}
+
 # ─── BSP Insertion for "add" Space ──────────────────────────────────────
 # When a Blender/Bambu/Omni/Slack window opens in the add space, insert it
 # so Blender+Bambu share the west side and Obsidian+Slack share the east.
@@ -65,123 +75,18 @@ yabai -m signal --add event=window_created action="
     esac
 " 2>/dev/null
 
-# ─── Space Layout ───────────────────────────────────────────────────────
-
-setup_spaces() {
-    local needed
-
-    if [ "$display_count" -eq 1 ]; then
-        # Single display: main, web, comms + optional add
-        needed=3
-        has_extra_apps && needed=4
-        adjust_space_count "$needed"
-
-        yabai -m space 1 --label main
-        yabai -m space 2 --label web
-        yabai -m space 3 --label comms
-        if has_extra_apps; then
-            yabai -m space 4 --label add
-        fi
-    else
-        # Multi-display: [add], main, web, comms, [emulators]
-        needed=3
-        has_extra_apps && needed=$((needed + 1))
-        has_emulator   && needed=$((needed + 1))
-        adjust_space_count "$needed"
-
-        # Label all spaces first
-        local idx=1
-        if has_extra_apps; then
-            yabai -m space $idx --label add
-            idx=$((idx + 1))
-        fi
-        yabai -m space $idx --label main
-        idx=$((idx + 1))
-        yabai -m space $idx --label web
-        idx=$((idx + 1))
-        yabai -m space $idx --label comms
-        idx=$((idx + 1))
-        if has_emulator; then
-            yabai -m space $idx --label emulators
-        fi
-
-        # Assign to displays
-        local d1 d2
-        d1=$(yabai -m query --displays | jq '.[0].index')   # built-in
-        d2=$(yabai -m query --displays | jq '.[1].index')   # external
-
-        idx=1
-        # Display 1 (built-in): [add], main
-        if has_extra_apps; then
-            yabai -m space $idx --display "$d1"
-            idx=$((idx + 1))
-        fi
-        yabai -m space $idx --display "$d1"
-        idx=$((idx + 1))
-        # Display 2 (external): web, comms, [emulators]
-        while [ "$idx" -le "$needed" ]; do
-            yabai -m space $idx --display "$d2"
-            idx=$((idx + 1))
-        done
-    fi
-}
-
-# ─── Window Rules ───────────────────────────────────────────────────────
-
-setup_rules() {
-    yabai -m rule --remove ".*" 2>/dev/null
-
-    # Core spaces (always present)
-    yabai -m rule --add app="^(Alacritty|kitty|Ghostty)$"                        space="main"
-    yabai -m rule --add app="^Xcode(-beta)?$"                                     space="main"
-    yabai -m rule --add app="^(Orion|Safari|Brave Browser|SigmaOS|Zen Browser|Zen)$" space="web"
-    yabai -m rule --add app="^(Mail|Messages|Things|Telegram)$"                   space="comms"
-
-    # Extra apps → merged "add" space
-    # (Rules are always registered so they apply even if apps launch later)
-    yabai -m rule --add app="^(Blender|Bambu Studio|Obsidian|Slack|Epic Games Launcher|UnrealEditor)$"             space="add"
-
-    # Emulators
-    if [ "$display_count" -eq 1 ] || ! has_emulator; then
-        yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="main" manage=on
-    else
-        yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="emulators" manage=on
-    fi
-
-    # Floating / special windows
-    yabai -m rule --add title="^Ubuntu$"                                           space="main" manage=off
-    yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam|Gaze|Simulator)$" manage=off
-    yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden|App Store|Gaze|Simulator)$" manage=off
-
-    # Apply all rules retroactively
-    yabai -m rule --apply
-}
-
 # ─── Display-Change Watcher ─────────────────────────────────────────────
+# Re-run this dispatcher when displays change; it re-routes to the
+# display-count-specific config.
 
 yabai -m signal --add event=display_added action="$0"
 yabai -m signal --add event=display_removed action="$0"
 
-# ─── Main ───────────────────────────────────────────────────────────────
+# ─── Route to Display-Count Config ──────────────────────────────────────
+# Each mode owns its space layout in its own file; both pull in the
+# shared rules/config from yabairc-common.
 
-setup_spaces
-setup_rules
-
-# General yabai config
-yabai -m config \
-    layout                 bsp            \
-    top_padding            10             \
-    bottom_padding         10             \
-    left_padding           10             \
-    right_padding          10             \
-    window_gap             16             \
-    window_shadow          float          \
-    mouse_modifier         cmd            \
-    mouse_action1          move           \
-    mouse_action2          resize         \
-    external_bar           all:40:0
-
-# Window borders (JankyBorders)
-borders
-
-echo "yabai configuration loaded successfully"
+case "$display_count" in
+    1) source "$(dirname "$0")/yabairc-single" ;;
+    *) source "$(dirname "$0")/yabairc-multi"  ;;
+esac
