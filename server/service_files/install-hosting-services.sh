@@ -17,7 +17,7 @@ set -euo pipefail
 UNIT_DIR="/etc/systemd/system"
 STAGED_DIR="/tmp/hosting_service_files"
 BACKUP_DIR="${STAGED_DIR}/backup"
-SERVICES=(odysseus paperclip firecrawl)
+SERVICES=(odysseus paperclip firecrawl gitnexus-api gitnexus-web)
 
 echo "==> Staged units present:"
 for s in "${SERVICES[@]}"; do

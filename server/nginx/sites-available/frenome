@@ -3,7 +3,8 @@
 # ===================================================================
 server {
     listen 80;
-    server_name jellyfin.freno.me michaelfreno.asuscomm.com vw.freno.me ai.freno.me infill.freno.me git.freno.me next.freno.me paper.freno.me odysseus.freno.me worldview.freno.me pen.freno.me;
+    server_name jellyfin.freno.me michaelfreno.asuscomm.com vw.freno.me ai.freno.me infill.freno.me git.freno.me next.freno.me paper.freno.me odysseus.freno.me worldview.freno.me pen.freno.me gitnexus.freno.me macro.freno.me;
+
     return 301 https://$host$request_uri;
 }
 
@@ -352,4 +353,108 @@ server {
 
         proxy_buffering off;
     }
+    ssl_certificate /etc/letsencrypt/live/pen.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/pen.freno.me/privkey.pem; # managed by Certbot
+}
+
+# ===================================================================
+# SERVICE 10: GitNexus (Web UI + REST API + MCP)
+#   All traffic -> gitnexus-web (127.0.0.1:4173). It serves the SPA and enforces
+#   a Bearer token on /api/* via GITNEXUS_SERVE_AUTH_TOKEN, proxying /api to
+#   gitnexus-api (127.0.0.1:4747).
+#   - Web UI:    nginx basic-auth (create /etc/nginx/.gitnexus_htpasswd)
+#   - REST/MCP:  Authorization: Bearer <token> on /api/* (incl /api/mcp)
+#   Note: needs a cert first. Run: sudo certbot certonly --standalone -d gitnexus.freno.me
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name gitnexus.freno.me;
+
+    client_max_body_size 100M;
+
+    # Web UI (SPA) — basic-auth protected at the nginx edge
+    location / {
+        auth_basic "GitNexus";
+        auth_basic_user_file /etc/nginx/.gitnexus_htpasswd;
+
+        proxy_pass http://127.0.0.1:4173;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_buffering off;
+        proxy_read_timeout 1800;
+        proxy_connect_timeout 60;
+        proxy_send_timeout 1800;
+        send_timeout 1800;
+    }
+
+    # REST API + MCP — bearer-token gate lives in docker-server; NO basic auth here
+    # so CLI/MCP clients can authenticate with just the token.
+    location /api/ {
+        proxy_pass http://127.0.0.1:4173;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_buffering off;
+        proxy_read_timeout 1800;
+        proxy_connect_timeout 60;
+        proxy_send_timeout 1800;
+        send_timeout 1800;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/gitnexus.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/gitnexus.freno.me/privkey.pem; # managed by Certbot
+}
+
+# ===================================================================
+# SERVICE: Macro (locally-hosted cloud storage stack)
+#
+#   Fronts the Macro local stack. The app is served by the local stack's
+#   reverse proxy / frontend dev server (single origin).
+#   Upstream: FRONTEND_ORIGIN (instance port) below.
+#   Note: needs a cert first under /etc/letsencrypt/live/macro.freno.me.
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name macro.freno.me;
+
+    client_max_body_size 500M;
+
+    # SPA + API + websockets — single origin of the local stack
+    location / {
+        proxy_pass http://127.0.0.1:28010;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_read_timeout 3600;
+        proxy_connect_timeout 60;
+        proxy_send_timeout 3600;
+        send_timeout 3600;
+
+        proxy_buffering off;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/macro.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/macro.freno.me/privkey.pem; # managed by Certbot
 }

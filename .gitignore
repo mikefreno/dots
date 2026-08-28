@@ -1,2 +1,5 @@
 .DS_Store
 *.env
+
+# local-only secrets / notes (github-mirrored repo must never contain these)
+creds.md
