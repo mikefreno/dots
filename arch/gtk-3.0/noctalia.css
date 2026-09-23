@@ -20,7 +20,7 @@
 @define-color view_bg_color #1c2518;
 @define-color view_fg_color #f2f3f2;
 
-@define-color headerbar_bg_color #1c2518;
+@define-color headerbar_bg_color #2e3e28;
 @define-color headerbar_fg_color #f2f3f2;
 @define-color headerbar_backdrop_color @window_bg_color;
 
@@ -43,6 +43,10 @@
 
 @define-color secondary_sidebar_bg_color #1c2518;
 @define-color secondary_sidebar_fg_color #f2f3f2;
+
+/* Focused selection states */
+@define-color theme_selected_bg_color @accent_bg_color;
+@define-color theme_selected_fg_color @accent_fg_color;
 
 /* Backdrop/unfocused states */
 @define-color theme_unfocused_fg_color @window_fg_color;

@@ -2,6 +2,7 @@
 declare -a BLOCKED_TITLES=(
     "Path of Exile 2"
     "Witchfire"
+    "KINGDOM HEARTS III"
 )
 
 # Get current window title safely
@@ -31,7 +32,7 @@ fi
 
 # Get all workspaces for current monitor
 workspace_ids_current_monitor=$(hyprctl -j workspaces | jq --arg currentMonitorID "$current_monitor" -r '
-  .[] | select(.monitorID == ($currentMonitorID | tonumber)) | .id' | sort -n)
+  .[] | select(.monitorID == ($currentMonitorID | tonumber) and .id > 0) | .id' | sort -n)
 
 # Convert to array
 readarray -t workspace_ids_current_monitor <<< "$workspace_ids_current_monitor"
@@ -87,7 +88,7 @@ fi
 # Switch to new workspace
 if [[ -n "$new_workspace" ]] && [[ "$new_workspace" != "$current_workspace" ]]; then
     echo "Switching from workspace $current_workspace to $new_workspace"
-    hyprctl dispatch workspace "$new_workspace"
+    hyprctl dispatch "hl.dsp.focus({ workspace = $new_workspace })"
 else
     echo "No workspace change needed or error occurred"
 fi
