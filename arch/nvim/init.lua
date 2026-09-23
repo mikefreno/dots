@@ -861,91 +861,104 @@ require("lazy").setup({
 	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
+		lazy = false, -- this plugin does not support lazy-loading
 		build = ":TSUpdate",
-		main = "nvim-treesitter.configs", -- Sets main module to use for opts
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-		opts = {
-			ensure_installed = {
+		config = function()
+			require("nvim-treesitter").install({
 				"bash",
 				"c",
 				"cpp",
-				"go",
-				"python",
-				"rust",
-				"tsx",
-				"javascript",
-				"typescript",
 				"diff",
+				"go",
 				"html",
+				"javascript",
 				"lua",
 				"luadoc",
 				"markdown",
 				"markdown_inline",
+				"python",
 				"query",
+				"rust",
+				"tsx",
+				"typescript",
 				"vim",
 				"vimdoc",
-			},
-			-- Autoinstall languages that are not installed
-			auto_install = true,
-			highlight = {
-				enable = true,
-				additional_vim_regex_highlighting = { "ruby" },
-			},
-			indent = { enable = true, disable = { "ruby" } },
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<c-space>",
-					node_incremental = "<c-space>",
-					scope_incremental = "<c-s>",
-					node_decremental = "<M-space>",
-				},
-			},
-			textobjects = {
-				select = {
-					enable = true,
-					lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-					keymaps = {
-						-- You can use the capture groups defined in textobjects.scm
-						["aa"] = "@parameter.outer",
-						["ia"] = "@parameter.inner",
-						["af"] = "@function.outer",
-						["if"] = "@function.inner",
-						["ac"] = "@class.outer",
-						["ic"] = "@class.inner",
-					},
-				},
-				move = {
-					enable = true,
-					set_jumps = true, -- whether to set jumps in the jumplist
-					goto_next_start = {
-						["]m"] = "@function.outer",
-						["]]"] = "@class.outer",
-					},
-					goto_next_end = {
-						["]M"] = "@function.outer",
-						["]["] = "@class.outer",
-					},
-					goto_previous_start = {
-						["[m"] = "@function.outer",
-						["[["] = "@class.outer",
-					},
-					goto_previous_end = {
-						["[M"] = "@function.outer",
-						["[]"] = "@class.outer",
-					},
-				},
-				--swap = {
-				--enable = true,
-				--swap_next = {
-				--["<leader>a"] = "@parameter.inner",
-				--},
-				--swap_previous = {
-				--["<leader>A"] = "@parameter.inner",
-				--},
-				--},
-			},
-		},
+			})
+
+			-- Highlighting and indentation are provided by Neovim itself now; enable
+			-- them for every filetype that has a parser available.
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("treesitter_attach", { clear = true }),
+				callback = function(ev)
+					if not vim.treesitter.get_parser(ev.buf) then
+						return
+					end
+					vim.treesitter.start(ev.buf)
+					vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end,
+			})
+
+			-- Incremental selection is provided by Neovim core (`an`/`in`), but
+			-- mini.ai already owns those keys, so call the core implementation directly.
+			local ts_select = require("vim.treesitter._select")
+			vim.keymap.set({ "x", "o" }, "<c-space>", function()
+				ts_select.select_parent(vim.v.count1)
+			end, { desc = "Expand selection to parent node" })
+			vim.keymap.set("n", "<c-space>", function()
+				vim.cmd("normal! v")
+				ts_select.select_parent(vim.v.count1)
+			end, { desc = "Start node selection" })
+			vim.keymap.set({ "x", "o" }, "<M-space>", function()
+				ts_select.select_child(vim.v.count1)
+			end, { desc = "Shrink selection to child node" })
+		end,
+	},
+	{ -- Syntax aware text objects (select/move)
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
+		config = function()
+			require("nvim-treesitter-textobjects").setup({
+				-- Automatically jump forward to textobj, similar to targets.vim
+				select = { lookahead = true },
+				-- whether to set jumps in the jumplist
+				move = { set_jumps = true },
+			})
+
+			local select = require("nvim-treesitter-textobjects.select")
+			local move = require("nvim-treesitter-textobjects.move")
+
+			local function select_textobject(lhs, query)
+				vim.keymap.set({ "x", "o" }, lhs, function()
+					select.select_textobject(query, "textobjects")
+				end, { desc = "Select " .. query })
+			end
+			-- NOTE: `[[`/`]]`/`][`/`[]` are also mapped buffer-locally by some built-in
+			-- ftplugins (go, markdown, vim, ...); those keep precedence there. Set
+			-- `vim.g.no_plugin_maps = true` to let these win everywhere instead.
+
+			local function goto_textobject(lhs, method, query)
+				vim.keymap.set({ "n", "x", "o" }, lhs, function()
+					move[method](query, "textobjects")
+				end, { desc = "Go to " .. query })
+			end
+
+			select_textobject("aa", "@parameter.outer")
+			select_textobject("ia", "@parameter.inner")
+			select_textobject("af", "@function.outer")
+			select_textobject("if", "@function.inner")
+			select_textobject("ac", "@class.outer")
+			select_textobject("ic", "@class.inner")
+
+			goto_textobject("]m", "goto_next_start", "@function.outer")
+			goto_textobject("]]", "goto_next_start", "@class.outer")
+			goto_textobject("]M", "goto_next_end", "@function.outer")
+			goto_textobject("][", "goto_next_end", "@class.outer")
+			goto_textobject("[m", "goto_previous_start", "@function.outer")
+			goto_textobject("[[", "goto_previous_start", "@class.outer")
+			goto_textobject("[M", "goto_previous_end", "@function.outer")
+			goto_textobject("[]", "goto_previous_end", "@class.outer")
+		end,
 	},
 	{
 		"jake-stewart/multicursor.nvim",
