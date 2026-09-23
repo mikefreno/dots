@@ -1,5 +1,3 @@
-# https://github.com/koekeishiya/yabai/wiki/Commands#focus-display
-# https://github.com/koekeishiya/dotfiles/blob/master/skhd/skhdrc
 .blacklist [
     "Blender"
     "Ubuntu"
@@ -52,10 +50,10 @@ rcmd - 9 : yabai -m window --space 9 --focus
 alt - e : yabai -m space --balance
 
 # Moving windows
-lcmd - h : yabai -m window --warp west
-lcmd - l : yabai -m window --warp east
-lcmd - j : yabai -m window --warp south
-lcmd - k : yabai -m window --warp north
+rcmd - h : yabai -m window --warp west
+rcmd - l : yabai -m window --warp east
+rcmd - j : yabai -m window --warp south
+rcmd - k : yabai -m window --warp north
 
 #swap windows
 lalt - h : yabai -m window --swap west
@@ -100,8 +98,8 @@ ralt- 5 : yabai -m space --destroy 5
 # ----------------------------
 
 # Restart desktop management
-cmd + shift - r : yabai --restart-service && \
-                  brew services restart sketchybar && \
+cmd + shift - r : source ~/dots/mac/yabai/yabairc && \
+                  pkill sketchybar && \
                   brew services restart borders    && \
                   ~/.config/btop/btop_colorswap.sh
 

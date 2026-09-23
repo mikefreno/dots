@@ -1,0 +1,6 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin" : [
+    "file:\/\/\/Users\/mike\/.config\/opencode\/plugins\/open-island.js"
+  ]
+}

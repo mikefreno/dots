@@ -1,13 +1,18 @@
 [Unit]
-Description=Auth Endpoint
+Description=PaperClip
 After=network.target
+Wants=network.target
 
 [Service]
 Type=simple
 User=mike
-WorkingDirectory=/home/mike/code/paperclip
+WorkingDirectory=/home/mike/hosting/paperclip
 Environment="PATH=/home/mike/.opencode/bin:/usr/local/bin:/usr/bin:/bin"
 Environment="HOME=/home/mike"
+Environment="PAPERCLIP_UI_DEV_MIDDLEWARE=false"
+Environment="PORT=8087"
+Environment="PAPERCLIP_PUBLIC_URL=https://paper.freno.me"
+ExecStartPre=/home/mike/.local/share/pnpm/pnpm build
 ExecStart=/home/mike/.local/share/pnpm/pnpm paperclipai run
 Restart=on-failure
 RestartSec=10s

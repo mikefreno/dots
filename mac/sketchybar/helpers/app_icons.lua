@@ -399,6 +399,8 @@ return {
 	["Trello"] = ":trello:",
 	["Tweetbot"] = ":twitter:",
 	["Twitter"] = ":twitter:",
+	["UnrealEditor"] = ":ue:",
+	["UnrealEngine"] = ":ue:",
 	["UTM"] = ":utm:",
 	["VeraCrypt"] = ":veracrypt:",
 	["MacVim"] = ":vim:",

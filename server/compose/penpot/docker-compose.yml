@@ -1,0 +1,129 @@
+# ===================================================================
+# Penpot — self-hosted design tool
+# See: https://github.com/penpot/penpot | https://help.penpot.app
+#
+# Production tuning vs. the stock docker-compose (from the repo):
+#   - Registration DISABLED (accounts created manually via manage.py create-profile)
+#   - Secure session cookies ENABLED  → REQUIRES HTTPS (terminated by nginx on pen.freno.me)
+#   - Email verification left on (default) — harmless with no open registration
+#   - Telemetry OFF
+#   - No mailcatch / no SMTP: emails log to the backend's stdout.
+#       (To enable team invitations later, add a real SMTP block — see README.md)
+#   - Bind mounts for postgres + assets under this directory (dots convention)
+#   - Only the frontend exposes a host port (8090); nginx proxies pen.freno.me
+#     → 127.0.0.1:8090. Everything else is on the internal compose network.
+#
+# First-time setup: see README.md in this directory.
+# ===================================================================
+
+# Flags shared by the services that need them.
+x-flags: &penpot-flags
+  # enable-mcp           → expose the /mcp/* MCP server via the frontend
+  # enable-prepl-server  → allows `manage.py` admin CLI (create-profile)
+  # enable-log-invitation-tokens → print invite tokens to logs (no SMTP)
+  # disable-registration → NO open signup. Only admin-created accounts log in.
+  PENPOT_FLAGS: enable-mcp enable-prepl-server enable-log-invitation-tokens disable-registration
+
+x-uri: &penpot-public-uri
+  PENPOT_PUBLIC_URI: https://pen.freno.me
+
+x-body-size: &penpot-http-body-size
+  PENPOT_HTTP_SERVER_MAX_BODY_SIZE: 367001600          # 350 MB max upload/import
+  PENPOT_HTTP_SERVER_MAX_MULTIPART_BODY_SIZE: 367001600
+
+services:
+  penpot-frontend:
+    image: penpotapp/frontend:${PENPOT_VERSION:-2.16}
+    container_name: penpot-frontend
+    restart: always
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./assets:/opt/data/assets
+    depends_on:
+      - penpot-backend
+      - penpot-exporter
+      - penpot-mcp
+    environment:
+      <<: [*penpot-flags, *penpot-http-body-size, *penpot-public-uri]
+
+  penpot-backend:
+    image: penpotapp/backend:${PENPOT_VERSION:-2.16}
+    container_name: penpot-backend
+    restart: always
+    volumes:
+      - ./assets:/opt/data/assets
+    depends_on:
+      penpot-postgres:
+        condition: service_healthy
+      penpot-valkey:
+        condition: service_healthy
+    environment:
+      <<: [*penpot-flags, *penpot-public-uri, *penpot-http-body-size]
+      # Master key. KEEP STABLE — rotate it and all sessions/invitations break.
+      # Stored in .env (gitignored) as PENPOT_SECRET_KEY.
+      PENPOT_SECRET_KEY: ${PENPOT_SECRET_KEY}
+
+      # Database
+      PENPOT_DATABASE_URI: postgresql://penpot-postgres/penpot
+      PENPOT_DATABASE_USERNAME: penpot
+      PENPOT_DATABASE_PASSWORD: ${PENPOT_DB_PASSWORD:-penpot}
+
+      # Valkey (Redis fork) for websocket notifications
+      PENPOT_REDIS_URI: redis://penpot-valkey/0
+
+      # Filesystem asset storage on the shared ./assets bind mount
+      PENPOT_OBJECTS_STORAGE_BACKEND: fs
+      PENPOT_OBJECTS_STORAGE_FS_DIRECTORY: /opt/data/assets
+
+      PENPOT_TELEMETRY_ENABLED: "false"
+
+  penpot-mcp:
+    image: penpotapp/mcp:${PENPOT_VERSION:-2.16}
+    container_name: penpot-mcp
+    restart: always
+
+  penpot-exporter:
+    image: penpotapp/exporter:${PENPOT_VERSION:-2.16}
+    container_name: penpot-exporter
+    restart: always
+    depends_on:
+      penpot-valkey:
+        condition: service_healthy
+    environment:
+      PENPOT_SECRET_KEY: ${PENPOT_SECRET_KEY}
+      PENPOT_PUBLIC_URI: https://pen.freno.me
+      PENPOT_INTERNAL_URI: http://penpot-frontend:8080
+      PENPOT_REDIS_URI: redis://penpot-valkey/0
+
+  penpot-postgres:
+    image: postgres:15
+    container_name: penpot-postgres
+    restart: always
+    stop_signal: SIGINT
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U penpot"]
+      interval: 2s
+      timeout: 10s
+      retries: 5
+      start_period: 2s
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_INITDB_ARGS: --data-checksums
+      POSTGRES_DB: penpot
+      POSTGRES_USER: penpot
+      POSTGRES_PASSWORD: ${PENPOT_DB_PASSWORD:-penpot}
+
+  penpot-valkey:
+    image: valkey/valkey:8.1
+    container_name: penpot-valkey
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "valkey-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+    environment:
+      - VALKEY_EXTRA_FLAGS=--maxmemory 128mb --maxmemory-policy volatile-lfu
