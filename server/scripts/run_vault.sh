@@ -5,6 +5,7 @@ DOCKER_PATH=$(which docker)
 $DOCKER_PATH start vaultwarden || \
 $DOCKER_PATH run \
   --name vaultwarden \
+  --network monitoring \
   -v /srv/vaultwarden/data:/data \
   -p 127.0.0.1:8081:80 \
   -e DOMAIN=https://vw.freno.me \

@@ -4,7 +4,6 @@
 #
 # Installs updated systemd unit files for the apps that moved into ~/hosting/.
 #   odysseus.service  -> /home/mike/hosting/odysseus
-#   paperclip.service -> /home/mike/hosting/paperclip
 #   firecrawl.service -> /home/mike/hosting/firecrawl  (+ docker v2 compose)
 #
 # Usage:
@@ -17,7 +16,7 @@ set -euo pipefail
 UNIT_DIR="/etc/systemd/system"
 STAGED_DIR="/tmp/hosting_service_files"
 BACKUP_DIR="${STAGED_DIR}/backup"
-SERVICES=(odysseus paperclip firecrawl gitnexus-api gitnexus-web)
+SERVICES=(odysseus firecrawl)
 
 echo "==> Staged units present:"
 for s in "${SERVICES[@]}"; do

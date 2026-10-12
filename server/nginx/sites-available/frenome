@@ -3,9 +3,219 @@
 # ===================================================================
 server {
     listen 80;
-    server_name jellyfin.freno.me michaelfreno.asuscomm.com vw.freno.me git.freno.me next.freno.me paper.freno.me odysseus.freno.me pen.freno.me gitnexus.freno.me macro.freno.me nook-relay.freno.me;
+    server_name jellyfin.freno.me michaelfreno.asuscomm.com vw.freno.me git.freno.me next.freno.me odysseus.freno.me pen.freno.me nook-relay.freno.me plane.freno.me pihole.freno.me kuma.freno.me ntfy.freno.me glance.freno.me beszel.freno.me audiobookshelf.freno.me miniflux.freno.me;
 
-    return 301 https://$host$request_uri;
+    # certbot webroot challenge — must be served over plain HTTP, no redirect.
+    # NB: the redirect MUST live in a location, not at server level — a
+    # server-level `return` runs in the rewrite phase BEFORE location
+    # matching and would 301 the ACME challenges away.
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# ===================================================================
+# SERVICE 12: Pi-hole admin — upstream 127.0.0.1:8080
+#
+#   Publicly reachable (nginx is internet-facing) — protection is
+#   Pi-hole's own login. Deliberately NO IP allowlist: freno.me names
+#   resolve to the WAN IP, so remote access arrives from arbitrary
+#   public IPs (tailnet source IPs only appear when using ts.net
+#   hostnames, which nothing here does).
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name pihole.freno.me;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Single multi-SAN lineage covers all three new services (issued as one
+    # cert by install.sh — see certbot output)
+    ssl_certificate /etc/letsencrypt/live/pihole.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pihole.freno.me/privkey.pem;
+}
+
+# ===================================================================
+# SERVICE 13: Uptime Kuma — upstream 127.0.0.1:3001 (needs websockets)
+#   Protected by Kuma's own login (no public status pages configured).
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name kuma.freno.me;
+
+    location / {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+
+        proxy_read_timeout 3600;
+        proxy_send_timeout 3600;
+        proxy_buffering off;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/pihole.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pihole.freno.me/privkey.pem;
+}
+
+# ===================================================================
+# SERVICE 14: ntfy — upstream 127.0.0.1:2586 (websockets + pub/sub)
+#   Protected by ntfy's deny-all auth (anonymous publish/read rejected).
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name ntfy.freno.me;
+
+    client_max_body_size 512k;
+
+    location / {
+        proxy_pass http://127.0.0.1:2586;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+
+        proxy_read_timeout 1h;
+        proxy_send_timeout 1h;
+        proxy_buffering off;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/pihole.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pihole.freno.me/privkey.pem;
+}
+
+# ===================================================================
+# SERVICE 15: Glance dashboard — upstream 127.0.0.1:8093
+#
+#   Auth: Glance's native login (cookie sessions — persist on mobile),
+#   with built-in brute-force protection (server.proxied: true in its
+#   config). The old basic-auth layer was removed — it re-prompted on
+#   phones and is redundant now.
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name glance.freno.me;
+
+    location / {
+        proxy_pass http://127.0.0.1:8093;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # dashboard live-refreshes
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/pihole.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pihole.freno.me/privkey.pem;
+}
+
+# ===================================================================
+# SERVICE 16: Beszel — server metrics, upstream 127.0.0.1:8089
+#   Protected by Beszel's own login.
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name beszel.freno.me;
+
+    location / {
+        proxy_pass http://127.0.0.1:8089;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+
+        proxy_read_timeout 3600;
+        proxy_buffering off;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/pihole.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pihole.freno.me/privkey.pem;
+}
+
+# ===================================================================
+# SERVICE 17: Audiobookshelf — upstream 127.0.0.1:8095
+#   Protected by its own login.
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name audiobookshelf.freno.me;
+
+    client_max_body_size 500M;   # book/podcast uploads
+
+    location / {
+        proxy_pass http://127.0.0.1:8095;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+
+        proxy_read_timeout 3600;
+        proxy_buffering off;
+    }
+
+    # ABS streams large audio ranges — allow big range requests
+    proxy_force_ranges on;
+
+    ssl_certificate /etc/letsencrypt/live/pihole.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pihole.freno.me/privkey.pem;
+}
+
+# ===================================================================
+# SERVICE 18: Miniflux — RSS reader, upstream 127.0.0.1:8082
+#   Protected by its own login.
+# ===================================================================
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name miniflux.freno.me;
+
+    location / {
+        proxy_pass http://127.0.0.1:8082;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/pihole.freno.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/pihole.freno.me/privkey.pem;
 }
 
 # ===================================================================
@@ -75,12 +285,20 @@ server {
 
     location / {
         proxy_pass http://127.0.0.1:8083;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_read_timeout 1h;
+        proxy_send_timeout 1h;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+
+    ssl_certificate /etc/letsencrypt/live/nook-relay.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/nook-relay.freno.me/privkey.pem; # managed by Certbot
 }
 
 
@@ -148,26 +366,6 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
-}
-
-# ===================================================================
-# SERVICE 7: Paperclip
-# ===================================================================
-server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    server_name paper.freno.me;
-
-    ssl_certificate /etc/letsencrypt/live/paper.freno.me/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/paper.freno.me/privkey.pem;
-
-    location / {
-        proxy_pass http://127.0.0.1:8087;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
 }
 
 # ===================================================================
@@ -241,99 +439,48 @@ server {
 }
 
 # ===================================================================
-# SERVICE 10: GitNexus (Web UI + REST API + MCP)
-#   All traffic -> gitnexus-web (127.0.0.1:4173). It serves the SPA and enforces
-#   a Bearer token on /api/* via GITNEXUS_SERVE_AUTH_TOKEN, proxying /api to
-#   gitnexus-api (127.0.0.1:4747).
-#   - Web UI:    nginx basic-auth (create /etc/nginx/.gitnexus_htpasswd)
-#   - REST/MCP:  Authorization: Bearer <token> on /api/* (incl /api/mcp)
-#   Note: needs a cert first. Run: sudo certbot certonly --standalone -d gitnexus.freno.me
-# ===================================================================
-server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    server_name gitnexus.freno.me;
-
-    client_max_body_size 100M;
-
-    # Web UI (SPA) — basic-auth protected at the nginx edge
-    location / {
-        #auth_basic "GitNexus";
-        #auth_basic_user_file /etc/nginx/.gitnexus_htpasswd;
-
-        proxy_pass http://127.0.0.1:4173;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-
-        proxy_buffering off;
-        proxy_read_timeout 1800;
-        proxy_connect_timeout 60;
-        proxy_send_timeout 1800;
-        send_timeout 1800;
-    }
-
-    # REST API + MCP — bearer-token gate lives in docker-server; NO basic auth here
-    # so CLI/MCP clients can authenticate with just the token.
-    location /api/ {
-        proxy_pass http://127.0.0.1:4173;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-
-        proxy_buffering off;
-        proxy_read_timeout 1800;
-        proxy_connect_timeout 60;
-        proxy_send_timeout 1800;
-        send_timeout 1800;
-    }
-
-    ssl_certificate /etc/letsencrypt/live/gitnexus.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/gitnexus.freno.me/privkey.pem; # managed by Certbot
-}
-
-# ===================================================================
-# SERVICE: Macro (locally-hosted cloud storage stack)
+# SERVICE 11: Plane (Community Edition) — project management
 #
-#   Fronts the Macro local stack. The app is served by the stack's Caddy
-#   proxy as a static same-origin bundle (instance `macro-home`), so the one
-#   origin works from any hostname.
-#   Upstream: proxy origin http://127.0.0.1:31709
-#   Note: needs a cert first under /etc/letsencrypt/live/macro.freno.me.
-#   Restart after bring-up: `just stack up --instance macro-home` (headless).
+#   Single origin -> the stack's bundled plane-proxy (Caddy) on 127.0.0.1:8092,
+#   which routes internally: / -> web, /api + /auth -> Django API, /spaces ->
+#   space, /god-mode -> admin, /live -> WebSocket server, /uploads -> MinIO.
+#   Stack lives in /home/mike/hosting/plane (manage with `make up`).
+#   Note: needs a cert first under /etc/letsencrypt/live/plane.freno.me.
+#   Run: sudo certbot --nginx -d plane.freno.me   (before nginx -t will pass)
 # ===================================================================
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    server_name macro.freno.me;
+    server_name plane.freno.me;
 
-    client_max_body_size 500M;
+    # Plane caps uploads at 5 MB by default (FILE_SIZE_LIMIT in plane.env).
+    client_max_body_size 10m;
 
-    # SPA + API + websockets — single origin of the local stack
+    # plane-ntfy-bridge: signed webhook POSTs from Plane (must be matched
+    # BEFORE the / catch-all that goes to plane-proxy)
+    location /webhooks/ntfy {
+        proxy_pass http://127.0.0.1:8094;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 30s;
+    }
+
     location / {
-        auth_basic "Macro";
-        auth_basic_user_file /etc/nginx/.macro_htpasswd;
-        proxy_pass http://127.0.0.1:31709;
+        proxy_pass http://127.0.0.1:8092;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Host $host;
 
+        # WebSockets (/live/*) — $connection_upgrade is in conf.d/websocket.conf
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection $connection_upgrade;
 
+        # Long-lived websocket / streaming connections
         proxy_read_timeout 3600;
         proxy_connect_timeout 60;
         proxy_send_timeout 3600;
@@ -342,6 +489,6 @@ server {
         proxy_buffering off;
     }
 
-    ssl_certificate /etc/letsencrypt/live/macro.freno.me/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/macro.freno.me/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/plane.freno.me/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/plane.freno.me/privkey.pem; # managed by Certbot
 }
