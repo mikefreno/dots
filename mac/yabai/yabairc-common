@@ -2,31 +2,53 @@
 
 # ─── Shared Rules & Config ─────────────────────────────────────────────
 # Pulled in by both display-count configs (yabairc-single / yabairc-multi).
-# Window rules are identical across display counts.
+# Window rules are identical across display counts except Hermes, which
+# floats on a single display but gets its own space when external is attached.
 
-yabai -m rule --remove ".*" 2>/dev/null
+# yabai's rule removal matches an exact label — it is NOT a regex — and a
+# rule added without a label can never be removed. Every rule below therefore
+# carries a unique dots-* label, cleared here before it is re-added. Rules
+# left over from a config that did not label them survive until yabai is
+# restarted (rules are runtime-only state).
+for label in dots-terminal dots-xcode dots-web dots-comms dots-add \
+             dots-hermes dots-emulators dots-ubuntu \
+             dots-special-title dots-floating; do
+    yabai -m rule --remove "$label" 2>/dev/null
+done
 
 # Core spaces (always present)
-yabai -m rule --add app="^(Alacritty|kitty|Ghostty)$"                        space="main"
-yabai -m rule --add app="^Xcode(-beta)?$"                                     space="main"
-yabai -m rule --add app="^(Orion|Safari|Brave Browser|SigmaOS|Zen Browser|Zen)$" space="web"
-yabai -m rule --add app="^(Mail|Messages|Things|Telegram)$"                   space="comms"
+yabai -m rule --add label=dots-terminal app="^(Alacritty|kitty|Ghostty)$"                        space="main"
+yabai -m rule --add label=dots-xcode    app="^Xcode(-beta)?$"                                    space="main"
+yabai -m rule --add label=dots-web      app="^(Orion|Safari|Brave Browser|SigmaOS|Zen Browser|Zen)$" space="web"
+yabai -m rule --add label=dots-comms    app="^(Mail|Messages|Things|Telegram|Obsidian)$"          space="comms"
 
 # Extra apps → merged "add" space
 # (Rules are always registered so they apply even if apps launch later)
-yabai -m rule --add app="^(Blender|Bambu Studio|Obsidian|Slack|Epic Games Launcher|UnrealEditor)$"             space="add"
+yabai -m rule --add label=dots-add      app="^(Blender|Bambu Studio|Slack|Epic Games Launcher|UnrealEditor)$"             space="add"
+
+# Hermes: floats on a single display; on multiple displays it gets its own
+# space next to main on the built-in (falling back to main if no space exists).
+if [ "$display_count" -gt 1 ]; then
+    if yabai -m query --spaces | jq -e '.[] | select(.label == "hermes")' >/dev/null 2>&1; then
+        yabai -m rule --add label=dots-hermes app="^Hermes$" space="hermes" manage=on
+    else
+        yabai -m rule --add label=dots-hermes app="^Hermes$" space="main" manage=on
+    fi
+else
+    yabai -m rule --add label=dots-hermes app="^Hermes$" manage=off
+fi
 
 # Emulators: dedicated space when one exists, else the main space
 if yabai -m query --spaces | jq -e '.[] | select(.label == "emulators")' >/dev/null 2>&1; then
-    yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="emulators" manage=on
+    yabai -m rule --add label=dots-emulators app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="emulators" manage=on
 else
-    yabai -m rule --add app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="main" manage=on
+    yabai -m rule --add label=dots-emulators app="^(Simulator|Android Emulator|qemu-system-aarch64)$" space="main" manage=on
 fi
 
 # Floating / special windows
-yabai -m rule --add title="^Ubuntu$"                                           space="main" manage=off
-yabai -m rule --add title="^(Preview|Preferences|Settings|Control Center|Steam|Gaze|Simulator)$" manage=off
-yabai -m rule --add app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden|App Store|Gaze|Simulator)$" manage=off
+yabai -m rule --add label=dots-ubuntu        title="^Ubuntu$"                                           space="main" manage=off
+yabai -m rule --add label=dots-special-title title="^(Preview|Preferences|Settings|Control Center|Steam|Gaze|Simulator)$" manage=off
+yabai -m rule --add label=dots-floating      app="^(Calculator|System Preferences|System Settings|Activity Monitor|Archive Utility|Finder|Notes|Numi|Weather|DaisyDisk|Raycast|Raycast Settings|Dato|Terminal|Proton VPN|iStat Menus|Transmission|AlDente|Steam|Little Snitch|Radio Silence|TextEdit|love|Bitwarden|App Store|Gaze|Simulator)$" manage=off
 
 # Apply all rules retroactively
 yabai -m rule --apply

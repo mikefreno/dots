@@ -6,59 +6,18 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "on-atlas",
       "options": {
-        "baseURL": "atlas:8123/v1"
-        //"apiKey": "{file:~/.config/opencode/my.key}"
+        "baseURL": "http://atlas:8123/v1",
+        "apiKey": "fb48e49fe6c531234de4b918c97a56f3eeda967da7ad761e"
       },
       "models": {
-        "Qwen3.6-27B":{
+        "Qwen3.8-27B":{
           "limit":{
-            "context": 155000,
+            "context": 264144,
             "output": 100000
           },
           "modalities":{
             "input":  ["text", "image"],
             "output": ["text"]
-          }
-        },
-        "Qwen3.6-35B-A3B":{
-          "limit":{
-            "context": 125000,
-            "output": 100000
-          },
-          "modalities":{
-            "input":  ["text", "image"],
-            "output": ["text"]
-          }
-        },
-        "Gemma4-31B-Opus":{
-          "limit":{
-            "context": 80000,
-            "output": 100000
-          },
-          "modalities":{
-            "input":  ["text", "image"],
-            "output": ["text"]
-          }
-        }
-      }
-    },
-    "hermes": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "on-hermes",
-      "options": {
-        "baseURL": "localhost:8123/v1"
-      },
-      "models": {
-        "Qwen3.5-9B": {
-          "limit":{
-            "context": 100000,
-            "output": 100000
-          }
-        },
-        "Qwen3.5-4B": {
-          "limit":{
-            "context": 150000,
-            "output": 100000
           }
         }
       }
@@ -70,46 +29,96 @@
         "baseURL": "strix:8123/v1"
       },
       "models": {
-        "Qwen3.6-27B": {
+        "qwen3.8-flash": {
           "limit":{
-            "context": 262144,
-            "output": 100000
-          }
-        },
-        "Qwen3.6-35B-A3B": {
-          "limit":{
-            "context": 262144,
-            "output": 100000
-          }
-        },
-        "MiniMax-M2.7": {
-          "limit":{
-            "context": 200000,
-            "output": 100000
-          }
-        },
-        "Qwen3.5-122B-A10B": {
-          "limit":{
-            "context": 262144,
+            "context": 204100,
             "output": 100000
           }
         }
       }
     },
-    "pan": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "on-pan",
-      "options": {
-        "baseURL": "pan:8080/v1"
-      },
-      "models": {
-        "preferred": {
-          "limit":{
-            "context": 262144,
-            "output": 100000
-          }
-        }
-      }
+    "opencode": {
+      "blacklist": [
+        "big-pickle",
+        "claude-haiku-4-5",
+        "claude-opus-4-5",
+        "claude-opus-4-6",
+        "claude-opus-4-7",
+        "claude-opus-4-8",
+        "claude-opus-5",
+        "claude-sonnet-4",
+        "claude-sonnet-4-5",
+        "claude-sonnet-4-6",
+        "gpt-5",
+        "gpt-5-codex",
+        "gpt-5-nano",
+        "gpt-5.1",
+        "gpt-5.1-codex",
+        "gpt-5.1-codex-max",
+        "gpt-5.1-codex-mini",
+        "gpt-5.2",
+        "gpt-5.2-codex",
+        "gpt-5.3-codex",
+        "gpt-5.3-codex-spark",
+        "gpt-5.4",
+        "gpt-5.4-mini",
+        "gpt-5.4-nano",
+        "gpt-5.4-pro",
+        "gpt-5.5",
+        "gpt-5.5-pro",
+        "gpt-5.6-luna",
+        "gpt-5.6-terra",
+        "gemini-3-flash",
+        "gemini-3.1-pro",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-3.6-flash",
+        "deepseek-v4-flash",
+        "deepseek-v4-flash-free",
+        "deepseek-v4-pro",
+        "glm-5",
+        "glm-5.1",
+        "glm-5.2",
+        "kimi-k2.5",
+        "kimi-k2.6",
+        "kimi-k2.7-code",
+        "qwen3.5-plus",
+        "qwen3.6-plus",
+        "grok-4.5",
+        "grok-build-0.1",
+        "minimax-m2.5",
+        "minimax-m2.7",
+        "mimo-v2.5-free",
+        "laguna-s-2.1-free",
+        "ling-3.0-flash-free",
+        "ling-3.0-tiny-free",
+        "longcat-2.0-free",
+        "nemotron-3-ultra-free",
+        "north-mini-code-free"
+      ]
+    },
+    "opencode-go": {
+      "blacklist": [
+        "grok-4.5",
+        "qwen3.7-plus",
+        "hy3",
+        "mimo-v2.5",
+        "glm-5.2",
+        "glm-5.1",
+        "glm-5",
+        "deepseek-v4-pro",
+        "kimi-k2.5",
+        "kimi-k2.6",
+        "kimi-k2.7-code",
+        "mimo-v2-omni",
+        "mimo-v2-pro",
+        "mimo-v2.5-pro",
+        "minimax-m2.5",
+        "minimax-m2.7",
+        "qwen3.5-plus",
+        "qwen3.6-plus",
+        "qwen3.7-max"
+      ]
     }
   },
   "lsp": {
@@ -125,7 +134,7 @@
   "mcp": {
     "apple-docs-mcp": {
       "type": "local",
-      "command": ["npx", "@kimsungwhee/apple-docs-mcp", "--help"],
+      "command": ["node", "/Users/mike/code/apple-docs-mcp/dist/index.js"],
       "enabled": true
     },
     "expo-docs": {
@@ -147,6 +156,19 @@
     "alpha-vantage":{
       "type": "remote",
       "url": "https://mcp.alphavantage.co/mcp?apikey={file:~/.config/opencode/av.key}"
+    },
+    "rea": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "rea-agents@6.3.0",
+        "mcp"
+      ],
+      "enabled": true,
+      "environment": {
+        "HOPPER_LAUNCHER_PATH": "/Users/mike/Applications/Hopper Disassembler.app/Contents/MacOS/hopper"
+      }
     }
     //"clerk": {
       //"type": "remote",

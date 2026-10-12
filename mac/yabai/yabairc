@@ -1,8 +1,18 @@
 #!/bin/bash
 
+# ─── Signal Reset ───────────────────────────────────────────────────────
+# Signals are re-registered on every run; remove this config's labeled
+# handlers first so they never accumulate (a display change would
+# otherwise re-run this config dozens of times concurrently).
+
+yabai -m signal --remove load-sa    2>/dev/null
+yabai -m signal --remove bsp-insert 2>/dev/null
+yabai -m signal --remove watch-add  2>/dev/null
+yabai -m signal --remove watch-rem  2>/dev/null
+
 # ─── Bootstrap ──────────────────────────────────────────────────────────
 
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+yabai -m signal --add event=dock_did_restart label="load-sa" action="sudo yabai --load-sa"
 sudo yabai --load-sa &>/dev/null
 
 display_count=$(yabai -m query --displays | jq length)
@@ -12,22 +22,55 @@ echo "Number of displays detected: $display_count"
 
 running()              { pgrep -x "$1" >/dev/null; }
 has_blender_or_bambu() { running "Blender" || running "BambuStudio"; }
-has_obsidian()         { running "Obsidian"; }
 has_slack()            { running "Slack"; }
-has_emulator()         { running "Simulator" || pgrep "qemu-system-aarch64" >/dev/null; }
-has_extra_apps()       { has_blender_or_bambu || has_obsidian || has_slack; }
+has_hermes()           { running "Hermes"; }
+# Emulators get their own space only when two or more are running
+# (e.g. iOS Simulator + Android emulator together); a single one shares main.
+has_multiple_emulators() {
+    local count=0
+    running "Simulator" && count=$((count + 1))
+    count=$((count + $(pgrep "qemu-system-aarch64" 2>/dev/null | wc -l)))
+    [ "$count" -ge 2 ]
+}
+has_extra_apps()       { has_blender_or_bambu || has_slack; }
 
-get_space_count() { yabai -m query --spaces | jq length; }
+# Indexes of real spaces (native-fullscreen spaces are invisible to the
+# layout: they are not counted, labeled, moved, or destroyed).
+real_space_indexes() {
+    yabai -m query --spaces | jq -r '.[] | select(."is-native-fullscreen" != true) | .index'
+}
+
+# Index of the Nth real space (1-based)
+nth_real_space() { real_space_indexes | sed -n "${1}p"; }
+
+# Label spaces in layout order: reset_space_counter, then label_space <label>
+# for each space the current display mode wants. Positions are resolved as we
+# go, so optional spaces (add, emulators) need no hard-coded indexes.
+space_seq=0
+reset_space_counter() { space_seq=1; }
+label_space() {
+    yabai -m space "$(nth_real_space $space_seq)" --label "$1"
+    space_seq=$((space_seq + 1))
+}
 
 adjust_space_count() {
-    local needed=$1 current
-    current=$(get_space_count)
+    local needed=$1 current last_real
+
+    # Destroy orphaned native-fullscreen spaces (left behind by display
+    # changes); a fullscreen space with no window is garbage.
+    yabai -m query --spaces | jq -r '.[] | select(."is-native-fullscreen" == true and (.windows | length) == 0) | .index' | \
+        while read -r fs_id; do
+            yabai -m space "$fs_id" --destroy 2>/dev/null
+        done
+
+    current=$(real_space_indexes | wc -l | tr -d ' ')
     while [ "$current" -lt "$needed" ]; do
         yabai -m space --create
         current=$((current + 1))
     done
     while [ "$current" -gt "$needed" ]; do
-        yabai -m space "$current" --destroy
+        last_real=$(real_space_indexes | tail -1)
+        yabai -m space "$last_real" --destroy
         current=$((current - 1))
     done
 }
@@ -43,10 +86,10 @@ move_label_to_display() {
 }
 
 # ─── BSP Insertion for "add" Space ──────────────────────────────────────
-# When a Blender/Bambu/Omni/Slack window opens in the add space, insert it
-# so Blender+Bambu share the west side and Obsidian+Slack share the east.
+# When a Blender/Bambu/Slack window opens in the add space, insert it
+# so Blender+Bambu share the west side and Slack takes the east.
 
-yabai -m signal --add event=window_created action="
+yabai -m signal --add event=window_created label="bsp-insert" action="
     app=\$(/opt/homebrew/bin/yabai -m query --windows --window \$YABAI_WINDOW_ID 2>/dev/null | \
           /opt/homebrew/bin/jq -r '.app // empty')
     case \"\$app\" in
@@ -61,7 +104,7 @@ yabai -m signal --add event=window_created action="
                 fi
             fi
             ;;
-        Obsidian|Slack)
+        Slack)
             space_idx=\$(/opt/homebrew/bin/yabai -m query --windows --window \$YABAI_WINDOW_ID 2>/dev/null | \
                         /opt/homebrew/bin/jq -r '.space // empty')
             if [ -n \"\$space_idx\" ]; then
@@ -79,8 +122,8 @@ yabai -m signal --add event=window_created action="
 # Re-run this dispatcher when displays change; it re-routes to the
 # display-count-specific config.
 
-yabai -m signal --add event=display_added action="$0"
-yabai -m signal --add event=display_removed action="$0"
+yabai -m signal --add event=display_added label="watch-add" action="$0"
+yabai -m signal --add event=display_removed label="watch-rem" action="$0"
 
 # ─── Route to Display-Count Config ──────────────────────────────────────
 # Each mode owns its space layout in its own file; both pull in the

@@ -1,26 +1,25 @@
 #!/bin/bash
 
 # ─── Multi Display Config ───────────────────────────────────────────────
-# Order matches single-display mode: main, web, comms, [add], [emulators].
-# Labeling by position is deterministic at yabai startup; the shared
-# rules then route apps. Built-in keeps only main (terminal); the
-# external display gets the rest.
-# Sourced by yabairc (the dispatcher) when two or more displays are attached.
+# Layout order: main, web, comms + optional hermes/add/emulators.
+# Labeling is by position (deterministic at yabai startup); the shared
+# rules then route apps. Built-in keeps main and, when Hermes runs, hermes
+# next to it; the external display gets the rest.
+# Sourced by yabairc when two or more displays are attached.
 
 needed=3
+has_hermes && needed=$((needed + 1))
 has_extra_apps && needed=$((needed + 1))
-has_emulator   && needed=$((needed + 1))
+has_multiple_emulators && needed=$((needed + 1))
 adjust_space_count "$needed"
 
-yabai -m space 1 --label main
-yabai -m space 2 --label web
-yabai -m space 3 --label comms
-if has_extra_apps; then
-    yabai -m space 4 --label add
-fi
-if has_emulator; then
-    yabai -m space 5 --label emulators
-fi
+reset_space_counter
+label_space main
+has_hermes && label_space hermes
+label_space web
+label_space comms
+has_extra_apps && label_space add
+has_multiple_emulators && label_space emulators
 
 # Place displays by label — indexes shift as moves happen, so re-query
 # each label right before moving it, and only move what is misplaced.
@@ -28,10 +27,11 @@ d1=$(yabai -m query --displays | jq '.[0].index')   # built-in
 d2=$(yabai -m query --displays | jq '.[1].index')   # external
 
 move_label_to_display main  "$d1"
+has_hermes && move_label_to_display hermes "$d1"
 move_label_to_display web   "$d2"
 move_label_to_display comms "$d2"
 has_extra_apps && move_label_to_display add   "$d2"
-has_emulator && move_label_to_display emulators "$d2"
+has_multiple_emulators && move_label_to_display emulators "$d2"
 
 # Shared rules + config
 source "$(dirname "$0")/yabairc-common"
