@@ -34,55 +34,56 @@ has_multiple_emulators() {
 }
 has_extra_apps()       { has_blender_or_bambu || has_slack; }
 
-# Indexes of real spaces (native-fullscreen spaces are invisible to the
-# layout: they are not counted, labeled, moved, or destroyed).
-real_space_indexes() {
-    yabai -m query --spaces | jq -r '.[] | select(."is-native-fullscreen" != true) | .index'
+# Spaces are placed by creating and destroying them per display, never by
+# moving them: `space --display` is a silent no-op when the scripting-addition
+# lacks the moveSpace patch (macOS 27 arm64e). `--create` takes a display and
+# appends to that display's list without touching focus.
+
+# Indexes of the real spaces on one display, in layout order
+# (native-fullscreen spaces are invisible to the layout).
+display_space_indexes() {
+    yabai -m query --spaces | jq -r --argjson d "$1" \
+        '.[] | select(.display == $d and ."is-native-fullscreen" != true) | .index'
 }
 
-# Index of the Nth real space (1-based)
-nth_real_space() { real_space_indexes | sed -n "${1}p"; }
-
-# Label spaces in layout order: reset_space_counter, then label_space <label>
-# for each space the current display mode wants. Positions are resolved as we
-# go, so optional spaces (add, emulators) need no hard-coded indexes.
-space_seq=0
-reset_space_counter() { space_seq=1; }
-label_space() {
-    yabai -m space "$(nth_real_space $space_seq)" --label "$1"
-    space_seq=$((space_seq + 1))
+# Last space on a display holding no windows. Destroying a populated space
+# takes its windows with it, so shrink by destroying an empty one when we can.
+empty_space_on_display() {
+    yabai -m query --spaces | jq -r --argjson d "$1" \
+        '[.[] | select(.display == $d and ."is-native-fullscreen" != true and (.windows | length) == 0) | .index] | last // empty'
 }
 
+# Grow or shrink one display's real-space count to $2
 adjust_space_count() {
-    local needed=$1 current last_real
-
-    # Destroy orphaned native-fullscreen spaces (left behind by display
-    # changes); a fullscreen space with no window is garbage.
-    yabai -m query --spaces | jq -r '.[] | select(."is-native-fullscreen" == true and (.windows | length) == 0) | .index' | \
-        while read -r fs_id; do
-            yabai -m space "$fs_id" --destroy 2>/dev/null
-        done
-
-    current=$(real_space_indexes | wc -l | tr -d ' ')
+    local did=$1 needed=$2 current victim dest wid
+    current=$(display_space_indexes "$did" | wc -l | tr -d ' ')
     while [ "$current" -lt "$needed" ]; do
-        yabai -m space --create
+        yabai -m space --create "$did"
         current=$((current + 1))
     done
     while [ "$current" -gt "$needed" ]; do
-        last_real=$(real_space_indexes | tail -1)
-        yabai -m space "$last_real" --destroy
+        victim=$(empty_space_on_display "$did")
+        [ -n "$victim" ] || victim=$(display_space_indexes "$did" | tail -1)
+        # Destroying a space takes its windows with it: park them on a sibling.
+        dest=$(display_space_indexes "$did" | head -1)
+        [ "$dest" = "$victim" ] && dest=$(display_space_indexes "$did" | sed -n 2p)
+        for wid in $(yabai -m query --windows --space "$victim" | jq -r '.[].id'); do
+            yabai -m window "$wid" --space "$dest"
+        done
+        yabai -m space "$victim" --destroy
         current=$((current - 1))
     done
 }
 
-# Move the space carrying a label to a display, only if it is misplaced.
-# Re-queries the label's index every time (space indexes shift as moves happen).
-move_label_to_display() {
-    local label=$1 did=$2 sid cur
-    sid=$(yabai -m query --spaces | jq -r --arg l "$label" '.[] | select(.label == $l) | .index' | head -1)
-    [ -n "$sid" ] || return
-    cur=$(yabai -m query --spaces --space "$sid" | jq -r '.display')
-    [ "$cur" != "$did" ] && yabai -m space "$sid" --display "$did" 2>/dev/null
+# Label the Nth real space of a display (1-based)
+label_space() { yabai -m space "$(display_space_indexes "$1" | sed -n "${2}p")" --label "$3"; }
+
+# A native-fullscreen space with no window is garbage left by a display change.
+destroy_orphan_fullscreen_spaces() {
+    yabai -m query --spaces | jq -r '.[] | select(."is-native-fullscreen" == true and (.windows | length) == 0) | .index' | \
+        while read -r fs_id; do
+            yabai -m space "$fs_id" --destroy 2>/dev/null
+        done
 }
 
 # ─── BSP Insertion for "add" Space ──────────────────────────────────────
@@ -128,6 +129,8 @@ yabai -m signal --add event=display_removed label="watch-rem" action="$0"
 # ─── Route to Display-Count Config ──────────────────────────────────────
 # Each mode owns its space layout in its own file; both pull in the
 # shared rules/config from yabairc-common.
+
+destroy_orphan_fullscreen_spaces
 
 case "$display_count" in
     1) source "$(dirname "$0")/yabairc-single" ;;

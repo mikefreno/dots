@@ -1,6 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
+  "permissions": [
+    { "action": "shell", "resource": "*", "effect": "ask" },
+    { "action": "edit", "resource": "*", "effect": "ask" },
+    { "action": "external_directory", "resource": "*", "effect": "ask" },
+  ],
   "provider": {
     "atlas": {
       "npm": "@ai-sdk/openai-compatible",
@@ -157,12 +162,24 @@
       "type": "remote",
       "url": "https://mcp.alphavantage.co/mcp?apikey={file:~/.config/opencode/av.key}"
     },
+    "plane": {
+      "type": "local",
+      "command": [
+        "/Users/mike/.local/bin/uvx",
+        "plane-mcp-server",
+        "stdio"
+      ],
+      "enabled": true,
+      "environment": {
+        "PLANE_API_KEY": "{file:~/.pi/agent/plane.key}",
+        "PLANE_WORKSPACE_SLUG": "frenocorp",
+        "PLANE_BASE_URL": "https://plane.freno.me"
+      }
+    },
     "rea": {
       "type": "local",
       "command": [
-        "npx",
-        "-y",
-        "rea-agents@6.3.0",
+        "/opt/homebrew/bin/rea",
         "mcp"
       ],
       "enabled": true,

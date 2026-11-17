@@ -1,20 +1,21 @@
 #!/bin/bash
 
 # ─── Single Display Config ──────────────────────────────────────────────
-# All spaces live on the one display: main, web, comms + optional
-# add. Labeling is by position (deterministic at yabai startup); the
-# shared rules then route apps. Hermes gets no space here — it floats (see
-# yabairc-common). Sourced by yabairc when exactly one display is attached.
+# All spaces live on the one display: main, web, comms + optional add,
+# labeled by position. The shared rules then route apps. Hermes gets no
+# space here — it floats (see yabairc-common).
+# Sourced by yabairc when exactly one display is attached.
+
+d1=$(yabai -m query --displays | jq '.[0].index')
 
 needed=3
 has_extra_apps && needed=$((needed + 1))
-adjust_space_count "$needed"
+adjust_space_count "$d1" "$needed"
 
-reset_space_counter
-label_space main
-label_space web
-label_space comms
-has_extra_apps && label_space add
+label_space "$d1" 1 main
+label_space "$d1" 2 web
+label_space "$d1" 3 comms
+has_extra_apps && label_space "$d1" 4 add
 
 # Shared rules + config
 source "$(dirname "$0")/yabairc-common"

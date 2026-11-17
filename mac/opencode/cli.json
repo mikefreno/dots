@@ -9,7 +9,9 @@
   "session": {
     "sidebar": "hide",
     "scrollbar": false,
-    "thinking": "show"
+    "thinking": "show",
+    "permissions": "prompt"
   },
-  "animations": true
+  "animations": true,
+  "plugins": ["./herdr-opencode"]
 }
